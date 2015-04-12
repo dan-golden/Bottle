@@ -70,7 +70,7 @@ exports.homeCol = new Column({
 		new Column({name: "tempControl", left:0, right:0, top:0, bottom:0, skin: blueSkinLabel,
 			contents:[
 				increase_button,
-				new Label({left:-18, right:0, string: current_temperature, style:titleStyle,}),
+				new Label({left:-18, right:0, string: current_temperature_string, style:titleStyle,}),
 				decrease_button,
 				new Line({left:0, right:0, top:0, bottom:0,
 					contents:[ cold_button, room_button, hot_button, boil_button]

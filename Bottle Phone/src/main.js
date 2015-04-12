@@ -2,13 +2,20 @@
 
 //IMPORTS
 
-var THEME = require("themes/flat/theme");
+var CONTROLS_THEME = require('themes/flat/theme');
+var THEME = require('themes/sample/theme');
+for ( var i in CONTROLS_THEME ){
+    THEME[i] = CONTROLS_THEME[i]
+}
 var BUTTONS = require("controls/buttons");
 var CONTROL = require('mobile/control');
 var KEYBOARD = require('mobile/keyboard');
 var TRANSITIONS = require('transitions');
 var SLIDERS = require('controls/sliders');
 var SWITCHES = require('controls/switch');
+var SCROLLER = require('mobile/scroller');
+var SCREEN = require('mobile/screen');
+
 
 // Skins and Styles
 var whiteSkin = new Skin( { fill:"white" } );
@@ -31,6 +38,14 @@ var smallText = new Style({font:"bold 20px", color:"#333333"});
 var nameInputSkin = new Skin({ borders: { left:2, right:2, top:2, bottom:2 }, stroke: 'gray',});
 var fieldStyle = new Style({ color: 'black', font: 'bold 24px', horizontal: 'left', vertical: 'middle', left: 5, right: 5, top: 5, bottom: 5, });
 var fieldHintStyle = new Style({ color: '#aaa', font: '24px', horizontal: 'left', vertical: 'middle', left: 5, right: 5, top: 5, bottom: 5, });
+var buttonStyle1 = new Style({ font: "25px Helvetica, sans-serif;", color:"white", skin: redSkin });
+var taskNameStyle = new Style({ font: "25px Helvetica, sans-serif; bold;", color:"black" });
+var taskStyle = new Style({ font: "20px Helvetica, sans-serif;", color:"black" });
+var blackSkin = new Skin({ fill: 'black',});
+var yellowSkin	= new Skin({ fill: 'yellow'});
+var separatorSkin = new Skin({ fill: 'silver',});
+var productNameStyle = new Style({  font: 'bold 22px', horizontal: 'left', vertical: 'middle', lines: 1, });
+var productDescriptionStyle = new Style({  font: '16px', horizontal: 'left', vertical: 'middle', left: 1, color: 'Black' });
 
 // Internal Variables
 var deviceURL = "";
@@ -224,8 +239,8 @@ var MenuScreen = Column.template(function($) { return { left: 0, right: 0, top: 
 
 var ScheduleScreen = Container.template(function($) { return { left: 0, right: 0, top: 0, bottom: 0, skin: blueSkin, contents: [
 	Label($, { left: 0, right: 0, style: labelStyle, string: 'Current Schedules', }),
+//	SCHEDULE_SCREEN.ScheduleScreen,
 	new menuButton(),
-	new newMenu()
 ], }});
 
 var SurvivalScreen = Container.template(function($) { return { left: 0, right: 0, top: 0, bottom: 0, skin: blueSkin, contents: [
@@ -234,13 +249,13 @@ var SurvivalScreen = Container.template(function($) { return { left: 0, right: 0
 ], }});
 
 var TemperatureScreen = Container.template(function($) { return { left: 0, right: 0, top: 0, bottom: 0, skin: blueSkin, contents: [
-	//Label($, { left: 0, right: 0, style: labelStyle, string: 'Manual Temperature Control', }),
+	Label($, { left: 0, right: 0, style: labelStyle, string: 'Manual Temperature Control', }),
 	TEMPERATURE_SCREEN.homeCol,
 	new menuButton()
 ], }});
 
 var MenuScreen = new MenuScreen();
-var ScheduleScreen = new ScheduleScreen();
+//var ScheduleScreen = new ScheduleScreen();
 var SurvivalScreen = new SurvivalScreen();
 var TemperatureScreen = new TemperatureScreen();
 
@@ -251,6 +266,8 @@ var TemperatureScreen = new TemperatureScreen();
 var ApplicationBehavior = Behavior.template({
     onLaunch: function(application) {
 		application.shared = true;
+//		var str = SCHEDULE_SCREEN.generateDisplayString(SCHEDULE_SCREEN.newSchedule);
+	//	str.SCHEDULE_SCREEN.forEach(SCHEDULE_SCREEN.ListBuilder);
 	},
 	onDisplayed: function(application) {
 		application.discover("bottleDevice");
