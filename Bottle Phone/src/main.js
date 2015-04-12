@@ -27,6 +27,7 @@ var labelStyle = new Style( { font: "15px Helvetica, sans-serif;", color:"white"
 var redSkin = new Skin({fill:'red'});
 var buttonStyle = new Style({ font: "15px Helvetica, sans-serif;", color:"white", skin: redSkin });
 var bigText = new Style({font:"bold 40px", color:"#333333"});
+var smallText = new Style({font:"bold 20px", color:"#333333"});
 var nameInputSkin = new Skin({ borders: { left:2, right:2, top:2, bottom:2 }, stroke: 'gray',});
 var fieldStyle = new Style({ color: 'black', font: 'bold 24px', horizontal: 'left', vertical: 'middle', left: 5, right: 5, top: 5, bottom: 5, });
 var fieldHintStyle = new Style({ color: '#aaa', font: '24px', horizontal: 'left', vertical: 'middle', left: 5, right: 5, top: 5, bottom: 5, });
@@ -230,7 +231,8 @@ var SurvivalScreen = Container.template(function($) { return { left: 0, right: 0
 ], }});
 
 var TemperatureScreen = Container.template(function($) { return { left: 0, right: 0, top: 0, bottom: 0, skin: blueSkin, contents: [
-	Label($, { left: 0, right: 0, style: labelStyle, string: 'Manual Temperature Control', }),
+	//Label($, { left: 0, right: 0, style: labelStyle, string: 'Manual Temperature Control', }),
+	TEMPERATURE_SCREEN.homeCol,
 	new menuButton()
 ], }});
 
