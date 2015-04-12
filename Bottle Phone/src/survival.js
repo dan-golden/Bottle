@@ -63,15 +63,16 @@ exports.mainCol = new Column({
 	left:0, right:0, top:0, bottom:0,
 	skin: whiteS,
 	contents:[
-		new Line({left:0, right:0, top:0, height:80, skin: whiteS,
+		new Line({left:0, right:0, top:0, height:60, skin: whiteS,
 				contents:[
-					new Label({left:-18, right:0, string:"Bot-tle", style:titleStyle,}),
+					new Label({left:40, right:0, string:"Bot-tle", style:titleStyle,}),
 				]
 			}),
 		new Column({name: "secondCol", left:0, right:0, top:0, bottom:0, skin: blueSkinLabel,
 				contents:[
 					save_label,
-					new MySwitchTemplate({value: 1}),
+					survival_title_label,
+					new MySwitchTemplate({value: 0}),					
 					survival_mode_label,
 					new MySlider({ min:0, max:100, value:50 }),
 					dispense_rate_label,

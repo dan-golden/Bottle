@@ -19,7 +19,7 @@ var whiteS = new Skin({
 		fill:"#e5e5ff",
 		borders:{left:5, right:5, top:5, bottom:5},
 		stroke:"gray"});
-var textStyle = new Style({font:"bold 20px", color:"black"});
+var textStyle = new Style({font:"bold 25px", color:"black"});
 var titleStyle = new Style({font:"bold 30px", color:"black"});
 var repeatingPatternTexture = new Texture('./assets/menuIcon.png', 1)
 var repeatingPatternSkin = new Skin({ texture: repeatingPatternTexture, width: 244, height: 88, tiles: { left:0, right:0, top:0, bottom:0 }, });
@@ -146,42 +146,6 @@ var tButton = new temperatureButton();
 var sButton = new scheduleButton();
 var suButton = new survivalButton();
 
-var SURVIVAL_SCREEN = require('survival.js');
-var CREATE_SCHEDULE_SCREEN = require("createSchedule.js");
-var SCHEDULE_SCREEN = require("schedules.js");
-var TEMPERATURE_SCREEN = require("home.js");
-
-// SCREENS
-var MenuScreen = Column.template(function($) { return { left: 0, right: 0, top: 0, bottom: 0, skin: blueSkin, contents: [
-	Label($, { left: 0, right: 0, top: 20, style: labelStyle, string: 'Menu', }),
-	tButton,
-	sButton,
-	suButton,
-	bButton,
-], }});
-
-var ScheduleScreen = Container.template(function($) { return { left: 0, right: 0, top: 0, bottom: 0, skin: blueSkin, contents: [
-	Label($, { left: 0, right: 0, style: labelStyle, string: 'Current Schedules', }),
-	new menuButton(),
-	new newMenu()
-], }});
-
-var SurvivalScreen = Container.template(function($) { return { left: 0, right: 0, top: 0, bottom: 0, skin: blueSkin, contents: [
-	Label($, { left: 0, right: 0, top:0, style: labelStyle, string: 'Survival Mode', }),
-	new menuButton(),
-	SURVIVAL_SCREEN.mainCol,
-], }});
-
-var TemperatureScreen = Container.template(function($) { return { left: 0, right: 0, top: 0, bottom: 0, skin: blueSkin, contents: [
-	Label($, { left: 0, right: 0, style: labelStyle, string: 'Manual Temperature Control', }),
-	new menuButton()
-], }});
-
-var MenuScreen = new MenuScreen();
-var ScheduleScreen = new ScheduleScreen();
-var SurvivalScreen = new SurvivalScreen();
-var TemperatureScreen = new TemperatureScreen();
-
 //HANDLERS
 
 Handler.bind("/discover", Behavior({
@@ -235,7 +199,46 @@ var current_temperature_label = new Label({left:10, right:5, top:5, bottom:5, st
 var survival_mode_label = new Label({string: survival_mode, style:textStyle, skin: blueSkin});
 var dispense_rate_label = new Label({string: dispense_rate, style:textStyle, skin: blueSkin});
 var dispense_time_label = new Label({string: dispense_time, style:textStyle, skin: blueSkin});
-var save_label = new Label({string: "", style:textStyle, skin: blueSkin});
+var save_label = new Label({string: "", style:labelStyle, skin: blueSkin});
+var survival_title_label = new Label({ left: 0, right: 0, top:0, style: textStyle, string: 'Survival Mode', skin: blueSkin});
+
+
+
+var SURVIVAL_SCREEN = require('survival.js');
+var CREATE_SCHEDULE_SCREEN = require("createSchedule.js");
+var SCHEDULE_SCREEN = require("schedules.js");
+var TEMPERATURE_SCREEN = require("home.js");
+
+// SCREENS
+var MenuScreen = Column.template(function($) { return { left: 0, right: 0, top: 0, bottom: 0, skin: blueSkin, contents: [
+	Label($, { left: 0, right: 0, top: 20, style: labelStyle, string: 'Menu', }),
+	tButton,
+	sButton,
+	suButton,
+	bButton,
+], }});
+
+var ScheduleScreen = Container.template(function($) { return { left: 0, right: 0, top: 0, bottom: 0, skin: blueSkin, contents: [
+	Label($, { left: 0, right: 0, style: labelStyle, string: 'Current Schedules', }),
+	new menuButton(),
+	new newMenu()
+], }});
+
+var SurvivalScreen = Container.template(function($) { return { left: 0, right: 0, top: 0, bottom: 0, skin: blueSkin, contents: [
+	SURVIVAL_SCREEN.mainCol,
+	new menuButton(),	
+], }});
+
+var TemperatureScreen = Container.template(function($) { return { left: 0, right: 0, top: 0, bottom: 0, skin: blueSkin, contents: [
+	Label($, { left: 0, right: 0, style: labelStyle, string: 'Manual Temperature Control', }),
+	new menuButton()
+], }});
+
+var MenuScreen = new MenuScreen();
+var ScheduleScreen = new ScheduleScreen();
+var SurvivalScreen = new SurvivalScreen();
+var TemperatureScreen = new TemperatureScreen();
+
 
 //Containers, Application
 
