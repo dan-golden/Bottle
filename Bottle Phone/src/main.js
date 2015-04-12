@@ -35,7 +35,8 @@ var fieldHintStyle = new Style({ color: '#aaa', font: '24px', horizontal: 'left'
 // Internal Variables
 var deviceURL = "";
 var temperature_unit = "\xB0 F"; //default temperature to Fahrenheit
-var current_temperature = "70" + temperature_unit; // range of temp should be 32 degrees for freezing to 212 degrees for boiling
+var current_temperature = 70;
+var current_temperature_string = current_temperature + temperature_unit; // range of temp should be 32 degrees for freezing to 212 degrees for boiling
 var survival_mode = "OFF";
 var currentScreen = "Temperature";
 var toScreen = "Menu";
@@ -56,8 +57,10 @@ var converter = function(input) {
 }
 
 
-function updateDeviceTemperature() {
+function updateDeviceTemperature(newTemp) {
     // make sure current_temperature is up to date before calling this to update device
+    current_temperature = newTemp;
+    current_temperature_string = current_temperature + temperature_unit;
     application.invoke(new Message(deviceURL + "updateTemperature"), Message.JSON);    
 }
 
@@ -165,7 +168,7 @@ Handler.bind("/forget", Behavior({
 
 Handler.bind("/currentTemperature", Behavior({
 	onInvoke: function(handler, message){
-	    message.responseText = current_temperature;
+	    message.responseText = current_temperature_string;
 		trace("inside currentTemperature in phone");
 	}
 }));
@@ -190,13 +193,13 @@ Handler.bind("/updateTemperature", Behavior({
 		trace("inside updateTemp in phone");
 	},
 	onComplete: function(handler, message, text) {
-	    current_temperature = text;
-	    current_temperature_label.string = current_temperature;
+	    current_temperature_string = text;
+	    current_temperature_label.string = current_temperature_string;
 	}
 }));
 
 // Labels
-var current_temperature_label = new Label({left:10, right:5, top:5, bottom:5, string: current_temperature, style:textStyle, skin: blueSkin});
+var current_temperature_label = new Label({left:10, right:5, top:5, bottom:5, string: current_temperature_string, style:textStyle, skin: blueSkin});
 var survival_mode_label = new Label({string: survival_mode, style:textStyle, skin: blueSkin});
 var dispense_rate_label = new Label({string: dispense_rate, style:textStyle, skin: blueSkin});
 var dispense_time_label = new Label({string: dispense_time, style:textStyle, skin: blueSkin});

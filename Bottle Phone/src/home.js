@@ -4,12 +4,12 @@
 var MyButtonTemplate = BUTTONS.Button.template(function($){ return{
   top:50, bottom:50, left:50, right:50,
   contents:[
-    new Label({left:0, right:0, height:55, string:$.textForLabel, style:bigText})
+    new Label({name: "label", left:0, right:0, height:55, string:$.textForLabel, style:bigText}),
   ],
   behavior: Object.create(BUTTONS.ButtonBehavior.prototype, {
     onTap: { value:  function(button){
-      trace("Button was tapped.\n");
       save_label.string = "Changes saved!";
+      updateDeviceTemperature($.temp);
     }}
   })
 }});
@@ -21,23 +21,23 @@ var SmallTextButtonTemplate = BUTTONS.Button.template(function($){ return{
   ],
   behavior: Object.create(BUTTONS.ButtonBehavior.prototype, {
     onTap: { value:  function(button){
-      trace("Button was tapped.\n");
+      updateDeviceTemperature($.temp);
       save_label.string = "Changes saved!";
     }}
   })
 }});
 
 // Buttons
-var increase_button = new MyButtonTemplate({textForLabel:"^"});
-var decrease_button = new MyButtonTemplate({textForLabel:"V"});
-var cold_button = new SmallTextButtonTemplate({textForLabel:"c"});
-var room_button = new SmallTextButtonTemplate({textForLabel:"r"});
-var hot_button = new SmallTextButtonTemplate({textForLabel:"h"});
-var boil_button = new SmallTextButtonTemplate({textForLabel:"b"});
-var water_button = new SmallTextButtonTemplate({textForLabel:"water"});
-var tea_button = new SmallTextButtonTemplate({textForLabel:"tea"});
-var coffee_button = new SmallTextButtonTemplate({textForLabel:"coffee"});
-var iceTea_button = new SmallTextButtonTemplate({textForLabel:"iced tea"});
+var increase_button = new MyButtonTemplate({textForLabel:"^", temp: current_temperature+1});
+var decrease_button = new MyButtonTemplate({textForLabel:"V", temp: current_temperature-1});
+var cold_button = new SmallTextButtonTemplate({textForLabel:"c", temp: 40});
+var room_button = new SmallTextButtonTemplate({textForLabel:"r", temp: 72});
+var hot_button = new SmallTextButtonTemplate({textForLabel:"h", temp: 150});
+var boil_button = new SmallTextButtonTemplate({textForLabel:"b", temp: 212});
+var water_button = new SmallTextButtonTemplate({textForLabel:"water", temp: current_temperature});
+var tea_button = new SmallTextButtonTemplate({textForLabel:"tea", temp: current_temperature});
+var coffee_button = new SmallTextButtonTemplate({textForLabel:"coffee", temp: current_temperature});
+var iceTea_button = new SmallTextButtonTemplate({textForLabel:"iced tea", temp: current_temperature});
 
 // Columns
 var mainCol = new Column({
