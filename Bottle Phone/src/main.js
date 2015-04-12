@@ -2,9 +2,6 @@
 
 //IMPORTS
 
-//ScheduleScreen = require("schedules.js");
-//TemperatureScreen = require("home.js");
-
 var THEME = require("themes/flat/theme");
 var BUTTONS = require("controls/buttons");
 var CONTROL = require('mobile/control');
@@ -12,10 +9,6 @@ var KEYBOARD = require('mobile/keyboard');
 var TRANSITIONS = require('transitions');
 var SLIDERS = require('controls/sliders');
 var SWITCHES = require('controls/switch');
-
-var SURVIVAL_SCREEN = require('survival.js');
-var CREATE_SCHEDULE_SCREEN = require("createSchedule.js");
-
 
 // Skins and Styles
 var whiteSkin = new Skin( { fill:"white" } );
@@ -47,7 +40,7 @@ var currentScreen = "Temperature";
 var toScreen = "Menu";
 var dispense_rate = 0;
 var dispense_time = 0;
-
+var schedules = [];
 
 // FUNCTIONS
 var converter = function(input) {
@@ -152,6 +145,11 @@ var bButton = new backButton();
 var tButton = new temperatureButton();
 var sButton = new scheduleButton();
 var suButton = new survivalButton();
+
+var SURVIVAL_SCREEN = require('survival.js');
+var CREATE_SCHEDULE_SCREEN = require("createSchedule.js");
+var SCHEDULE_SCREEN = require("schedules.js");
+var TEMPERATURE_SCREEN = require("home.js");
 
 // SCREENS
 var MenuScreen = Column.template(function($) { return { left: 0, right: 0, top: 0, bottom: 0, skin: blueSkin, contents: [

@@ -10,7 +10,6 @@ var cancelButton = BUTTONS.Button.template(function($){ return{
 		}}
 	})
 }});
-var schedules = []
 var saveButton = BUTTONS.Button.template(function($){ return{
 	left:0, right: 0, height:50,
 	contents: [
