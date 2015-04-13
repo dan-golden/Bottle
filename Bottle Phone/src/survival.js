@@ -55,9 +55,7 @@ var MyButtonTemplate = BUTTONS.Button.template(function($){ return{
   })
 }});
 
-
 var save_button = new MyButtonTemplate({textForLabel:"Save"});
-
 
 exports.mainCol = new Column({
 	left:0, right:0, top:0, bottom:0,
@@ -82,7 +80,5 @@ exports.mainCol = new Column({
 					
 				]
 			}),
-		
 	],
-	
 });
