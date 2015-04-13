@@ -74,8 +74,6 @@ var converter = function(input) {
 
 function updateDeviceTemperature(newTemp) {
     // make sure current_temperature is up to date before calling this to update device
-    current_temperature = newTemp;
-    current_temperature_string = current_temperature + temperature_unit;
     application.invoke(new Message(deviceURL + "updateTemperature"), Message.JSON);    
 }
 
@@ -183,7 +181,7 @@ Handler.bind("/forget", Behavior({
 
 Handler.bind("/currentTemperature", Behavior({
 	onInvoke: function(handler, message){
-	    message.responseText = current_temperature_string;
+	    message.responseText = current_temperature;
 		trace("inside currentTemperature in phone");
 	}
 }));
@@ -208,13 +206,14 @@ Handler.bind("/updateTemperature", Behavior({
 		trace("inside updateTemp in phone");
 	},
 	onComplete: function(handler, message, text) {
-	    current_temperature_string = text;
+	    current_temperature = parseFloat(text);
+	    current_temperature_string = current_temperature + temperature_unit;
 	    current_temperature_label.string = current_temperature_string;
 	}
 }));
 
 // Labels
-var current_temperature_label = new Label({left:10, right:5, top:5, bottom:5, string: current_temperature_string, style:textStyle, skin: blueSkin});
+var current_temperature_label = new Label({string: current_temperature_string, style:textStyle, skin: blueSkin});
 var survival_mode_label = new Label({string: survival_mode, style:textStyle, skin: blueSkin});
 var dispense_rate_label = new Label({string: dispense_rate, style:textStyle, skin: blueSkin});
 var dispense_time_label = new Label({string: dispense_time, style:textStyle, skin: blueSkin});
