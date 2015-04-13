@@ -239,7 +239,7 @@ var MenuScreen = Column.template(function($) { return { left: 0, right: 0, top: 
 
 var ScheduleScreen = Container.template(function($) { return { left: 0, right: 0, top: 0, bottom: 0, skin: blueSkin, contents: [
 	Label($, { left: 0, right: 0, style: labelStyle, string: 'Current Schedules', }),
-//	SCHEDULE_SCREEN.ScheduleScreen,
+	//SCHEDULE_SCREEN.ScheduleScreen,
 	new menuButton(),
 ], }});
 
@@ -255,7 +255,7 @@ var TemperatureScreen = Container.template(function($) { return { left: 0, right
 ], }});
 
 var MenuScreen = new MenuScreen();
-//var ScheduleScreen = new ScheduleScreen();
+var ScheduleScreen = new ScheduleScreen();
 var SurvivalScreen = new SurvivalScreen();
 var TemperatureScreen = new TemperatureScreen();
 
@@ -267,7 +267,7 @@ var ApplicationBehavior = Behavior.template({
     onLaunch: function(application) {
 		application.shared = true;
 //		var str = SCHEDULE_SCREEN.generateDisplayString(SCHEDULE_SCREEN.newSchedule);
-	//	str.SCHEDULE_SCREEN.forEach(SCHEDULE_SCREEN.ListBuilder);
+//		str.SCHEDULE_SCREEN.forEach(SCHEDULE_SCREEN.ListBuilder);
 	},
 	onDisplayed: function(application) {
 		application.discover("bottleDevice");

@@ -42,10 +42,8 @@ var deleteButton = BUTTONS.Button.template(function($){ return{
 exports.ScheduleScreen = Container.template(function($) { return { left: 0, right: 0, top: 0, bottom: 0, skin: blueSkin, contents: [
 	Label($, { left: 0, right: 0, style: labelStyle, string: '', }),
 	new menuButton(),
-	new newMenu(),
 	new plusButton(),
-//	screen
-	
+	screen	
 ],
  }});
 
@@ -127,5 +125,3 @@ var screen = new ScreenContainer(data);
 function ListBuilder(element, index, array) {
 	screen.first.menu.add(new ProcessorLine(element));
 }
-
-module.exports = SCHEDULE_SCREEN;
