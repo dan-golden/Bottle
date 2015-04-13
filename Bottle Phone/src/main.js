@@ -22,10 +22,7 @@ var whiteSkin = new Skin( { fill:"white" } );
 var blueSkin = new Skin( { fill:"#9898ff", } );
 var blueSkinLabel = new Skin( { fill:"#9898ff", borders: { left:5, right:5, }, stroke: 'gray',} );
 var blueTitleSkin = new Skin( { fill:"#d3d3d3", borders: { top: 5, bottom: 5, left:5, right:5, }, stroke: 'gray', });
-var whiteS = new Skin({
-		fill:"#e5e5ff",
-		borders:{left:5, right:5, top:5, bottom:5},
-		stroke:"gray"});
+var whiteS = new Skin({fill:"#e5e5ff", borders:{left:5, right:5, top:5, bottom:5}, stroke:"gray"});
 var textStyle = new Style({font:"bold 25px", color:"black"});
 var titleStyle = new Style({font:"bold 30px", color:"black"});
 var repeatingPatternTexture = new Texture('./assets/menuIcon.png', 1)
@@ -298,7 +295,7 @@ MainScreen.behaviors[0] = Behavior.template({
 	},
 	onTriggerTransition: function(container) {
 		var toScreenObj = converter(toScreen);
-		
+		KEYBOARD.hide();
 		if(toScreen == "Menu") {
 			container.run( new TRANSITIONS.Push(), container.last, toScreenObj, { direction : "right", duration : 400 } );
 		} else {
@@ -309,6 +306,6 @@ MainScreen.behaviors[0] = Behavior.template({
 
 var main = new MainScreen();
 application.add(main);
-main.add(ScheduleScreen);
+main.add(TemperatureScreen);
 
 application.behavior = new ApplicationBehavior();

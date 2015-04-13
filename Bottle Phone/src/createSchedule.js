@@ -1,7 +1,7 @@
 SCHEDULE_SCREEN = require('schedules.js');
 
 function checkValidHours(hour) {
-	if(isNaN(hour) || hour==null) {
+	if(isNaN(hour) || hour=="") {
 		return false;
 	} else if(+hour > 24 || +hour < 0) {
 		return false;
@@ -10,7 +10,7 @@ function checkValidHours(hour) {
 }
 
 function checkValidMinutes(min) {
-	if(isNaN(min) || min == null) {
+	if(isNaN(min) || min == "") {
 		return false;
 	} else if(+min > 59 || +min < 0) {
 		return false;
@@ -19,12 +19,26 @@ function checkValidMinutes(min) {
 }
 
 function checkValidTemp(temp) {
-	if(isNaN(temp) || temp == null) {
+	if(isNaN(temp) || temp == "") {
 		return false;
 	}
 	return true;
 }
 
+function isValid(schedule) {
+	if(checkValidTemp(schedule.temperature) && checkValidHours(schedule.hours) && checkValidMinutes(schedule.minutes)) {
+		return true;
+	}
+	return false;
+}
+
+function reset() {
+	nameField.scroller.textbox.string = ""; 
+	tempField.scroller.textbox.string = "",  
+	hourField.scroller.textbox.string = "";
+	minuteField.scroller.textbox.string = "";
+	validMessage.visible = false;
+}
 
 var cancelButton = BUTTONS.Button.template(function($){ return{
 	left:0, right:0, height:50,
@@ -34,6 +48,7 @@ var cancelButton = BUTTONS.Button.template(function($){ return{
 	behavior: Object.create(BUTTONS.ButtonBehavior.prototype, {
 		onTap: { value: function(content){
 			toScreen = "Schedule";
+			reset();
 			content.bubble("onTriggerTransition");
 		}}
 	})
@@ -53,13 +68,14 @@ var saveButton = BUTTONS.Button.template(function($){ return{
 							repeatedDays: selectedBoxes, 
 							hours: hourField.scroller.textbox.string,
 							minutes: minuteField.scroller.textbox.string};
-			if(checkValidTemp(newSchedule.temperature) && checkValidHours(newSchedule.hours) && checkValidMinutes(newSchedule.minutes)) {
+			if(isValid(newSchedule)) {
 				validMessage.visible = false;
 				schedules.push(newSchedule);
 				var tempScheds = [newSchedule];
 				var str = SCHEDULE_SCREEN.generateDisplayString(tempScheds);
 				str.forEach(SCHEDULE_SCREEN.ListBuilder);
 				toScreen = "Schedule";
+				reset();
 				content.bubble("onTriggerTransition");
 			} else {
 				validMessage.visible = true;
@@ -69,23 +85,23 @@ var saveButton = BUTTONS.Button.template(function($){ return{
 }});
               
 var MyField = Container.template(function($) { return { 
-  width: 200, height: 36, skin: nameInputSkin, contents: [
+  width: 100, height: 36, skin: nameInputSkin, contents: [
     Scroller($, { 
       left: 4, right: 4, top: 4, bottom: 4, active: true, name: "scroller",
       behavior: Object.create(CONTROL.FieldScrollerBehavior.prototype), clip: true, contents: [
-        Label($, { 
+      	Label($, { 
           name: "textbox", left: 0, top: 0, bottom: 0, skin: THEME.fieldLabelSkin, style: fieldStyle, anchor: 'NAME',
           editable: true, string: $.name,
          	behavior: Object.create( CONTROL.FieldLabelBehavior.prototype, {
          		onEdited: { value: function(label){
          			var data = this.data;
-              data.name = label.string;
-              label.container.hint.visible = ( data.name.length == 0 );	
+              		data.name = label.string;
+              		label.container.hint.visible = ( data.name.length == 0 );	
          		}}
          	}),
          }),
          Label($, {
-   			 	left:4, right:4, top:4, bottom:4, style:fieldHintStyle, string:"Tap to enter info...", name:"hint"
+   			 	left:4, right:4, top:4, bottom:4, style:fieldHintStyle, string:"Entry", name:"hint"
          })
       ]
     })
@@ -138,8 +154,8 @@ var TextContainerTemplate = Container.template(function($) { return {
   })
 }});
 
-var repeatSwitch = new MySwitchTemplate({ left:0, right:0 });
-var repeatSwitchValue = 0;
+var repeatSwitch = new MySwitchTemplate({ left:1, right:0, value:1 });
+var repeatSwitchValue = 1;
 var tempField = new MyField({ name: "", width: 100});
 var nameField = new MyField({name: "", width: 100});
 var hourField = new MyField({name: "", width: 50});
@@ -158,13 +174,13 @@ exports.CreateScheduleScreen = Container.template(function($) { return { left: 0
 			nameField
 		]}),
 		new Line( { left:0, right:0, contents: [
-			Label($, {left: 0, right: 0, style: labelStyle, string: "Temperature (Degrees C): "}),
+			Label($, {left: 0, right: 0, style: labelStyle, string: "Temperature (Degrees F): "}),
 			tempField
 		]}),
 		new Line( { left:0, right:0, contents: [
 			Label($, {left: 0, right: 0, style: labelStyle, string: "Time: "}),
 			hourField,
-			Label($, {left: 0, right: 0, style: labelStyle, string: ":"}),
+			Label($, {left: 0, right: 0, style: labelStyle, string: " :"}),
 			minuteField,
 		]}),
 		new Line( { left:0, right:0, contents: [
