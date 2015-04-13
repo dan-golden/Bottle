@@ -233,7 +233,7 @@ var TEMPERATURE_SCREEN = require("home.js");
 
 // SCREENS
 var MenuScreen = Column.template(function($) { return { left: 0, right: 0, top: 0, bottom: 0, skin: blueSkin, contents: [
-	Label($, { left: 0, right: 0, top: 20, style: labelStyle, string: 'Menu', }),
+	Label($, { left: 30, right: 0, top: 20, style: labelStyle, string: 'Menu', }),
 	tButton,
 	sButton,
 	suButton,

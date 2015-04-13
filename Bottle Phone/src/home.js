@@ -86,9 +86,9 @@ exports.homeCol = new Column({
 	left:0, right:0, top:0, bottom:0,
 	skin: whiteS,
 	contents:[
-		new Line({left:0, right:0, top:0, height:80, skin: whiteS,
+		new Column({left:0, right:0, top:0, height:80, skin: whiteS,
 			contents:[
-				new Label({left:-18, right:0, string:"Bot-tle", style:titleStyle,}),
+				new Label({right: 90, top: 20, string:"Bot-tle", style:titleStyle,}),
 			]
 		}),
 		new Column({name: "tempControl", left:0, right:0, top:0, bottom:0, skin: blueSkinLabel,

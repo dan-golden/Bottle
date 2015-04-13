@@ -40,7 +40,11 @@ var deleteButton = BUTTONS.Button.template(function($){ return{
 // SCREENS
 
 exports.ScheduleScreen = Container.template(function($) { return { left: 0, right: 0, top: 0, bottom: 0, skin: blueSkin, contents: [
-	Label($, { left: 0, right: 0, style: labelStyle, string: '', }),
+	new Column({left:0, right:0, top:0, height:80, skin: whiteS,
+			contents:[
+				new Label({right: 90, top: 20, string:"Bot-tle", style:titleStyle,}),
+			]
+		}),
 	new menuButton(),
 	new plusButton(),
 	screen	
@@ -64,7 +68,7 @@ exports.generateDisplayString = function generateDisplayString(scheds) {
 				temp+= scheds.repeatedDays[j] + ", ";
 			}
 		}
-		temp += "for " + scheds.temperature + "\xB0 F";
+		temp += " for " + scheds[i].temperature + "\xB0 F";
 		dict = {};
 		dict["title"] = temp;
 		result.push(dict);

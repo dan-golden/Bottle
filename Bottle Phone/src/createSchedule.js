@@ -27,7 +27,7 @@ function checkValidTemp(temp) {
 
 
 var cancelButton = BUTTONS.Button.template(function($){ return{
-	left:0, right:0, height:50,
+	left: 1, right: 200, top: 1, height:50,
 	contents: [
 		new Label({left:0, right:0, height:40, string:"Cancel", style: buttonStyle})
 	],
@@ -69,7 +69,7 @@ var saveButton = BUTTONS.Button.template(function($){ return{
 }});
               
 var MyField = Container.template(function($) { return { 
-  width: 200, height: 36, skin: nameInputSkin, contents: [
+  width: 170, height: 36, skin: nameInputSkin, contents: [
     Scroller($, { 
       left: 4, right: 4, top: 4, bottom: 4, active: true, name: "scroller",
       behavior: Object.create(CONTROL.FieldScrollerBehavior.prototype), clip: true, contents: [
@@ -85,7 +85,31 @@ var MyField = Container.template(function($) { return {
          	}),
          }),
          Label($, {
-   			 	left:4, right:4, top:4, bottom:4, style:fieldHintStyle, string:"Tap to enter info...", name:"hint"
+   			 	left:4, right:4, top:4, bottom:4, style:fieldHintStyle, string:"Tap to edit", name:"hint",
+         })
+      ]
+    })
+  ]
+}});
+
+var MyTimeField = Container.template(function($) { return { 
+  width: 82, height: 36, skin: nameInputSkin, contents: [
+    Scroller($, { 
+      left: 4, right: 4, top: 4, bottom: 4, active: true, name: "scroller",
+      behavior: Object.create(CONTROL.FieldScrollerBehavior.prototype), clip: true, contents: [
+        Label($, { 
+          name: "textbox", left: 0, top: 0, bottom: 0, skin: THEME.fieldLabelSkin, style: fieldStyle, anchor: 'NAME',
+          editable: true, string: $.name,
+         	behavior: Object.create( CONTROL.FieldLabelBehavior.prototype, {
+         		onEdited: { value: function(label){
+         			var data = this.data;
+              data.name = label.string;
+              label.container.hint.visible = ( data.name.length == 0 );	
+         		}}
+         	}),
+         }),
+         Label($, {
+   			 	left:4, right:4, top:4, bottom:4, style:fieldHintStyle, string:"Input here...", name:"hint"
          })
       ]
     })
@@ -95,7 +119,7 @@ var MyField = Container.template(function($) { return {
 var selectedBoxes = [];
 
 var MyCheckBoxTemplate = BUTTONS.LabeledCheckbox.template(function($){ return{
-    top:10, bottom:10, left:10, right:10, visible: true, active: true,
+    top:10, bottom:10, left:10, right:10, visible: false, active: true,
     behavior: Object.create(BUTTONS.LabeledCheckboxBehavior.prototype, {
         onSelected: { value:  function(checkBox){
             selectedBoxes.push(checkBox.buttonLabel.string);
@@ -117,7 +141,7 @@ checkbox[6] = new MyCheckBoxTemplate({name:"Sa", visible: false});
 
 
 var MySwitchTemplate = SWITCHES.SwitchButton.template(function($){ return{
-  height:50,
+  height:30,
   behavior: Object.create(SWITCHES.SwitchButtonBehavior.prototype, {
     onValueChanged: { value: function(container){
       repeatSwitchValue = 1-repeatSwitchValue;
@@ -138,40 +162,48 @@ var TextContainerTemplate = Container.template(function($) { return {
   })
 }});
 
-var repeatSwitch = new MySwitchTemplate({ left:0, right:0 });
+var repeatSwitch = new MySwitchTemplate({ right:100 });
 var repeatSwitchValue = 0;
-var tempField = new MyField({ name: "", width: 100});
-var nameField = new MyField({name: "", width: 100});
-var hourField = new MyField({name: "", width: 50});
-hourField.scroller.hint.string = "Hours";
-var minuteField = new MyField({name: "", width: 50});
-minuteField.scroller.hint.string = "Minutes";
+var tempField = new MyField({ name: "",});
+tempField.scroller.hint.string = temperature_unit;
+var nameField = new MyField({name: "",});
+var hourField = new MyTimeField({name: "",});
+hourField.scroller.hint.string = "Hour";
+var minuteField = new MyTimeField({name: "",});
+minuteField.scroller.hint.string = "Min.";
 var validMessage = new Label( {left: 100, right:100, style: errorStyle, string: "Error!", visible: false})
 
 exports.CreateScheduleScreen = Container.template(function($) { return { left: 0, right: 0, top: 0, bottom: 0, skin: blueSkin, active: true, contents: [ 
 	new Column( { left: 0, right: 0, top:0, contents: [
-		Label($, { left: 100, right: 100, style: labelStyle, string: 'New Schedules', }),
-		new Line( { left:0, right:0, contents: [new cancelButton(), new saveButton()] }),
+		new Column({left:0, right:0, top:0, height:80, skin: whiteS,
+			contents:[
+			    new cancelButton(),
+				new Label({right: 92, top: -30, string:"Bot-tle", style:titleStyle,}),
+			]
+		}),
+		//new Line( { left:0, right:0, contents: [new cancelButton(), new saveButton()] }),
 		validMessage,
-		new Line( { left:0, right:0, contents: [
-			Label($, {left: 0, right: 0, style: labelStyle, string: "Name (Optional): "}),
+		new Line( { left:0, right:20, bottom: 5, contents: [
+			Label($, {left: 20, right: 0, style: labelStyle, string: "Title (Optional): "}),
 			nameField
 		]}),
-		new Line( { left:0, right:0, contents: [
-			Label($, {left: 0, right: 0, style: labelStyle, string: "Temperature (Degrees C): "}),
+		new Line( { left:0, right:20, contents: [
+			Label($, {left: 20, right: 20, style: labelStyle, string: "Temperature: "}),
 			tempField
 		]}),
-		new Line( { left:0, right:0, contents: [
-			Label($, {left: 0, right: 0, style: labelStyle, string: "Time: "}),
-			hourField,
-			Label($, {left: 0, right: 0, style: labelStyle, string: ":"}),
-			minuteField,
-		]}),
-		new Line( { left:0, right:0, contents: [
+		new Line({ right: 20, height:80, skin: blueSkin,
+			contents:[
+			    Label($, {right: 70, style: labelStyle, string: "Time: "}),
+			    hourField,
+			    Label($, {style: labelStyle, string: ":"}),
+			    minuteField,
+			]
+		}),
+		new Line( { left:20, right:100, contents: [
 			Label($, {left: 0, right: 0, style: labelStyle, string: "Repeat?: "}),
 			repeatSwitch
 		]}),
-		new Column( { left:0, right:0, contents: [
+		new Column( { left:20, right:0, contents: [
 			Label($, {left: 0, right: 0, style: labelStyle, string: "Days: "}),
 			new Column({left:0, right: 0, contents:[
 				new Line({left:0, right:0, contents:[
@@ -181,6 +213,7 @@ exports.CreateScheduleScreen = Container.template(function($) { return { left: 0
 					checkbox[4], checkbox[5], checkbox[6]]
 				})]}),
 		]}),
+		new Line( {left: 60, right: 60, contents: [new saveButton()] } ),
 	]})
 ],
 behavior: Object.create(Container.prototype, {
