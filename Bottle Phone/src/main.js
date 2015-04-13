@@ -248,7 +248,6 @@ var ScheduleScreen = Container.template(function($) { return { left: 0, right: 0
 
 var CreateScheduleScreen = Container.template(function($) { return { left: 0, right: 0, top: 0, bottom: 0, skin: blueSkin, contents: [
 	CREATE_SCHEDULE_SCREEN.CreateScheduleScreen(),
-	new menuButton(),	
 ], }});
 
 var SurvivalScreen = Container.template(function($) { return { left: 0, right: 0, top: 0, bottom: 0, skin: blueSkin, contents: [
@@ -275,8 +274,6 @@ var CreateScheduleScreen = new CreateScheduleScreen();
 var ApplicationBehavior = Behavior.template({
     onLaunch: function(application) {
 		application.shared = true;
-		var str = SCHEDULE_SCREEN.generateDisplayString(schedules);
-		str.forEach(SCHEDULE_SCREEN.ListBuilder);
 	},
 	onDisplayed: function(application) {
 		application.discover("bottleDevice");
@@ -301,11 +298,6 @@ MainScreen.behaviors[0] = Behavior.template({
 	},
 	onTriggerTransition: function(container) {
 		var toScreenObj = converter(toScreen);
-		
-		if(toScreen == 'Schedule') {
-			var str = SCHEDULE_SCREEN.generateDisplayString(schedules);
-			str.forEach(SCHEDULE_SCREEN.ListBuilder);
-		}
 		
 		if(toScreen == "Menu") {
 			container.run( new TRANSITIONS.Push(), container.last, toScreenObj, { direction : "right", duration : 400 } );

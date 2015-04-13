@@ -1,7 +1,7 @@
 SCHEDULE_SCREEN = require('schedules.js');
 
 function checkValidHours(hour) {
-	if(isNaN(hour)) {
+	if(isNaN(hour) || hour==null) {
 		return false;
 	} else if(+hour > 24 || +hour < 0) {
 		return false;
@@ -10,7 +10,7 @@ function checkValidHours(hour) {
 }
 
 function checkValidMinutes(min) {
-	if(isNaN(min)) {
+	if(isNaN(min) || min == null) {
 		return false;
 	} else if(+min > 59 || +min < 0) {
 		return false;
@@ -19,7 +19,7 @@ function checkValidMinutes(min) {
 }
 
 function checkValidTemp(temp) {
-	if(isNaN(temp)) {
+	if(isNaN(temp) || temp == null) {
 		return false;
 	}
 	return true;
@@ -56,6 +56,9 @@ var saveButton = BUTTONS.Button.template(function($){ return{
 			if(checkValidTemp(newSchedule.temperature) && checkValidHours(newSchedule.hours) && checkValidMinutes(newSchedule.minutes)) {
 				validMessage.visible = false;
 				schedules.push(newSchedule);
+				var tempScheds = [newSchedule];
+				var str = SCHEDULE_SCREEN.generateDisplayString(tempScheds);
+				str.forEach(SCHEDULE_SCREEN.ListBuilder);
 				toScreen = "Schedule";
 				content.bubble("onTriggerTransition");
 			} else {

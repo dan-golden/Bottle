@@ -57,13 +57,14 @@ exports.ScheduleScreen = Container.template(function($) { return { left: 0, righ
 exports.generateDisplayString = function generateDisplayString(scheds) {
 	result = [];
 	for (var i = 0; i < scheds.length; i++) {
-		temp = i+1+"."+scheds[i].name + " scheduled at " + scheds[i].hours + ":" + scheds[i].minutes;
+		temp = scheds[i].name + " scheduled at " + scheds[i].hours + ":" + scheds[i].minutes;
 		if(scheds[i].repeat == 1) {
 			temp+= " on ";
 			for(var j = 0; j < schedules[i].repeatedDays.length; j++) {
-				temp+= newSchedule.repeatedDays[j];
+				temp+= scheds.repeatedDays[j] + ", ";
 			}
 		}
+		temp += "for " + scheds.temperature + "\xB0 F";
 		dict = {};
 		dict["title"] = temp;
 		result.push(dict);
