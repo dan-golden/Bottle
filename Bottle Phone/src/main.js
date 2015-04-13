@@ -46,6 +46,8 @@ var yellowSkin	= new Skin({ fill: 'yellow'});
 var separatorSkin = new Skin({ fill: 'silver',});
 var productNameStyle = new Style({  font: 'bold 22px', horizontal: 'left', vertical: 'middle', lines: 1, });
 var productDescriptionStyle = new Style({  font: '16px', horizontal: 'left', vertical: 'middle', left: 1, color: 'Black' });
+var errorStyle = new Style( { font: "15px Helvetica, sans-serif;", color:"red" } );
+
 
 // Internal Variables
 var deviceURL = "";
@@ -67,8 +69,10 @@ var converter = function(input) {
 		return ScheduleScreen;
 	else if(input == "Temperature")
 		return TemperatureScreen;
-	else
+	else if(input == "Survival")
 		return SurvivalScreen;
+	else if(input == "CreateSchedule")
+		return CreateScheduleScreen;
 }
 
 
@@ -238,8 +242,13 @@ var MenuScreen = Column.template(function($) { return { left: 0, right: 0, top: 
 
 var ScheduleScreen = Container.template(function($) { return { left: 0, right: 0, top: 0, bottom: 0, skin: blueSkin, contents: [
 	Label($, { left: 0, right: 0, style: labelStyle, string: 'Current Schedules', }),
-	//SCHEDULE_SCREEN.ScheduleScreen,
+	SCHEDULE_SCREEN.ScheduleScreen(new Object()),
 	new menuButton(),
+], }});
+
+var CreateScheduleScreen = Container.template(function($) { return { left: 0, right: 0, top: 0, bottom: 0, skin: blueSkin, contents: [
+	CREATE_SCHEDULE_SCREEN.CreateScheduleScreen(),
+	new menuButton(),	
 ], }});
 
 var SurvivalScreen = Container.template(function($) { return { left: 0, right: 0, top: 0, bottom: 0, skin: blueSkin, contents: [
@@ -257,6 +266,7 @@ var MenuScreen = new MenuScreen();
 var ScheduleScreen = new ScheduleScreen();
 var SurvivalScreen = new SurvivalScreen();
 var TemperatureScreen = new TemperatureScreen();
+var CreateScheduleScreen = new CreateScheduleScreen();
 
 
 //Containers, Application
@@ -265,8 +275,8 @@ var TemperatureScreen = new TemperatureScreen();
 var ApplicationBehavior = Behavior.template({
     onLaunch: function(application) {
 		application.shared = true;
-//		var str = SCHEDULE_SCREEN.generateDisplayString(SCHEDULE_SCREEN.newSchedule);
-//		str.SCHEDULE_SCREEN.forEach(SCHEDULE_SCREEN.ListBuilder);
+		var str = SCHEDULE_SCREEN.generateDisplayString(schedules);
+		str.forEach(SCHEDULE_SCREEN.ListBuilder);
 	},
 	onDisplayed: function(application) {
 		application.discover("bottleDevice");
@@ -291,6 +301,11 @@ MainScreen.behaviors[0] = Behavior.template({
 	},
 	onTriggerTransition: function(container) {
 		var toScreenObj = converter(toScreen);
+		
+		if(toScreen == 'Schedule') {
+			var str = SCHEDULE_SCREEN.generateDisplayString(schedules);
+			str.forEach(SCHEDULE_SCREEN.ListBuilder);
+		}
 		
 		if(toScreen == "Menu") {
 			container.run( new TRANSITIONS.Push(), container.last, toScreenObj, { direction : "right", duration : 400 } );

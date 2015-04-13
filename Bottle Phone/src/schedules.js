@@ -11,7 +11,7 @@ var plusButton = BUTTONS.Button.template(function($){ return{
 	],
 	behavior: Object.create(BUTTONS.ButtonBehavior.prototype, {
 		onTap: { value: function(content){
-			toScreen = "Menu"; // change to new schedule screen 
+			toScreen = "CreateSchedule"; // change to new schedule screen 
 			content.bubble("onTriggerTransition");
 		}}
 	})
@@ -54,16 +54,16 @@ exports.ScheduleScreen = Container.template(function($) { return { left: 0, righ
  
 //Change this Daniel
 
-exports.newSchedule = [{name: "Morning Tea", 
-	temperature: "100 C", 
-	repeat: "1", 
-	repeatedDays:"Mon, Tu", 
-	time: "10:45"}];
-
-function generateDisplayString(newSchedule) {
+exports.generateDisplayString = function generateDisplayString(scheds) {
 	result = [];
-	for (var i = 0; i < newSchedule.length; i++) {
-		temp = i+1+"."+newSchedule[i].name + " scheduled at " + newSchedule[i].time + " on " + newSchedule[i].repeatedDays;
+	for (var i = 0; i < scheds.length; i++) {
+		temp = i+1+"."+scheds[i].name + " scheduled at " + scheds[i].hours + ":" + scheds[i].minutes;
+		if(scheds[i].repeat == 1) {
+			temp+= " on ";
+			for(var j = 0; j < schedules[i].repeatedDays.length; j++) {
+				temp+= newSchedule.repeatedDays[j];
+			}
+		}
 		dict = {};
 		dict["title"] = temp;
 		result.push(dict);
@@ -122,6 +122,6 @@ var screen = new ScreenContainer(data);
  * our array of list entries (menuItems).  It adds a new 
  * ProcessorLine() object to the Column named "menu" in the
  * screen object's SCROLLER */
-function ListBuilder(element, index, array) {
+exports.ListBuilder = function ListBuilder(element, index, array) {
 	screen.first.menu.add(new ProcessorLine(element));
 }

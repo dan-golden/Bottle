@@ -1,3 +1,31 @@
+SCHEDULE_SCREEN = require('schedules.js');
+
+function checkValidHours(hour) {
+	if(isNaN(hour)) {
+		return false;
+	} else if(+hour > 24 || +hour < 0) {
+		return false;
+	}
+	return true;
+}
+
+function checkValidMinutes(min) {
+	if(isNaN(min)) {
+		return false;
+	} else if(+min > 59 || +min < 0) {
+		return false;
+	}
+	return true;
+}
+
+function checkValidTemp(temp) {
+	if(isNaN(temp)) {
+		return false;
+	}
+	return true;
+}
+
+
 var cancelButton = BUTTONS.Button.template(function($){ return{
 	left:0, right:0, height:50,
 	contents: [
@@ -5,11 +33,12 @@ var cancelButton = BUTTONS.Button.template(function($){ return{
 	],
 	behavior: Object.create(BUTTONS.ButtonBehavior.prototype, {
 		onTap: { value: function(content){
-			//toScreen = "Schedule";
-			//content.bubble("onTriggerTransition");
+			toScreen = "Schedule";
+			content.bubble("onTriggerTransition");
 		}}
 	})
 }});
+
 var saveButton = BUTTONS.Button.template(function($){ return{
 	left:0, right: 0, height:50,
 	contents: [
@@ -17,14 +46,21 @@ var saveButton = BUTTONS.Button.template(function($){ return{
 	],
 	behavior: Object.create(BUTTONS.ButtonBehavior.prototype, {
 		onTap: { value: function(content){
+		
 			var newSchedule = {name: nameField.scroller.textbox.string, 
 							temperature: tempField.scroller.textbox.string, 
-							repeat: repeatSwitch.value, 
+							repeat: repeatSwitchValue, 
 							repeatedDays: selectedBoxes, 
-							time: timeField.scroller.textbox.string};
-			schedules.push(newSchedule);
-			//toScreen = "Schedules";
-			//content.bubble("onTriggerTransition");
+							hours: hourField.scroller.textbox.string,
+							minutes: minuteField.scroller.textbox.string};
+			if(checkValidTemp(newSchedule.temperature) && checkValidHours(newSchedule.hours) && checkValidMinutes(newSchedule.minutes)) {
+				validMessage.visible = false;
+				schedules.push(newSchedule);
+				toScreen = "Schedule";
+				content.bubble("onTriggerTransition");
+			} else {
+				validMessage.visible = true;
+			}
 		}}
 	})
 }});
@@ -68,18 +104,20 @@ var MyCheckBoxTemplate = BUTTONS.LabeledCheckbox.template(function($){ return{
 }});
 
 var checkbox = [];
-checkbox[0] = new MyCheckBoxTemplate({name:"Su"});
-checkbox[1] = new MyCheckBoxTemplate({name:"M"});
-checkbox[2] = new MyCheckBoxTemplate({name:"Tu"});
-checkbox[3] = new MyCheckBoxTemplate({name:"W"});
-checkbox[4] = new MyCheckBoxTemplate({name:"Th"});
-checkbox[5] = new MyCheckBoxTemplate({name:"F"});
-checkbox[6] = new MyCheckBoxTemplate({name:"Sa"});
+checkbox[0] = new MyCheckBoxTemplate({name:"Su", visible: false});
+checkbox[1] = new MyCheckBoxTemplate({name:"M", visible: false});
+checkbox[2] = new MyCheckBoxTemplate({name:"Tu", visible: false});
+checkbox[3] = new MyCheckBoxTemplate({name:"W", visible: false});
+checkbox[4] = new MyCheckBoxTemplate({name:"Th", visible: false});
+checkbox[5] = new MyCheckBoxTemplate({name:"F", visible: false});
+checkbox[6] = new MyCheckBoxTemplate({name:"Sa", visible: false});
+
 
 var MySwitchTemplate = SWITCHES.SwitchButton.template(function($){ return{
-  height:50, width: 100,
+  height:50,
   behavior: Object.create(SWITCHES.SwitchButtonBehavior.prototype, {
     onValueChanged: { value: function(container){
+      repeatSwitchValue = 1-repeatSwitchValue;
       SWITCHES.SwitchButtonBehavior.prototype.onValueChanged.call(this, container);
       for(i = 0; i<7; i++){
       	checkbox[i].visible = !checkbox[i].visible;
@@ -97,18 +135,21 @@ var TextContainerTemplate = Container.template(function($) { return {
   })
 }});
 
-var repeatSwitch = new MySwitchTemplate({ left:0, right:0, value: 1 });
-var tempField = new MyField({ name: ""});
-var nameField = new MyField({name: ""});
+var repeatSwitch = new MySwitchTemplate({ left:0, right:0 });
+var repeatSwitchValue = 0;
+var tempField = new MyField({ name: "", width: 100});
+var nameField = new MyField({name: "", width: 100});
 var hourField = new MyField({name: "", width: 50});
 hourField.scroller.hint.string = "Hours";
 var minuteField = new MyField({name: "", width: 50});
 minuteField.scroller.hint.string = "Minutes";
+var validMessage = new Label( {left: 100, right:100, style: errorStyle, string: "Error!", visible: false})
 
-var CreateScheduleScreen = Container.template(function($) { return { left: 0, right: 0, top: 0, bottom: 0, skin: blueSkin, active: true, contents: [ 
+exports.CreateScheduleScreen = Container.template(function($) { return { left: 0, right: 0, top: 0, bottom: 0, skin: blueSkin, active: true, contents: [ 
 	new Column( { left: 0, right: 0, top:0, contents: [
 		Label($, { left: 100, right: 100, style: labelStyle, string: 'New Schedules', }),
 		new Line( { left:0, right:0, contents: [new cancelButton(), new saveButton()] }),
+		validMessage,
 		new Line( { left:0, right:0, contents: [
 			Label($, {left: 0, right: 0, style: labelStyle, string: "Name (Optional): "}),
 			nameField
