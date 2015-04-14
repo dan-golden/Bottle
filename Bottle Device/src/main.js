@@ -9,7 +9,7 @@ phoneURL = "";
 temperature_unit = "\xB0 F"; //default temperature to Fahrenheit
 current_temperature = 70; // range of temp should be 32 degrees for freezing to 212 degrees for boiling
 current_temperature_string = current_temperature + temperature_unit;
-desired_temperature = 70; 
+desired_temperature = 70 + temperature_unit; 
 desired_temperature_string = desired_temperature + temperature_unit;
 old_slider = 32;
 new_slider = 32;
@@ -45,9 +45,6 @@ Handler.bind("/updateTemperature", Behavior({
 		desired_temperature_string = desired_temperature + temperature_unit;
 		desired_temperature_label.string = desired_temperature_string;
 		trace("desired temp " + desired_temperature);
-	    //current_temperature = parseFloat(text);
-	    //current_temperature_string = current_temperature + temperature_unit;
-	    //current_temperature_label.string = current_temperature_string;
 	}
 }));
 

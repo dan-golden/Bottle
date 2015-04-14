@@ -33,8 +33,8 @@ var titleStyle = new Style({font:"bold 30px", color:"black"});
 //var repeatingPatternSkin = new Skin({ texture: repeatingPatternTexture, width: 244, height: 88, tiles: { left:0, right:0, top:0, bottom:0 }, });
 var labelStyle = new Style( { font: "15px Helvetica, sans-serif;", color:"black" } );
 var redSkin = new Skin({fill:'red'});
-var biggerText = new Style({font:"bold 50px", color:"black"});
-var bigText = new Style({font:"bold 35px", color:"black"});
+var biggerText = new Style({font:"bold 60px", color:"black"});
+var bigText = new Style({font:"bold 30px", color:"black"});
 var smallText = new Style({font:"bold 20px", color:"black"});
 var nameInputSkin = new Skin({ borders: { left:2, right:2, top:2, bottom:2 }, stroke: 'gray',});
 var fieldStyle = new Style({ color: 'black', fill: "white", font: 'bold 24px', horizontal: 'left', vertical: 'middle', left: 5, right: 5, top: 5, bottom: 5, });
@@ -58,7 +58,7 @@ var deviceURL = "";
 var temperature_unit = "\xB0 F"; //default temperature to Fahrenheit
 var current_temperature = 70;
 var desired_temperature = 70; 
-var current_temperature_string = current_temperature + temperature_unit; // range of temp should be 32 degrees for freezing to 212 degrees for boiling
+var current_temperature_string = current_temperature + temperature_unit + " now"; // range of temp should be 32 degrees for freezing to 212 degrees for boiling
 var desired_temperature_string = desired_temperature + temperature_unit;
 var survival_mode = "OFF";
 var currentScreen = "Temperature";
@@ -204,7 +204,7 @@ Handler.bind("/updateTemperature", Behavior({
 	},
 	onComplete: function(handler, message, text) {
 	    current_temperature = parseFloat(text);
-	    current_temperature_string = current_temperature + temperature_unit;
+	    current_temperature_string = current_temperature + temperature_unit + " now";
 	    current_temperature_label.string = current_temperature_string;
 	}
 }));

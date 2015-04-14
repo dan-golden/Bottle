@@ -4,14 +4,15 @@
 function updateTemperature(newTemp) {
     // make sure current_temperature is up to date before calling this to update device
     current_temperature = newTemp;
-    //current_temperature_string = current_temperature + temperature_unit;
-    //current_temperature_label.string = current_temperature_string;
+    desired_temperature = newTemp;
+    desired_temperature_string = desired_temperature + temperature_unit;
+    desired_temperature_label.string = desired_temperature_string;
     updateDeviceTemperature(current_temperature);
 }
 
 // Button Templates
 var IncreaseTemperatureButtonTemplate = BUTTONS.Button.template(function($){ return{
-  top:50, bottom:50, left:50, right:50,height: 50, width: 50, skin: navyblueskin,
+  top:35, bottom:35, left:50, right:50,height: 50, width: 50, skin: navyblueskin,
   contents:[
     new Label({name: "label", left:0, right:0, height:55, string:$.textForLabel, style:textStyle}),
   ],
@@ -24,7 +25,7 @@ var IncreaseTemperatureButtonTemplate = BUTTONS.Button.template(function($){ ret
 }});
 
 var DecreaseTemperatureButtonTemplate = BUTTONS.Button.template(function($){ return{
-  top:50, bottom:50, left:50, right:50, height: 50, width: 50, skin: navyblueskin,
+  top:35, bottom:35, left:50, right:50, height: 50, width: 50, skin: navyblueskin,
   contents:[
     new Label({name: "label", left:0, right:0, height:55, string:$.textForLabel, style:textStyle}),
   ],
@@ -50,8 +51,8 @@ var SmallTextButtonTemplate = BUTTONS.Button.template(function($){ return{
 }});
 
 // Buttons
-var increase_button = new IncreaseTemperatureButtonTemplate({textForLabel:"^",});
-var decrease_button = new DecreaseTemperatureButtonTemplate({textForLabel:"v",});
+var increase_button = new IncreaseTemperatureButtonTemplate({textForLabel:"^", height: 50});
+var decrease_button = new DecreaseTemperatureButtonTemplate({textForLabel:"v", height: 50});
 var cold_button = new SmallTextButtonTemplate({textForLabel:"c", temp: 40});
 var room_button = new SmallTextButtonTemplate({textForLabel:"r", temp: 72});
 var hot_button = new SmallTextButtonTemplate({textForLabel:"h", temp: 150});
@@ -94,7 +95,8 @@ exports.homeCol = new Column({
 		new Column({name: "tempControl", left:0, right:0, top:0, bottom:0, skin: babyblueskin,
 			contents:[
 				increase_button,
-				//desired_temperature_label,
+				desired_temperature_label,
+				
 				current_temperature_label,
 				decrease_button,
 				new Line({left:0, right:0, top:0, bottom:0,
