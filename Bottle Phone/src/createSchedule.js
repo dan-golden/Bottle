@@ -1,7 +1,7 @@
 SCHEDULE_SCREEN = require('schedules.js');
 
 function checkValidHours(hour) {
-	if(isNaN(hour) || hour==null) {
+	if(isNaN(hour) || hour=="") {
 		return false;
 	} else if(+hour > 24 || +hour < 0) {
 		return false;
@@ -10,7 +10,7 @@ function checkValidHours(hour) {
 }
 
 function checkValidMinutes(min) {
-	if(isNaN(min) || min == null) {
+	if(isNaN(min) || min == "") {
 		return false;
 	} else if(+min > 59 || +min < 0) {
 		return false;
@@ -19,10 +19,18 @@ function checkValidMinutes(min) {
 }
 
 function checkValidTemp(temp) {
-	if(isNaN(temp) || temp == null) {
+	if(isNaN(temp) || temp == "") {
 		return false;
 	}
 	return true;
+}
+
+function reset() {
+	tempField.scroller.textbox.string = ""; 
+	hourField.scroller.textbox.string = "";
+	minuteField.scroller.textbox.string = "";
+	nameField.scroller.textbox.string = "";
+	validMessage.visible = false;
 }
 
 
@@ -34,6 +42,7 @@ var cancelButton = BUTTONS.Button.template(function($){ return{
 	behavior: Object.create(BUTTONS.ButtonBehavior.prototype, {
 		onTap: { value: function(content){
 			toScreen = "Schedule";
+			reset();
 			content.bubble("onTriggerTransition");
 		}}
 	})
@@ -60,6 +69,7 @@ var saveButton = BUTTONS.Button.template(function($){ return{
 				var str = SCHEDULE_SCREEN.generateDisplayString(tempScheds);
 				str.forEach(SCHEDULE_SCREEN.ListBuilder);
 				toScreen = "Schedule";
+				reset();
 				content.bubble("onTriggerTransition");
 			} else {
 				validMessage.visible = true;

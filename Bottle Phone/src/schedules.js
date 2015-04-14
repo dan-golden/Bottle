@@ -64,8 +64,8 @@ exports.generateDisplayString = function generateDisplayString(scheds) {
 		temp = scheds[i].name + " scheduled at " + scheds[i].hours + ":" + scheds[i].minutes;
 		if(scheds[i].repeat == 1) {
 			temp+= " on ";
-			for(var j = 0; j < schedules[i].repeatedDays.length; j++) {
-				temp+= scheds.repeatedDays[j] + ", ";
+			for(var j = 0; j < scheds[i].repeatedDays.length; j++) {
+				temp+= scheds[i].repeatedDays[j] + ", ";
 			}
 		}
 		temp += " for " + scheds[i].temperature + "\xB0 F";

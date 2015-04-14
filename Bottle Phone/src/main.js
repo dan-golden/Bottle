@@ -92,7 +92,7 @@ function updateDeviceDispenseRate() {
 }
 
 // BUTTONS
-var backButton = BUTTONS.Button.template(function($){ return{
+/*var backButton = BUTTONS.Button.template(function($){ return{
 	left: 50, right: 50, top: 50, height:50,
 	contents: [
 		new Label({left:0, right:0, height:40, string:"Go Back", style: labelStyle})
@@ -104,7 +104,7 @@ var backButton = BUTTONS.Button.template(function($){ return{
 		}}
 	})
 }});
-
+*/
 var newMenu = Container.template(function($) { return { 
 	left: 1, top:1, width: 244, height: 88, skin: repeatingPatternSkin, 
 	contents: [ new Label({left:0, right:0, height:88, width:244, string:"", style: buttonStyle})],
@@ -162,7 +162,6 @@ var temperatureButton = BUTTONS.Button.template(function($){ return{
 	})
 }});
 
-var bButton = new backButton();
 var tButton = new temperatureButton();
 var sButton = new scheduleButton();
 var suButton = new survivalButton();
@@ -237,7 +236,6 @@ var MenuScreen = Column.template(function($) { return { left: 0, right: 0, top: 
 	tButton,
 	sButton,
 	suButton,
-	bButton,
 ], }});
 
 var ScheduleScreen = Container.template(function($) { return { left: 0, right: 0, top: 0, bottom: 0, skin: blueSkin, contents: [
@@ -309,6 +307,6 @@ MainScreen.behaviors[0] = Behavior.template({
 
 var main = new MainScreen();
 application.add(main);
-main.add(ScheduleScreen);
+main.add(TemperatureScreen);
 
 application.behavior = new ApplicationBehavior();
