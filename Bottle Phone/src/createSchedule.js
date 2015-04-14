@@ -174,6 +174,15 @@ var MySwitchTemplate = SWITCHES.SwitchButton.template(function($){ return{
   }}})
 }});
 
+var MyRadioGroup = BUTTONS.RadioGroup.template(function($){ return{
+  top:50, bottom:50, left:50, right:50,
+  behavior: Object.create(BUTTONS.RadioGroupBehavior.prototype, {
+    onRadioButtonSelected: { value: function(buttonName){
+      trace("Radio button with name " + buttonName + " was selected.\n");
+  }}})
+}});
+
+
 var TextContainerTemplate = Container.template(function($) { return {
   skin: whiteSkin, active: true,
   behavior: Object.create(Container.prototype, {
@@ -184,8 +193,14 @@ var TextContainerTemplate = Container.template(function($) { return {
   })
 }});
 
+<<<<<<< HEAD
 var repeatSwitch = new MySwitchTemplate({right:100, value:0 });
 var repeatSwitchValue = 0;
+=======
+var radioGroup = new MyRadioGroup({ buttonNames: "am,pm" });
+var repeatSwitch = new MySwitchTemplate({right:100, value:1 });
+var repeatSwitchValue = 1;
+>>>>>>> 7360a5b2b378dd686a1bb6eb204d4707039dd7c1
 var tempField = new MyField({ name: "",});
 tempField.scroller.hint.string = temperature_unit;
 var nameField = new MyField({name: "",});
@@ -218,6 +233,7 @@ exports.CreateScheduleScreen = Container.template(function($) { return { left: 0
 			    hourField,
 			    Label($, {style: labelStyle, string: ":"}),
 			    minuteField,
+			    radioGroup,
 			]
 		}),
 		new Line( { left:20, right:100, contents: [
