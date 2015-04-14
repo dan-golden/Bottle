@@ -30,6 +30,9 @@ function reset() {
 	hourField.scroller.textbox.string = "";
 	minuteField.scroller.textbox.string = "";
 	nameField.scroller.textbox.string = "";
+	repeatSwitchValue = 1;
+	repeatSwitch = new MySwitchTemplate({right:100, value:1});
+	
 	validMessage.visible = false;
 	if(repeatSwitchValue == 1) {
 		repeatSwitch.behavior.data.value = 0;
@@ -49,6 +52,7 @@ var cancelButton = BUTTONS.Button.template(function($){ return{
 	behavior: Object.create(BUTTONS.ButtonBehavior.prototype, {
 		onTap: { value: function(content){
 			toScreen = "Schedule";
+			currentScreen = "CreateSchedule";
 			reset();
 			content.bubble("onTriggerTransition");
 		}}
