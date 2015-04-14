@@ -76,14 +76,14 @@ function generateRepeatedDaysDict(days) {
 exports.generateDisplayString = function generateDisplayString(scheds) {
 	result = [];
 	for (var i = 0; i < scheds.length; i++) {
-<<<<<<< HEAD
+
 		temp = scheds[i].name + " scheduled at " + scheds[i].hours + ":";
 		if(scheds[i].minutes < 10)
 			temp+="0";
 		temp+=scheds[i].minutes;
-=======
+
 		temp = scheds[i].name + " scheduled at " + scheds[i].hours + ":" + scheds[i].minutes + scheds[i].ampm;
->>>>>>> cleaned_styles
+
 		if(scheds[i].repeat == 1) {
 			temp+= " on ";
 			days = generateRepeatedDaysDict(scheds[i].repeatedDays);
