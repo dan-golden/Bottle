@@ -31,6 +31,7 @@ function reset() {
 	minuteField.scroller.textbox.string = "";
 	nameField.scroller.textbox.string = "";
 	validMessage.visible = false;
+	amField.
 }
 
 
@@ -162,6 +163,15 @@ var MySwitchTemplate = SWITCHES.SwitchButton.template(function($){ return{
   }}})
 }});
 
+var MyRadioGroup = BUTTONS.RadioGroup.template(function($){ return{
+  top:50, bottom:50, left:50, right:50,
+  behavior: Object.create(BUTTONS.RadioGroupBehavior.prototype, {
+    onRadioButtonSelected: { value: function(buttonName){
+      trace("Radio button with name " + buttonName + " was selected.\n");
+  }}})
+}});
+
+
 var TextContainerTemplate = Container.template(function($) { return {
   skin: whiteSkin, active: true,
   behavior: Object.create(Container.prototype, {
@@ -172,6 +182,7 @@ var TextContainerTemplate = Container.template(function($) { return {
   })
 }});
 
+var radioGroup = new MyRadioGroup({ buttonNames: "am,pm" });
 var repeatSwitch = new MySwitchTemplate({right:100, value:1 });
 var repeatSwitchValue = 1;
 var tempField = new MyField({ name: "",});
@@ -207,6 +218,7 @@ exports.CreateScheduleScreen = Container.template(function($) { return { left: 0
 			    hourField,
 			    Label($, {style: labelStyle, string: ":"}),
 			    minuteField,
+			    radioGroup,
 			]
 		}),
 		new Line( { left:20, right:100, contents: [
