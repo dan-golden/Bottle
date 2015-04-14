@@ -22,10 +22,7 @@ var whiteSkin = new Skin( { fill:"white" } );
 var blueSkin = new Skin( { fill:"#9898ff", } );
 var blueSkinLabel = new Skin( { fill:"#9898ff", borders: { left:5, right:5, }, stroke: 'gray',} );
 var blueTitleSkin = new Skin( { fill:"#d3d3d3", borders: { top: 5, bottom: 5, left:5, right:5, }, stroke: 'gray', });
-var whiteS = new Skin({
-		fill:"#e5e5ff",
-		borders:{left:5, right:5, top:5, bottom:5},
-		stroke:"gray"});
+var whiteS = new Skin({fill:"#e5e5ff", borders:{left:5, right:5, top:5, bottom:5}, stroke:"gray"});
 var textStyle = new Style({font:"bold 25px", color:"black"});
 var titleStyle = new Style({font:"bold 30px", color:"black"});
 var repeatingPatternTexture = new Texture('./assets/menuIcon.png', 1)
@@ -220,7 +217,7 @@ var current_temperature_label = new Label({string: current_temperature_string, s
 var survival_mode_label = new Label({string: survival_mode, style:textStyle, skin: blueSkin});
 var dispense_rate_label = new Label({string: dispense_rate, style:textStyle, skin: blueSkin});
 var dispense_time_label = new Label({string: dispense_time, style:textStyle, skin: blueSkin});
-var save_label = new Label({string: "", style:labelStyle, skin: blueSkin});
+var save_label = new Label({string: "Changes Saved", style:labelStyle, skin: blueSkin, visible: false});
 var survival_title_label = new Label({ left: 0, right: 0, top:0, style: textStyle, string: 'Survival Mode', skin: blueSkin});
 
 
@@ -297,6 +294,7 @@ MainScreen.behaviors[0] = Behavior.template({
 	onTriggerTransition: function(container) {
 		var toScreenObj = converter(toScreen);
 		KEYBOARD.hide();
+		save_label.visible = false;
 		if(toScreen == "Menu") {
 			container.run( new TRANSITIONS.Push(), container.last, toScreenObj, { direction : "right", duration : 400 } );
 		} else {

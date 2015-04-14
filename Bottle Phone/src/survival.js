@@ -50,7 +50,7 @@ var MyButtonTemplate = BUTTONS.Button.template(function($){ return{
   behavior: Object.create(BUTTONS.ButtonBehavior.prototype, {
     onTap: { value:  function(button){
       trace("Button was tapped.\n");
-      save_label.string = "Changes saved!";
+      save_label.visible = true;
     }}
   })
 }});
@@ -69,20 +69,18 @@ exports.mainCol = new Column({
 			]
 		}),
 		new Column({name: "secondCol", left:0, right:0, top:0, bottom:0, skin: blueSkinLabel,
-				contents:[
-					save_label,
-					survival_title_label,
-					new MySwitchTemplate({value: 0}),					
-					survival_mode_label,
-					new MySlider({ min:0, max:100, value:50 }),
-					dispense_rate_label,
-					new MySlider1({ min:0, max:100, value:50 }),
-					dispense_time_label,
-					save_button, 
-					
-				]
-			}),
-		
-	],
-	
+			contents:[
+				save_label,
+				survival_title_label,
+				new MySwitchTemplate({value: 0}),					
+				survival_mode_label,
+				new MySlider({ min:0, max:100, value:50 }),
+				dispense_rate_label,
+				new MySlider1({ min:0, max:100, value:50 }),
+				dispense_time_label,
+				save_button, 
+				
+			]
+		}),
+	]
 });
