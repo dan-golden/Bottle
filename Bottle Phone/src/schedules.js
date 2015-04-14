@@ -58,15 +58,45 @@ exports.ScheduleScreen = Container.template(function($) { return { left: 0, righ
  
 //Change this Daniel
 
+function generateRepeatedDaysDict(days) {
+	dict = {};
+	dict["Su"] = false
+	dict["M"] = false;
+	dict["Tu"] = false;
+	dict["W"] = false;
+	dict["Th"] = false;
+	dict["f"] = false;
+	dict["Sa"] = false;
+	for(i = 0; i<days.length; i++) {
+		dict[days[i]] = true;
+	}
+	return dict;
+}
+
 exports.generateDisplayString = function generateDisplayString(scheds) {
 	result = [];
 	for (var i = 0; i < scheds.length; i++) {
-		temp = scheds[i].name + " scheduled at " + scheds[i].hours + ":" + scheds[i].minutes;
+		temp = scheds[i].name + " scheduled at " + scheds[i].hours + ":";
+		if(scheds[i].minutes < 10)
+			temp+="0";
+		temp+=scheds[i].minutes;
 		if(scheds[i].repeat == 1) {
 			temp+= " on ";
-			for(var j = 0; j < scheds[i].repeatedDays.length; j++) {
-				temp+= scheds[i].repeatedDays[j] + ", ";
-			}
+			days = generateRepeatedDaysDict(scheds[i].repeatedDays);
+			if(days["Su"]) 
+				temp+="Su, ";
+			if(days["M"])
+				temp+="M, ";
+			if(days["Tu"])
+				temp+="Tu, ";
+			if(days["W"])
+				temp+="W, ";
+			if(days["Th"])
+				temp+="Th, ";
+			if(days["f"])
+				temp+="F, ";
+			if(days["Sa"])
+				temp+="Sa, ";
 		}
 		temp += " for " + scheds[i].temperature + "\xB0 F";
 		dict = {};

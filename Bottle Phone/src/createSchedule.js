@@ -25,6 +25,19 @@ function checkValidTemp(temp) {
 	return true;
 }
 
+function checkValidSchedule(schedule) {
+	if(!checkValidTemp(schedule.temperature)){
+		return false;
+	} else if(!checkValidHours(schedule.hours)) {
+		return false;
+	} else if(!checkValidMinutes(schedule.minutes)) {
+		return false;
+	} else if(schedule.repeat == 1 && schedule.repeatedDays.length == 0) {
+		return false;
+	}
+	return true;
+}
+
 function reset() {
 	tempField.scroller.textbox.string = ""; 
 	hourField.scroller.textbox.string = "";
@@ -70,7 +83,7 @@ var saveButton = BUTTONS.Button.template(function($){ return{
 							repeatedDays: selectedBoxes, 
 							hours: hourField.scroller.textbox.string,
 							minutes: minuteField.scroller.textbox.string};
-			if(checkValidTemp(newSchedule.temperature) && checkValidHours(newSchedule.hours) && checkValidMinutes(newSchedule.minutes)) {
+			if(checkValidSchedule(newSchedule)) {
 				validMessage.visible = false;
 				schedules.push(newSchedule);
 				var tempScheds = [newSchedule];
@@ -174,15 +187,6 @@ var MySwitchTemplate = SWITCHES.SwitchButton.template(function($){ return{
   }}})
 }});
 
-var MyRadioGroup = BUTTONS.RadioGroup.template(function($){ return{
-  top:50, bottom:50, left:50, right:50,
-  behavior: Object.create(BUTTONS.RadioGroupBehavior.prototype, {
-    onRadioButtonSelected: { value: function(buttonName){
-      trace("Radio button with name " + buttonName + " was selected.\n");
-  }}})
-}});
-
-
 var TextContainerTemplate = Container.template(function($) { return {
   skin: whiteSkin, active: true,
   behavior: Object.create(Container.prototype, {
@@ -195,7 +199,6 @@ var TextContainerTemplate = Container.template(function($) { return {
 
 var repeatSwitch = new MySwitchTemplate({right:100, value:0 });
 var repeatSwitchValue = 0;
-var radioGroup = new MyRadioGroup({ buttonNames: "am,pm" });
 var tempField = new MyField({ name: "",});
 tempField.scroller.hint.string = temperature_unit;
 var nameField = new MyField({name: "",});
@@ -228,7 +231,6 @@ exports.CreateScheduleScreen = Container.template(function($) { return { left: 0
 			    hourField,
 			    Label($, {style: labelStyle, string: ":"}),
 			    minuteField,
-			    radioGroup,
 			]
 		}),
 		new Line( { left:20, right:100, contents: [
