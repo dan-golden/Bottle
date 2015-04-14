@@ -30,10 +30,15 @@ function reset() {
 	hourField.scroller.textbox.string = "";
 	minuteField.scroller.textbox.string = "";
 	nameField.scroller.textbox.string = "";
-	repeatSwitchValue = 1;
-	repeatSwitch = new MySwitchTemplate({right:100, value:1});
-	
 	validMessage.visible = false;
+	if(repeatSwitchValue == 1) {
+		repeatSwitch.behavior.data.value = 0;
+		repeatSwitch.behavior.onValueChanged(repeatSwitch);
+	}
+	for(i = 0; i<7; i++) {
+		checkbox[i].behavior.setSelected(checkbox[i],0);
+	}
+	selectedBoxes = [];
 }
 
 
@@ -133,25 +138,28 @@ var MyTimeField = Container.template(function($) { return {
 var selectedBoxes = [];
 
 var MyCheckBoxTemplate = BUTTONS.LabeledCheckbox.template(function($){ return{
-    top:10, bottom:10, left:10, right:10, visible: true, active: true,
+    top:10, bottom:10, left:10, right:10, visible: false, active: true,
     behavior: Object.create(BUTTONS.LabeledCheckboxBehavior.prototype, {
         onSelected: { value:  function(checkBox){
             selectedBoxes.push(checkBox.buttonLabel.string);
         }},
         onUnselected: { value:  function(checkBox){
             selectedBoxes.pop(checkBox.buttonLabel.string);
-        }}
+        }},
+        setSelected: { value: function(checkBox, selected) {
+			checkBox.variant = selected;
+		}}
     })
 }});
 
 var checkbox = [];
-checkbox[0] = new MyCheckBoxTemplate({name:"Su", visible: false});
-checkbox[1] = new MyCheckBoxTemplate({name:"M", visible: false});
-checkbox[2] = new MyCheckBoxTemplate({name:"Tu", visible: false});
-checkbox[3] = new MyCheckBoxTemplate({name:"W", visible: false});
-checkbox[4] = new MyCheckBoxTemplate({name:"Th", visible: false});
-checkbox[5] = new MyCheckBoxTemplate({name:"F", visible: false});
-checkbox[6] = new MyCheckBoxTemplate({name:"Sa", visible: false});
+checkbox[0] = new MyCheckBoxTemplate({name:"Su"});
+checkbox[1] = new MyCheckBoxTemplate({name:"M"});
+checkbox[2] = new MyCheckBoxTemplate({name:"Tu"});
+checkbox[3] = new MyCheckBoxTemplate({name:"W"});
+checkbox[4] = new MyCheckBoxTemplate({name:"Th"});
+checkbox[5] = new MyCheckBoxTemplate({name:"F"});
+checkbox[6] = new MyCheckBoxTemplate({name:"Sa"});
 
 
 var MySwitchTemplate = SWITCHES.SwitchButton.template(function($){ return{
@@ -166,6 +174,15 @@ var MySwitchTemplate = SWITCHES.SwitchButton.template(function($){ return{
   }}})
 }});
 
+var MyRadioGroup = BUTTONS.RadioGroup.template(function($){ return{
+  top:50, bottom:50, left:50, right:50,
+  behavior: Object.create(BUTTONS.RadioGroupBehavior.prototype, {
+    onRadioButtonSelected: { value: function(buttonName){
+      trace("Radio button with name " + buttonName + " was selected.\n");
+  }}})
+}});
+
+
 var TextContainerTemplate = Container.template(function($) { return {
   skin: whiteSkin, active: true,
   behavior: Object.create(Container.prototype, {
@@ -176,8 +193,9 @@ var TextContainerTemplate = Container.template(function($) { return {
   })
 }});
 
-var repeatSwitch = new MySwitchTemplate({right:100, value:1 });
-var repeatSwitchValue = 1;
+var repeatSwitch = new MySwitchTemplate({right:100, value:0 });
+var repeatSwitchValue = 0;
+var radioGroup = new MyRadioGroup({ buttonNames: "am,pm" });
 var tempField = new MyField({ name: "",});
 tempField.scroller.hint.string = temperature_unit;
 var nameField = new MyField({name: "",});
@@ -195,7 +213,6 @@ exports.CreateScheduleScreen = Container.template(function($) { return { left: 0
 				new Label({right: 92, top: -30, string:"Bot-tle", style:titleStyle,}),
 			]
 		}),
-		//new Line( { left:0, right:0, contents: [new cancelButton(), new saveButton()] }),
 		validMessage,
 		new Line( { left:0, right:20, bottom: 5, contents: [
 			Label($, {left: 20, right: 0, style: labelStyle, string: "Title (Optional): "}),
@@ -211,6 +228,7 @@ exports.CreateScheduleScreen = Container.template(function($) { return { left: 0
 			    hourField,
 			    Label($, {style: labelStyle, string: ":"}),
 			    minuteField,
+			    radioGroup,
 			]
 		}),
 		new Line( { left:20, right:100, contents: [

@@ -49,7 +49,7 @@ var errorStyle = new Style( { font: "15px Helvetica, sans-serif;", color:"red" }
 // Internal Variables
 var deviceURL = "";
 var temperature_unit = "\xB0 F"; //default temperature to Fahrenheit
-var current_temperature = 32;
+var current_temperature = 70;
 var current_temperature_string = current_temperature + temperature_unit; // range of temp should be 32 degrees for freezing to 212 degrees for boiling
 var survival_mode = "OFF";
 var currentScreen = "Temperature";

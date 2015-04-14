@@ -7,9 +7,9 @@ var labelStyle = new Style( { font: "bold 20px", color:"black" } );
 // Internal Variables
 phoneURL = "";
 temperature_unit = "\xB0 F"; //default temperature to Fahrenheit
-current_temperature = 32; // range of temp should be 32 degrees for freezing to 212 degrees for boiling
+current_temperature = 70; // range of temp should be 32 degrees for freezing to 212 degrees for boiling
 current_temperature_string = current_temperature + temperature_unit;
-desired_temperature = 32; 
+desired_temperature = 70; 
 desired_temperature_string = desired_temperature + temperature_unit;
 old_slider = 32;
 new_slider = 32;
