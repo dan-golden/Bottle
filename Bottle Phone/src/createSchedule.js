@@ -30,17 +30,15 @@ function reset() {
 	hourField.scroller.textbox.string = "";
 	minuteField.scroller.textbox.string = "";
 	nameField.scroller.textbox.string = "";
-	repeatSwitchValue = 1;
-	repeatSwitch = new MySwitchTemplate({right:100, value:1});
-	
 	validMessage.visible = false;
 	if(repeatSwitchValue == 1) {
 		repeatSwitch.behavior.data.value = 0;
 		repeatSwitch.behavior.onValueChanged(repeatSwitch);
 	}
 	for(i = 0; i<7; i++) {
-		checkbox[i].behavior.setSelected(checkbox[i], 1, 0);
+		checkbox[i].behavior.setSelected(checkbox[i],0);
 	}
+	selectedBoxes = [];
 }
 
 
@@ -148,9 +146,8 @@ var MyCheckBoxTemplate = BUTTONS.LabeledCheckbox.template(function($){ return{
         onUnselected: { value:  function(checkBox){
             selectedBoxes.pop(checkBox.buttonLabel.string);
         }},
-        setSelected: { value: function(container, selected, silent) {
-		if (selected != container.delegate("isSelected"))
-			container.delegate("doToggle", silent);
+        setSelected: { value: function(checkBox, selected) {
+			checkBox.variant = selected;
 		}}
     })
 }});
