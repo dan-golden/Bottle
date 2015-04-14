@@ -1,13 +1,14 @@
 SCHEDULE_SCREEN = require('schedules.js');
-
+var ampm_value = 'am'; 
 function checkValidHours(hour) {
 	if(isNaN(hour) || hour=="") {
 		return false;
-	} else if(+hour > 24 || +hour < 0) {
+	} else if(+hour > 12 || +hour < 0) {
 		return false;
 	}
 	return true;
 }
+
 
 function checkValidMinutes(min) {
 	if(isNaN(min) || min == "") {
@@ -43,6 +44,7 @@ function reset() {
 	hourField.scroller.textbox.string = "";
 	minuteField.scroller.textbox.string = "";
 	nameField.scroller.textbox.string = "";
+<<<<<<< HEAD
 	validMessage.visible = false;
 	if(repeatSwitchValue == 1) {
 		repeatSwitch.behavior.data.value = 0;
@@ -52,6 +54,12 @@ function reset() {
 		checkbox[i].behavior.setSelected(checkbox[i],0);
 	}
 	selectedBoxes = [];
+=======
+	repeatSwitchValue = 1;
+	repeatSwitch = new MySwitchTemplate({right:100, value:1});
+	ampm_value = "am";
+	validMessage.visible = false;
+>>>>>>> cleaned_styles
 }
 
 
@@ -82,8 +90,15 @@ var saveButton = BUTTONS.Button.template(function($){ return{
 							repeat: repeatSwitchValue, 
 							repeatedDays: selectedBoxes, 
 							hours: hourField.scroller.textbox.string,
+<<<<<<< HEAD
 							minutes: minuteField.scroller.textbox.string};
 			if(checkValidSchedule(newSchedule)) {
+=======
+							minutes: minuteField.scroller.textbox.string, 
+							ampm: ampm_value};
+							
+			if(checkValidTemp(newSchedule.temperature) && checkValidHours(newSchedule.hours) && checkValidMinutes(newSchedule.minutes)) {
+>>>>>>> cleaned_styles
 				validMessage.visible = false;
 				schedules.push(newSchedule);
 				var tempScheds = [newSchedule];
@@ -106,7 +121,7 @@ var MyField = Container.template(function($) { return {
       left: 4, right: 4, top: 4, bottom: 4, active: true, name: "scroller",
       behavior: Object.create(CONTROL.FieldScrollerBehavior.prototype), clip: true, contents: [
         Label($, { 
-          name: "textbox", left: 0, top: 0, bottom: 0, skin: THEME.fieldLabelSkin, style: fieldStyle, anchor: 'NAME',
+          name: "textbox", left: 0, top: 0, bottom: 0, skin: THEME.fieldLabelSkin, style: textStyle, anchor: 'NAME',
           editable: true, string: $.name,
          	behavior: Object.create( CONTROL.FieldLabelBehavior.prototype, {
          		onEdited: { value: function(label){
@@ -130,7 +145,7 @@ var MyTimeField = Container.template(function($) { return {
       left: 4, right: 4, top: 4, bottom: 4, active: true, name: "scroller",
       behavior: Object.create(CONTROL.FieldScrollerBehavior.prototype), clip: true, contents: [
         Label($, { 
-          name: "textbox", left: 0, top: 0, bottom: 0, skin: THEME.fieldLabelSkin, style: fieldStyle, anchor: 'NAME',
+          name: "textbox", left: 0, top: 0, bottom: 0, skin: THEME.fieldLabelSkin, style: textStyle, anchor: 'NAME',
           editable: true, string: $.name,
          	behavior: Object.create( CONTROL.FieldLabelBehavior.prototype, {
          		onEdited: { value: function(label){
@@ -187,6 +202,19 @@ var MySwitchTemplate = SWITCHES.SwitchButton.template(function($){ return{
   }}})
 }});
 
+<<<<<<< HEAD
+=======
+var MyRadioGroup = BUTTONS.RadioGroup.template(function($){ return{
+  top:50, bottom:50, left:50, right:50,
+  behavior: Object.create(BUTTONS.RadioGroupBehavior.prototype, {
+    onRadioButtonSelected: { value: function(buttonName){
+      trace("Radio button with name " + buttonName + " was selected.\n");
+      ampm_value = buttonName;
+  }}})
+}});
+
+
+>>>>>>> cleaned_styles
 var TextContainerTemplate = Container.template(function($) { return {
   skin: whiteSkin, active: true,
   behavior: Object.create(Container.prototype, {
@@ -197,8 +225,15 @@ var TextContainerTemplate = Container.template(function($) { return {
   })
 }});
 
+<<<<<<< HEAD
 var repeatSwitch = new MySwitchTemplate({right:100, value:0 });
 var repeatSwitchValue = 0;
+=======
+var radioGroup = new MyRadioGroup({ buttonNames: "am,pm" });
+trace("created new radiogroup");
+var repeatSwitch = new MySwitchTemplate({right:100, value:1 });
+var repeatSwitchValue = 1;
+>>>>>>> cleaned_styles
 var tempField = new MyField({ name: "",});
 tempField.scroller.hint.string = temperature_unit;
 var nameField = new MyField({name: "",});
@@ -208,37 +243,42 @@ var minuteField = new MyTimeField({name: "",});
 minuteField.scroller.hint.string = "Min.";
 var validMessage = new Label( {left: 100, right:100, style: errorStyle, string: "Error!", visible: false})
 
-exports.CreateScheduleScreen = Container.template(function($) { return { left: 0, right: 0, top: 0, bottom: 0, skin: blueSkin, active: true, contents: [ 
+exports.CreateScheduleScreen = Container.template(function($) { return { left: 0, right: 0, top: 0, bottom: 0, skin: whiteSkin, active: true, contents: [ 
 	new Column( { left: 0, right: 0, top:0, contents: [
-		new Column({left:0, right:0, top:0, height:80, skin: whiteS,
+		new Column({left:0, right:0, top:0, height:80, skin: whiteSkin,
 			contents:[
 			    new cancelButton(),
-				new Label({right: 92, top: -30, string:"Bot-tle", style:titleStyle,}),
+				new Label({right: 92, top: -30, string:"Bot-tle", style:textStyle,}),
 			]
 		}),
 		validMessage,
 		new Line( { left:0, right:20, bottom: 5, contents: [
-			Label($, {left: 20, right: 0, style: labelStyle, string: "Title (Optional): "}),
+			Label($, {left: 20, right: 0, style: textStyle, string: "Title (Optional): "}),
 			nameField
 		]}),
 		new Line( { left:0, right:20, contents: [
-			Label($, {left: 20, right: 20, style: labelStyle, string: "Temperature: "}),
+			Label($, {left: 20, right: 20, style: textStyle, string: "Temperature: "}),
 			tempField
 		]}),
-		new Line({ right: 20, height:80, skin: blueSkin,
+		new Line({ right: 20, height:80, skin: whiteSkin,
 			contents:[
-			    Label($, {right: 70, style: labelStyle, string: "Time: "}),
+			    Label($, {right: 70, style: textStyle, string: "Time: "}),
 			    hourField,
-			    Label($, {style: labelStyle, string: ":"}),
+			    Label($, {style: textStyle, string: ":"}),
 			    minuteField,
+<<<<<<< HEAD
+=======
+			    radioGroup,
+			    trace("added radiogroup to container"),
+>>>>>>> cleaned_styles
 			]
 		}),
 		new Line( { left:20, right:100, contents: [
-			Label($, {left: 0, right: 0, style: labelStyle, string: "Repeat?: "}),
+			Label($, {left: 0, right: 0, style: textStyle, string: "Repeat?: "}),
 			repeatSwitch
 		]}),
 		new Column( { left:20, right:0, contents: [
-			Label($, {left: 0, right: 0, style: labelStyle, string: "Days: "}),
+			Label($, {left: 0, right: 0, style: textStyle, string: "Days: "}),
 			new Column({left:0, right: 0, contents:[
 				new Line({left:0, right:0, contents:[
 					checkbox[0], checkbox[1], checkbox[2], checkbox[3]]
