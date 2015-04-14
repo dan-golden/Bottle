@@ -81,9 +81,6 @@ exports.generateDisplayString = function generateDisplayString(scheds) {
 		if(scheds[i].minutes < 10)
 			temp+="0";
 		temp+=scheds[i].minutes;
-
-		temp = scheds[i].name + " scheduled at " + scheds[i].hours + ":" + scheds[i].minutes + scheds[i].ampm;
-
 		if(scheds[i].repeat == 1) {
 			temp+= " on ";
 			days = generateRepeatedDaysDict(scheds[i].repeatedDays);
