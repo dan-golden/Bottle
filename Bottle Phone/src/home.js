@@ -13,7 +13,7 @@ function updateTemperature(newTemp) {
 var IncreaseTemperatureButtonTemplate = BUTTONS.Button.template(function($){ return{
   top:50, bottom:50, left:50, right:50,
   contents:[
-    new Label({name: "label", left:0, right:0, height:55, string:$.textForLabel, style:bigText}),
+    new Label({name: "label", left:0, right:0, height:55, string:$.textForLabel, style:textStyle}),
   ],
   behavior: Object.create(BUTTONS.ButtonBehavior.prototype, {
     onTap: { value:  function(button){
@@ -26,7 +26,7 @@ var IncreaseTemperatureButtonTemplate = BUTTONS.Button.template(function($){ ret
 var DecreaseTemperatureButtonTemplate = BUTTONS.Button.template(function($){ return{
   top:50, bottom:50, left:50, right:50,
   contents:[
-    new Label({name: "label", left:0, right:0, height:55, string:$.textForLabel, style:bigText}),
+    new Label({name: "label", left:0, right:0, height:55, string:$.textForLabel, style:textStyle}),
   ],
   behavior: Object.create(BUTTONS.ButtonBehavior.prototype, {
     onTap: { value:  function(button){
@@ -39,7 +39,7 @@ var DecreaseTemperatureButtonTemplate = BUTTONS.Button.template(function($){ ret
 var SmallTextButtonTemplate = BUTTONS.Button.template(function($){ return{
   top:25, bottom:10, left:5, right:5, width: 15,
   contents:[
-    new Label({left:0, right:0, height:55, string:$.textForLabel, style:smallText})
+    new Label({left:0, right:0, height:55, string:$.textForLabel, style:textStyle})
   ],
   behavior: Object.create(BUTTONS.ButtonBehavior.prototype, {
     onTap: { value:  function(button){
@@ -69,14 +69,14 @@ var mainCol = new Column({
 	left:0, right:0, top:0, bottom:0,
 	skin: whiteS,
 	contents:[
-		new Line({left:0, right:0, top:0, height:80, skin: whiteS,
+		new Line({left:0, right:0, top:0, height:80, skin: whiteSkin,
 			contents:[
-				new Label({left:-18, right:0, string:"Bot-tle", style:titleStyle,}),
+				new Label({left:-18, right:0, string:"Bot-tle", style:textStyle,}),
 			]
 		}),
-		new Line({left:0, right:0, top:0, bottom:0, skin: blueSkinLabel,
+		new Line({left:0, right:0, top:0, bottom:0, skin: whiteSkinLabel,
 			contents:[
-				new Label({left:10, right:20, string:"Current Temperature:", style:textStyle, skin: blueSkin}),
+				new Label({left:10, right:20, string:"Current Temperature:", style:textStyle, skin: whiteSkin}),
 			]
 		}),
 	],
@@ -86,12 +86,12 @@ exports.homeCol = new Column({
 	left:0, right:0, top:0, bottom:0,
 	skin: whiteS,
 	contents:[
-		new Column({left:0, right:0, top:0, height:80, skin: whiteS,
+		new Column({left:0, right:0, top:0, height:80, skin: whiteSkin,
 			contents:[
-				new Label({right: 90, top: 20, string:"Bot-tle", style:titleStyle,}),
+				new Label({right: 90, top: 20, string:"Bot-tle", style:textStyle,}),
 			]
 		}),
-		new Column({name: "tempControl", left:0, right:0, top:0, bottom:0, skin: blueSkinLabel,
+		new Column({name: "tempControl", left:0, right:0, top:0, bottom:0, skin: whiteSkinLabel,
 			contents:[
 				increase_button,
 				current_temperature_label,

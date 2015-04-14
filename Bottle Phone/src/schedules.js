@@ -39,10 +39,10 @@ var deleteButton = BUTTONS.Button.template(function($){ return{
 
 // SCREENS
 
-exports.ScheduleScreen = Container.template(function($) { return { left: 0, right: 0, top: 0, bottom: 0, skin: blueSkin, contents: [
+exports.ScheduleScreen = Container.template(function($) { return { left: 0, right: 0, top: 0, bottom: 0, skin: whiteSkin, contents: [
 	new Column({left:0, right:0, top:0, height:80, skin: whiteS,
 		contents:[
-			new Label({right: 90, top: 20, string:"Bot-tle", style:titleStyle,}),
+			new Label({right: 90, top: 20, string:"Bot-tle", style:textStyle,}),
 		]
 	}),
 	new menuButton(),
@@ -60,7 +60,7 @@ exports.ScheduleScreen = Container.template(function($) { return { left: 0, righ
 exports.generateDisplayString = function generateDisplayString(scheds) {
 	result = [];
 	for (var i = 0; i < scheds.length; i++) {
-		temp = scheds[i].name + " scheduled at " + scheds[i].hours + ":" + scheds[i].minutes;
+		temp = scheds[i].name + " scheduled at " + scheds[i].hours + ":" + scheds[i].minutes + scheds[i].ampm;
 		if(scheds[i].repeat == 1) {
 			temp+= " on ";
 			for(var j = 0; j < scheds[i].repeatedDays.length; j++) {
@@ -88,7 +88,7 @@ var ProcessorLine = Line.template(function($) { return { left: 0, right: 0, acti
      			            * nested objects until it hits one which is active. */
      			           /* This label is expecting a value for button.  Note that this Label
      			            * is marked active.  Touches registered here will be handeled here */
-     			           Label($, { left: 0, right: 0, style: productDescriptionStyle, skin: whiteSkin, active: true, string: $.title,     			            
+     			           Label($, { left: 0, right: 0, style: textStyle, skin: whiteSkin, active: true, string: $.title,     			            
      			           }), 
  			           ], 
 	           }),

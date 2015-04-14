@@ -19,30 +19,31 @@ var SCREEN = require('mobile/screen');
 
 // Skins and Styles
 var whiteSkin = new Skin( { fill:"white" } );
-var blueSkin = new Skin( { fill:"#9898ff", } );
-var blueSkinLabel = new Skin( { fill:"#9898ff", borders: { left:5, right:5, }, stroke: 'gray',} );
-var blueTitleSkin = new Skin( { fill:"#d3d3d3", borders: { top: 5, bottom: 5, left:5, right:5, }, stroke: 'gray', });
-var whiteS = new Skin({fill:"#e5e5ff", borders:{left:5, right:5, top:5, bottom:5}, stroke:"gray"});
+//var blueSkin = new Skin( { fill:"#9898ff", } );
+//var blueSkinLabel = new Skin( { fill:"#9898ff", borders: { left:5, right:5, }, stroke: 'gray',} );
+var whiteSkinLabel = new Skin( { fill:"white", borders: { left:5, right:5, }, stroke: 'white',} );
+//var blueTitleSkin = new Skin( { fill:"#d3d3d3", borders: { top: 5, bottom: 5, left:5, right:5, }, stroke: 'gray', });
+var whiteS = new Skin({fill:"white", borders:{left:5, right:5, top:5, bottom:5}, stroke:"white"});
 var textStyle = new Style({font:"bold 25px", color:"black"});
 var titleStyle = new Style({font:"bold 30px", color:"black"});
-var repeatingPatternTexture = new Texture('./assets/menuIcon.png', 1)
-var repeatingPatternSkin = new Skin({ texture: repeatingPatternTexture, width: 244, height: 88, tiles: { left:0, right:0, top:0, bottom:0 }, });
-var labelStyle = new Style( { font: "15px Helvetica, sans-serif;", color:"white" } );
+//var repeatingPatternTexture = new Texture('./assets/menuIcon.png', 1)
+//var repeatingPatternSkin = new Skin({ texture: repeatingPatternTexture, width: 244, height: 88, tiles: { left:0, right:0, top:0, bottom:0 }, });
+var labelStyle = new Style( { font: "15px Helvetica, sans-serif;", color:"black" } );
 var redSkin = new Skin({fill:'red'});
-var buttonStyle = new Style({ font: "15px Helvetica, sans-serif;", color:"white", skin: redSkin });
-var bigText = new Style({font:"bold 40px", color:"#333333"});
-var smallText = new Style({font:"bold 20px", color:"#333333"});
-var nameInputSkin = new Skin({ borders: { left:2, right:2, top:2, bottom:2 }, stroke: 'gray',});
+var buttonStyle = new Style({ font: "bold 25px", color:"black", skin: whiteSkin });
+var bigText = new Style({font:"bold 40px", color:"black"});
+var smallText = new Style({font:"bold 20px", color:"black"});
+var nameInputSkin = new Skin({ borders: { left:2, right:2, top:2, bottom:2 }, stroke: 'white',});
 var fieldStyle = new Style({ color: 'black', font: 'bold 24px', horizontal: 'left', vertical: 'middle', left: 5, right: 5, top: 5, bottom: 5, });
-var fieldHintStyle = new Style({ color: '#aaa', font: '24px', horizontal: 'left', vertical: 'middle', left: 5, right: 5, top: 5, bottom: 5, });
-var buttonStyle1 = new Style({ font: "25px Helvetica, sans-serif;", color:"white", skin: redSkin });
+var fieldHintStyle = new Style({ color: 'gray', font: '24px', horizontal: 'left', vertical: 'middle', left: 5, right: 5, top: 5, bottom: 5, });
+var buttonStyle1 = new Style({ font:"bold 25px", color:"black", skin: whiteSkin });
 var taskNameStyle = new Style({ font: "25px Helvetica, sans-serif; bold;", color:"black" });
 var taskStyle = new Style({ font: "20px Helvetica, sans-serif;", color:"black" });
 var blackSkin = new Skin({ fill: 'black',});
 var yellowSkin	= new Skin({ fill: 'yellow'});
 var separatorSkin = new Skin({ fill: 'silver',});
 var productNameStyle = new Style({  font: 'bold 22px', horizontal: 'left', vertical: 'middle', lines: 1, });
-var productDescriptionStyle = new Style({  font: '16px', horizontal: 'left', vertical: 'middle', left: 1, color: 'Black' });
+var productDescriptionStyle = new Style({  font: '16px', horizontal: 'left', vertical: 'middle', left: 1, color: 'black' });
 var errorStyle = new Style( { font: "15px Helvetica, sans-serif;", color:"red" } );
 
 
@@ -104,8 +105,8 @@ function updateDeviceDispenseRate() {
 	})
 }});
 */
-var newMenu = Container.template(function($) { return { 
-	left: 1, top:1, width: 244, height: 88, skin: repeatingPatternSkin, 
+/**var newMenu = Container.template(function($) { return { 
+	left: 1, top:1, width: 244, height: 88, skin: "whiteSkin", 
 	contents: [ new Label({left:0, right:0, height:88, width:244, string:"", style: buttonStyle})],
 	behavior: Object.create(BUTTONS.ButtonBehavior.prototype, {
 		onTouchBegan: function(container, id, x, y, ticks) {
@@ -114,7 +115,7 @@ var newMenu = Container.template(function($) { return {
 		}
 	})
 	} 
-});
+});**/
 
 var menuButton = BUTTONS.Button.template(function($){ return{
 	left: 1, right: 200, top: 1, height:50,
@@ -215,12 +216,12 @@ Handler.bind("/updateTemperature", Behavior({
 }));
 
 // Labels
-var current_temperature_label = new Label({string: current_temperature_string, style:textStyle, skin: blueSkin});
-var survival_mode_label = new Label({string: survival_mode, style:textStyle, skin: blueSkin});
-var dispense_rate_label = new Label({string: dispense_rate, style:textStyle, skin: blueSkin});
-var dispense_time_label = new Label({string: dispense_time, style:textStyle, skin: blueSkin});
-var save_label = new Label({string: "Changes Saved", style:labelStyle, skin: blueSkin, visible: false});
-var survival_title_label = new Label({ left: 0, right: 0, top:0, style: textStyle, string: 'Survival Mode', skin: blueSkin});
+var current_temperature_label = new Label({string: current_temperature_string, style:textStyle, skin: whiteSkin});
+var survival_mode_label = new Label({string: survival_mode, style:textStyle, skin: whiteSkin});
+var dispense_rate_label = new Label({string: dispense_rate, style:textStyle, skin: whiteSkin});
+var dispense_time_label = new Label({string: dispense_time, style:textStyle, skin: whiteSkin});
+var save_label = new Label({string: "Changes Saved", style:labelStyle, skin: whiteSkin, visible: false});
+var survival_title_label = new Label({ left: 0, right: 0, top:0, style: textStyle, string: 'Survival Mode', skin: whiteSkin});
 
 
 
@@ -230,30 +231,30 @@ var SCHEDULE_SCREEN = require("schedules.js");
 var TEMPERATURE_SCREEN = require("home.js");
 
 // SCREENS
-var MenuScreen = Column.template(function($) { return { left: 0, right: 0, top: 0, bottom: 0, skin: blueSkin, contents: [
-	Label($, { left: 30, right: 0, top: 20, style: labelStyle, string: 'Menu', }),
+var MenuScreen = Column.template(function($) { return { left: 0, right: 0, top: 0, bottom: 0, skin: whiteSkin, contents: [
+	Label($, { left: 30, right: 0, top: 20, style: textStyle, string: 'Menu', }),
 	tButton,
 	sButton,
 	suButton,
 ], }});
 
-var ScheduleScreen = Container.template(function($) { return { left: 0, right: 0, top: 0, bottom: 0, skin: blueSkin, contents: [
-	Label($, { left: 0, right: 0, style: labelStyle, string: 'Current Schedules', }),
+var ScheduleScreen = Container.template(function($) { return { left: 0, right: 0, top: 0, bottom: 0, skin: whiteSkin, contents: [
+	Label($, { left: 0, right: 0, style: textStyle, string: 'Current Schedules', }),
 	SCHEDULE_SCREEN.ScheduleScreen(new Object()),
 	new menuButton(),
 ], }});
 
-var CreateScheduleScreen = Container.template(function($) { return { left: 0, right: 0, top: 0, bottom: 0, skin: blueSkin, contents: [
+var CreateScheduleScreen = Container.template(function($) { return { left: 0, right: 0, top: 0, bottom: 0, skin: whiteSkin, contents: [
 	CREATE_SCHEDULE_SCREEN.CreateScheduleScreen(),
 ], }});
 
-var SurvivalScreen = Container.template(function($) { return { left: 0, right: 0, top: 0, bottom: 0, skin: blueSkin, contents: [
+var SurvivalScreen = Container.template(function($) { return { left: 0, right: 0, top: 0, bottom: 0, skin: whiteSkin, contents: [
 	SURVIVAL_SCREEN.mainCol,
 	new menuButton(),	
 ], }});
 
-var TemperatureScreen = Container.template(function($) { return { left: 0, right: 0, top: 0, bottom: 0, skin: blueSkin, contents: [
-	Label($, { left: 0, right: 0, style: labelStyle, string: 'Manual Temperature Control', }),
+var TemperatureScreen = Container.template(function($) { return { left: 0, right: 0, top: 0, bottom: 0, skin: whiteSkin, contents: [
+	Label($, { left: 0, right: 0, style: textStyle, string: 'Manual Temperature Control', }),
 	TEMPERATURE_SCREEN.homeCol,
 	new menuButton()
 ], }});
@@ -281,7 +282,7 @@ var ApplicationBehavior = Behavior.template({
 	},
 })
 
-var MainScreen = Container.template(function($) { return { left: 0, right: 0, top: 0, bottom: 0, active: true, skin: blueSkin, behavior: Object.create((
+var MainScreen = Container.template(function($) { return { left: 0, right: 0, top: 0, bottom: 0, active: true, skin: whiteSkin, behavior: Object.create((
 	MainScreen.behaviors[0]).prototype),
 	onTouchEnded: { value: function(content){
 			KEYBOARD.hide();
