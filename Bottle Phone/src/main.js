@@ -80,7 +80,9 @@ function updateDeviceTemperature(newTemp) {
 
 function updateDeviceSurvivalMode() {
     // make sure survival_mode is up to date before calling this to update device
-    application.invoke(new Message(deviceURL + "updateSurvivalMode"), Message.JSON);    
+    var message = new Message(deviceURL + "updateSurvivalMode");
+    message.responseText = survival_mode;
+    application.invoke(message, Message.JSON);    
 }
 
 function updateDeviceDispenseRate() {
@@ -295,7 +297,7 @@ MainScreen.behaviors[0] = Behavior.template({
 		var toScreenObj = converter(toScreen);
 		KEYBOARD.hide();
 		save_label.visible = false;
-		if(toScreen == "Menu") {
+		if(toScreen == "Menu" || currentScreen == "CreateSchedule") {
 			container.run( new TRANSITIONS.Push(), container.last, toScreenObj, { direction : "right", duration : 400 } );
 		} else {
 			container.run( new TRANSITIONS.Push(), container.last, toScreenObj, { direction : "left", duration : 400 } );
