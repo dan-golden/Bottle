@@ -124,6 +124,7 @@ var menuButton = BUTTONS.Button.template(function($){ return{
 	behavior: Object.create(BUTTONS.ButtonBehavior.prototype, {
 		onTap: { value: function(content){
 			toScreen = "Menu";
+			currentScreen = "NotCreateSchedule";
 			content.bubble("onTriggerTransition");
 		}}
 	})
@@ -135,6 +136,7 @@ var survivalButton = BUTTONS.Button.template(function($){ return{
 	behavior: Object.create(BUTTONS.ButtonBehavior.prototype, {
 		onTap: { value: function(content){
 			toScreen = "Survival";
+			currentScreen = "Menu";
 			content.bubble("onTriggerTransition");
 		}}
 	})
@@ -146,6 +148,7 @@ var scheduleButton = BUTTONS.Button.template(function($){ return{
 	behavior: Object.create(BUTTONS.ButtonBehavior.prototype, {
 		onTap: { value: function(content){
 			toScreen = "Schedule";
+			currentScreen = "Menu";
 			content.bubble("onTriggerTransition");
 		}}
 	})
@@ -156,6 +159,7 @@ var temperatureButton = BUTTONS.Button.template(function($){ return{
 	behavior: Object.create(BUTTONS.ButtonBehavior.prototype, {
 		onTap: { value: function(content){
 			toScreen = "Temperature";
+			currentScreen = "Menu";
 			content.bubble("onTriggerTransition");
 		}}
 	})

@@ -59,7 +59,6 @@ var saveButton = BUTTONS.Button.template(function($){ return{
 	],
 	behavior: Object.create(BUTTONS.ButtonBehavior.prototype, {
 		onTap: { value: function(content){
-		
 			var newSchedule = {name: nameField.scroller.textbox.string, 
 							temperature: tempField.scroller.textbox.string, 
 							repeat: repeatSwitchValue, 
@@ -74,6 +73,7 @@ var saveButton = BUTTONS.Button.template(function($){ return{
 				str.forEach(SCHEDULE_SCREEN.ListBuilder);
 				toScreen = "Schedule";
 				reset();
+				currentScreen = "CreateSchedule";
 				content.bubble("onTriggerTransition");
 			} else {
 				validMessage.visible = true;

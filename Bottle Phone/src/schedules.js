@@ -11,6 +11,7 @@ var plusButton = BUTTONS.Button.template(function($){ return{
 	],
 	behavior: Object.create(BUTTONS.ButtonBehavior.prototype, {
 		onTap: { value: function(content){
+			currentScreen = "Schedule";
 			toScreen = "CreateSchedule"; // change to new schedule screen 
 			content.bubble("onTriggerTransition");
 		}}
