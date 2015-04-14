@@ -129,7 +129,7 @@ var MyTimeField = Container.template(function($) { return {
 var selectedBoxes = [];
 
 var MyCheckBoxTemplate = BUTTONS.LabeledCheckbox.template(function($){ return{
-    top:10, bottom:10, left:10, right:10, visible: false, active: true,
+    top:10, bottom:10, left:10, right:10, visible: true, active: true,
     behavior: Object.create(BUTTONS.LabeledCheckboxBehavior.prototype, {
         onSelected: { value:  function(checkBox){
             selectedBoxes.push(checkBox.buttonLabel.string);
@@ -172,8 +172,8 @@ var TextContainerTemplate = Container.template(function($) { return {
   })
 }});
 
-var repeatSwitch = new MySwitchTemplate({ right:100 });
-var repeatSwitchValue = 0;
+var repeatSwitch = new MySwitchTemplate({right:100, value:1 });
+var repeatSwitchValue = 1;
 var tempField = new MyField({ name: "",});
 tempField.scroller.hint.string = temperature_unit;
 var nameField = new MyField({name: "",});

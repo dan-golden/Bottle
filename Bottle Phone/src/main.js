@@ -296,7 +296,7 @@ MainScreen.behaviors[0] = Behavior.template({
 	},
 	onTriggerTransition: function(container) {
 		var toScreenObj = converter(toScreen);
-		
+		KEYBOARD.hide();
 		if(toScreen == "Menu") {
 			container.run( new TRANSITIONS.Push(), container.last, toScreenObj, { direction : "right", duration : 400 } );
 		} else {

@@ -41,15 +41,14 @@ var deleteButton = BUTTONS.Button.template(function($){ return{
 
 exports.ScheduleScreen = Container.template(function($) { return { left: 0, right: 0, top: 0, bottom: 0, skin: blueSkin, contents: [
 	new Column({left:0, right:0, top:0, height:80, skin: whiteS,
-			contents:[
-				new Label({right: 90, top: 20, string:"Bot-tle", style:titleStyle,}),
-			]
-		}),
+		contents:[
+			new Label({right: 90, top: 20, string:"Bot-tle", style:titleStyle,}),
+		]
+	}),
 	new menuButton(),
 	new plusButton(),
 	screen	
-],
- }});
+]}});
 
 /* STATIC */
 /* A simple array of objects. Each will be used as a single
@@ -75,8 +74,6 @@ exports.generateDisplayString = function generateDisplayString(scheds) {
 	}
 	return result;
 }    
-
-
 
 /* This is a template that will be used to for each entry populating the list. 
  * Note that it is anticipating an object each time in is instanciated */
@@ -108,17 +105,17 @@ var ProcessorLine = Line.template(function($) { return { left: 0, right: 0, acti
 var ScreenContainer = Container.template(function($) { return {
 	left:0, right:0, top:100, bottom:100,
 	contents: [
-	   		/* Note that the scroller is declared as having only an empty
-	   		 * Column and a scrollbar.  All the entries will be added 
-	   		 * programmatically. */ 
-	   		SCROLLER.VerticalScroller($, { 
-	   			contents: [
-              			Column($, { left: 0, right: 0, top: 0, name: 'menu', }),
-	              			SCROLLER.VerticalScrollbar($, { }),
-              			]
-	   		})
-	   		]
-	}});
+   		/* Note that the scroller is declared as having only an empty
+   		 * Column and a scrollbar.  All the entries will be added 
+   		 * programmatically. */ 
+   		SCROLLER.VerticalScroller($, { 
+   			contents: [
+  				Column($, { left: 0, right: 0, top: 0, name: 'menu', }),
+      			SCROLLER.VerticalScrollbar($, { }),
+  			]
+   		})
+   	]
+}});
 
 var data = new Object();
 var screen = new ScreenContainer(data);
