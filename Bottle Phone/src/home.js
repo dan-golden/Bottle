@@ -11,7 +11,7 @@ function updateTemperature(newTemp) {
 
 // Button Templates
 var IncreaseTemperatureButtonTemplate = BUTTONS.Button.template(function($){ return{
-  top:50, bottom:50, left:50, right:50,
+  top:50, bottom:50, left:50, right:50,height: 50, width: 50, skin: navyblueskin,
   contents:[
     new Label({name: "label", left:0, right:0, height:55, string:$.textForLabel, style:textStyle}),
   ],
@@ -24,7 +24,7 @@ var IncreaseTemperatureButtonTemplate = BUTTONS.Button.template(function($){ ret
 }});
 
 var DecreaseTemperatureButtonTemplate = BUTTONS.Button.template(function($){ return{
-  top:50, bottom:50, left:50, right:50,
+  top:50, bottom:50, left:50, right:50, height: 50, width: 50, skin: navyblueskin,
   contents:[
     new Label({name: "label", left:0, right:0, height:55, string:$.textForLabel, style:textStyle}),
   ],
@@ -37,7 +37,7 @@ var DecreaseTemperatureButtonTemplate = BUTTONS.Button.template(function($){ ret
 }});
 
 var SmallTextButtonTemplate = BUTTONS.Button.template(function($){ return{
-  top:25, bottom:10, left:5, right:5, width: 15,
+  top:25, bottom:10, left:5, right:5, width: 15,skin: navyblueskin,
   contents:[
     new Label({left:0, right:0, height:55, string:$.textForLabel, style:textStyle})
   ],
@@ -67,16 +67,16 @@ var boil_button = new SmallTextButtonTemplate({textForLabel:"b", temp: 212});
 // Columns
 var mainCol = new Column({
 	left:0, right:0, top:0, bottom:0,
-	skin: whiteS,
+	skin: babyblueskin,
 	contents:[
-		new Line({left:0, right:0, top:0, height:80, skin: whiteSkin,
+		new Line({left:0, right:0, top:0, height:80, skin: babyblueskin,
 			contents:[
 				new Label({left:-18, right:0, string:"Bot-tle", style:textStyle,}),
 			]
 		}),
-		new Line({left:0, right:0, top:0, bottom:0, skin: whiteSkinLabel,
+		new Line({left:0, right:0, top:0, bottom:0, skin: babyblueskin,
 			contents:[
-				new Label({left:10, right:20, string:"Current Temperature:", style:textStyle, skin: whiteSkin}),
+				new Label({left:10, right:20, string:"Current Temperature:", style:textStyle, skin: babyblueskin}),
 			]
 		}),
 	],
@@ -84,16 +84,17 @@ var mainCol = new Column({
 
 exports.homeCol = new Column({
 	left:0, right:0, top:0, bottom:0,
-	skin: whiteS,
+	skin: babyblueskin,
 	contents:[
-		new Column({left:0, right:0, top:0, height:80, skin: whiteSkin,
+		new Column({left:0, right:0, top:0, height:80, skin: babyblueskin,
 			contents:[
-				new Label({right: 90, top: 20, string:"Bot-tle", style:textStyle,}),
+				new Label({right: 90, top: 20, string:"Bot-tle", style:bottleStyle,}),
 			]
 		}),
-		new Column({name: "tempControl", left:0, right:0, top:0, bottom:0, skin: whiteSkinLabel,
+		new Column({name: "tempControl", left:0, right:0, top:0, bottom:0, skin: babyblueskin,
 			contents:[
 				increase_button,
+				//desired_temperature_label,
 				current_temperature_label,
 				decrease_button,
 				new Line({left:0, right:0, top:0, bottom:0,

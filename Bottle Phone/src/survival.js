@@ -26,7 +26,7 @@ var MySlider1 = SLIDERS.HorizontalSlider.template(function($){ return{
 }});
 
 var MySwitchTemplate = SWITCHES.SwitchButton.template(function($){ return{
-  height:50, width: 100,
+  height:50, width: 100,skin: navyblueskin,
   behavior: Object.create(SWITCHES.SwitchButtonBehavior.prototype, {
     onValueChanged: { value: function(container){
       SWITCHES.SwitchButtonBehavior.prototype.onValueChanged.call(this, container);
@@ -44,9 +44,9 @@ var MySwitchTemplate = SWITCHES.SwitchButton.template(function($){ return{
 
 
 var MyButtonTemplate = BUTTONS.Button.template(function($){ return{
-  top:50, bottom:50, left:50, right:50,
+  top:25, bottom:25, left:-10, right:-10, height: 50, skin: navyblueskin,
   contents:[
-    new Label({left:0, right:0, height:55, string:$.textForLabel, style:textStyle})
+    new Label({left:0, right:0, height:50, string:$.textForLabel, style:textStyle})
   ],
   behavior: Object.create(BUTTONS.ButtonBehavior.prototype, {
     onTap: { value:  function(button){
@@ -62,14 +62,14 @@ var save_button = new MyButtonTemplate({textForLabel:"Save"});
 
 exports.mainCol = new Column({
 	left:0, right:0, top:0, bottom:0,
-	skin: whiteS,
+	skin: babyblueskin,
 	contents:[
-		new Column({left:0, right:0, top:0, height:80, skin: whiteSkin,
+		new Column({left:0, right:0, top:0, height:80, skin: babyblueskin,
 			contents:[
-				new Label({right: 90, top: 20, string:"Bot-tle", style:textStyle,}),
+				new Label({right: 90, top: 20, string:"Bot-tle", style:bottleStyle,}),
 			]
 		}),
-		new Column({name: "secondCol", left:0, right:0, top:0, bottom:0, skin: whiteSkinLabel,
+		new Column({name: "secondCol", left:0, right:0, top:0, bottom:0, skin: babyblueskin,
 			contents:[
 				save_label,
 				survival_title_label,

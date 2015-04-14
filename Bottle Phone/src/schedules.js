@@ -5,7 +5,7 @@
 // plus button to go to create schedule screen
 
 var plusButton = BUTTONS.Button.template(function($){ return{
-	left: 285, right: 15, top: 20, height:20,
+	left: 250, right: 1, top: 1, height: 50, width: 50,skin: navyblueskin,
 	contents: [
 		new Label({left:0, right:0, height:40, string:"+", style: buttonStyle1})
 	],
@@ -18,32 +18,14 @@ var plusButton = BUTTONS.Button.template(function($){ return{
 	})
 }});
 
-// plus button to go to create schedule screen
-
-/* NOT IMPLEMENTED YET
-var deleteButton = BUTTONS.Button.template(function($){ return{
-	left: 285, right: 15, top: 20, height:20,
-	contents: [
-		new Label({left:0, right:0, height:40, string:"+", style: buttonStyle1})
-	],
-	behavior: Object.create(BUTTONS.ButtonBehavior.prototype, {
-		onTap: { value: function(content){
-			toScreen = "Menu"; // change to new schedule screen 
-			content.bubble("onTriggerTransition");
-		}}
-	})
-}});
-*/
-
-// populate the screen with existed schedules
-//start
 
 // SCREENS
 
-exports.ScheduleScreen = Container.template(function($) { return { left: 0, right: 0, top: 0, bottom: 0, skin: whiteSkin, contents: [
-	new Column({left:0, right:0, top:0, height:80, skin: whiteS,
+exports.ScheduleScreen = Container.template(function($) { return { left: 0, right: 0, top: 0, bottom: 0, skin: babyblueskin, contents: [
+	new Column({left:0, right:0, top:0, height:80, skin: babyblueskin, vertical: 'middle', 
 		contents:[
-			new Label({right: 90, top: 20, string:"Bot-tle", style:textStyle,}),
+			new Label({right: 90, top: 20, string:"Bot-tle", style:bottleStyle,}),
+			new Label({ left: 0, right: 0, top:15, style: bottleStyle, vertical: 'middle',  string: 'Schedules', skin: babyblueskin}),
 		]
 	}),
 	new menuButton(),
@@ -109,7 +91,7 @@ exports.generateDisplayString = function generateDisplayString(scheds) {
 
 /* This is a template that will be used to for each entry populating the list. 
  * Note that it is anticipating an object each time in is instanciated */
-var ProcessorLine = Line.template(function($) { return { left: 0, right: 0, active: true, skin: THEME.lineSkin, 
+var ProcessorLine = Line.template(function($) { return { left: 0, right: 0, active: true, 
 	contents: [
      	Column($, { left: 0, right: 0, contents: [
      		Container($, { left: 4, right: 4, height: 32, 
@@ -120,7 +102,7 @@ var ProcessorLine = Line.template(function($) { return { left: 0, right: 0, acti
      			            * nested objects until it hits one which is active. */
      			           /* This label is expecting a value for button.  Note that this Label
      			            * is marked active.  Touches registered here will be handeled here */
-     			           Label($, { left: 0, right: 0, style: textStyle, skin: whiteSkin, active: true, string: $.title,     			            
+     			           Label($, { left: 0, right: 0, style: labelStyle, skin: babyblueskin, active: true, string: $.title,     			            
      			           }), 
  			           ], 
 	           }),
