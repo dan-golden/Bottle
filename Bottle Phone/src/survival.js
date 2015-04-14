@@ -26,7 +26,7 @@ var MySlider1 = SLIDERS.HorizontalSlider.template(function($){ return{
 }});
 
 var MySwitchTemplate = SWITCHES.SwitchButton.template(function($){ return{
-  height:50, width: 100,skin: navyblueskin,
+  height:50, width: 100,
   behavior: Object.create(SWITCHES.SwitchButtonBehavior.prototype, {
     onValueChanged: { value: function(container){
       SWITCHES.SwitchButtonBehavior.prototype.onValueChanged.call(this, container);
