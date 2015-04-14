@@ -11,6 +11,7 @@ var MySlider = SLIDERS.HorizontalSlider.template(function($){ return{
   }}})
 }});
 
+
 var MySlider1 = SLIDERS.HorizontalSlider.template(function($){ return{
   height:50, left:50, right:50,
   behavior: Object.create(SLIDERS.HorizontalSliderBehavior.prototype, {
