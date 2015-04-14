@@ -193,14 +193,9 @@ var TextContainerTemplate = Container.template(function($) { return {
   })
 }});
 
-<<<<<<< HEAD
 var repeatSwitch = new MySwitchTemplate({right:100, value:0 });
 var repeatSwitchValue = 0;
-=======
 var radioGroup = new MyRadioGroup({ buttonNames: "am,pm" });
-var repeatSwitch = new MySwitchTemplate({right:100, value:1 });
-var repeatSwitchValue = 1;
->>>>>>> 7360a5b2b378dd686a1bb6eb204d4707039dd7c1
 var tempField = new MyField({ name: "",});
 tempField.scroller.hint.string = temperature_unit;
 var nameField = new MyField({name: "",});
