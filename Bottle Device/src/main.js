@@ -53,7 +53,7 @@ Handler.bind("/updateTemperature", Behavior({
 
 Handler.bind("/updateSurvivalMode", Behavior({
 	onInvoke: function(handler, message){
-	    handler.invoke(new Message(phoneURL + "currentSurvivalSetting"), Message.TEXT);
+	    handler.invoke(new Message(phoneURL + "currentSurvivalMode"), Message.TEXT);
 	},
 	onComplete: function(handler, message, text) {
 	    survival_mode_switch.string = text;
