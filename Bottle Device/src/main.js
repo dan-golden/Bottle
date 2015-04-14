@@ -137,7 +137,7 @@ MainCanvas.behaviors[0] = Behavior.template({
 				application.invoke( new MessageWithObject( "pins:/potentiometers/read?repeat=on&callback=/potResult&interval=70" ) );
 	},
 	receiveSliderChange: function(params, data) {
-	    new_slider = (data.slider*180 + 32).toFixed(0);
+	    new_slider = (data.slider).toFixed(0);
 	},
 })
 var mainCanvas = new MainCanvas();

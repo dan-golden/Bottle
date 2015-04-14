@@ -30,8 +30,11 @@
 					{
 						valueLabel : "Slider",
 						valueID : "slider",
+						minValue: 32,
+						maxValue: 212,
 						defaultControl : PinsSimulators.SLIDER,
-						speed : 0
+						speed : 0,
+						value: 70
 					}
 				),
 				
