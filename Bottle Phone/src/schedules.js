@@ -20,12 +20,13 @@ var plusButton = BUTTONS.Button.template(function($){ return{
 
 
 // SCREENS
-
+no_schedule = new Label({ string:"No schedule created yet!", style:errorStyle,});
 exports.ScheduleScreen = Container.template(function($) { return { left: 0, right: 0, top: 0, bottom: 0, skin: babyblueskin, contents: [
 	new Column({left:0, right:0, top:0, height:80, skin: babyblueskin, vertical: 'middle', 
 		contents:[
 			new Label({right: 90, top: 20, string:"Bot-tle", style:bottleStyle,}),
 			new Label({ left: 0, right: 0, top:15, style: bottleStyle, vertical: 'middle',  string: 'Schedules', skin: babyblueskin}),
+			no_schedule,
 		]
 	}),
 	new menuButton(),
@@ -55,14 +56,20 @@ function generateRepeatedDaysDict(days) {
 	return dict;
 }
 
+var schedule_empty = true;
+
 exports.generateDisplayString = function generateDisplayString(scheds) {
 	result = [];
 	for (var i = 0; i < scheds.length; i++) {
-
-		temp = scheds[i].name + " scheduled at " + scheds[i].hours + ":";
+        if (scheds[i].name) {
+		    temp = scheds[i].name + " scheduled at " + scheds[i].hours + ":";
+		} else {
+		    temp = "Scheduled at " + scheds[i].hours + ":";
+		}
 		if(scheds[i].minutes < 10)
 			temp+="0";
 		temp+=scheds[i].minutes;
+		temp += scheds[i].t_of_day + " ";
 		if(scheds[i].repeat == 1) {
 			temp+= " on ";
 			days = generateRepeatedDaysDict(scheds[i].repeatedDays);
@@ -85,6 +92,10 @@ exports.generateDisplayString = function generateDisplayString(scheds) {
 		dict = {};
 		dict["title"] = temp;
 		result.push(dict);
+		schedule_empty = false;
+	}
+	if (result.length > 0) {
+	    no_schedule.string = "";
 	}
 	return result;
 }    
