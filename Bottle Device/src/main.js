@@ -6,13 +6,19 @@ var labelStyle = new Style( { font: "bold 20px", color:"black" } );
 
 // Internal Variables
 phoneURL = "";
-temperature_unit = "\xB0 F"; //default temperature to Fahrenheit
-current_temperature = 70; // range of temp should be 32 degrees for freezing to 212 degrees for boiling
+temperature_unit = "\xB0 F"; 
+current_temperature = 70; 
 current_temperature_string = current_temperature + temperature_unit;
 desired_temperature = 70 + temperature_unit; 
 desired_temperature_string = desired_temperature + temperature_unit;
 old_slider = 32;
 new_slider = 32;
+bottle_status = 0;
+old_status = 0; 
+new_status = 0;
+old_level = 16; 
+new_level = 16;  
+water_level = 16;  
 
 // Handler calls
 Handler.bind("/discover", Behavior({
@@ -30,6 +36,30 @@ Handler.bind("/forget", Behavior({
 Handler.bind("/currentTemperature", Behavior({
 	onInvoke: function(handler, message){
 	    message.responseText = current_temperature;
+	}
+}));
+
+Handler.bind("/currentBottleStatus", Behavior({
+	onInvoke: function(handler, message){
+	    message.responseText = bottle_status;
+	}
+}));
+
+Handler.bind("/currentWaterLevel", Behavior({
+	onInvoke: function(handler, message){
+	    message.responseText = water_level;
+	}
+}));
+
+
+Handler.bind("/updateBottleStatus", Behavior({
+	onInvoke: function(handler, message){
+	    handler.invoke( new Message(phoneURL + "currentBottleStatus"), Message.TEXT );
+		trace("inside updateBottleStatus in device");
+	},
+	onComplete: function(handler, message, text) {
+		bottle_status = parseFloat(text); 
+		bottle_status_label.string = bottle_status; 
 	}
 }));
 
@@ -57,9 +87,21 @@ Handler.bind("/updateSurvivalMode", Behavior({
 	}
 }));
 
+
 Handler.bind("/potResult", Object.create(Behavior.prototype, {
 	onInvoke: { value: function( handler, message ){
 				application.distribute( "receiveSliderChange", message.requestObject );
+				if (old_status != new_status) {
+					bottle_status = new_status; 
+					bottle_status_label.string = bottle_status; 
+					old_status = new_status; 
+					handler.invoke( new Message(phoneURL + "updateBottleStatus"), Message.JSON );
+					}
+				if (old_level != new_level) {
+					water_level = new_level; 
+					water_level_label.string = water_level; 
+					old_level = new_level; 
+					}
 				if ( new_slider != old_slider ) { // if the slider value changed
 				    current_temperature = new_slider;
 				    current_temperature_string = current_temperature + temperature_unit;
@@ -68,9 +110,12 @@ Handler.bind("/potResult", Object.create(Behavior.prototype, {
 				    d = new Date(); // update last-time updated displayed time
 	                last_time_updated.string = d.toString();
 				    handler.invoke( new Message(phoneURL + "updateTemperature"), Message.JSON );
+				    
 				}
 			}}
 }));
+var water_level_label = new Label({left:0, right:0, height:40, width:70, string:water_level, style: labelStyle});
+var bottle_status_label = new Label({left:0, right:0, height:40, width:70, string:bottle_status, style: labelStyle});
 var desired_temperature_label = new Label({left:0, right:0, height:40, width:70, string:desired_temperature, style: labelStyle});
 var current_temperature_label = new Label({left:0, right:0, height:40, width:70, string:current_temperature, style: labelStyle});
 var last_time_updated = new Label({left:20, right:20, height:40, string:new Date(), style: labelStyle});
@@ -79,6 +124,12 @@ var survival_mode_switch = new Label({left:0, right:0, height:40, width:80, stri
 var mainColumn = new Column({
 	left: 0, right: 0, top: 0, bottom: 0, skin: whiteSkin,
 	contents: [
+		new Line({left:10, right:10, top:10, bottom:0,
+				contents:[
+				    new Label({left:20, right:0, width: 160, height:40, string:"Bottle Status", style: labelStyle}),
+				    bottle_status_label,
+      			]
+			}),
 	    new Line({left:10, right:10, top:10, bottom:0,
 				contents:[
 				    new Label({left:20, right:0, width: 160, height:40, string:"Desired Temperature:", style: labelStyle}),
@@ -89,6 +140,12 @@ var mainColumn = new Column({
 				contents:[
 				    new Label({left:20, right:0, width: 160, height:40, string:"Current Temperature:", style: labelStyle}),
 				    current_temperature_label,
+      			]
+			}),
+		new Line({left:10, right:10, top:10, bottom:0,
+				contents:[
+				    new Label({left:20, right:0, width: 160, height:40, string:"Water Level: ", style: labelStyle}),
+				    water_level_label,
       			]
 			}),
 		new Line({left:10, right:10, top:10, bottom:0,
@@ -135,6 +192,8 @@ MainCanvas.behaviors[0] = Behavior.template({
 	},
 	receiveSliderChange: function(params, data) {
 	    new_slider = (data.slider).toFixed(0);
+	    new_status = (data.bottleStatus).toFixed(0); 
+	    new_level = (data.waterLevel).toFixed(0); 
 	},
 })
 var mainCanvas = new MainCanvas();
@@ -144,6 +203,8 @@ var mainCanvas = new MainCanvas();
             potentiometers: {
                 require: "potentiometers",
                 pins: {
+                	bottleStatus:  { pin: 58 },
+                	waterLevel: { pin: 62 },
 					slider: { pin: 64 },
                 }
             },

@@ -66,6 +66,8 @@ var toScreen = "Menu";
 var dispense_rate = 0;
 var dispense_time = 0;
 var schedules = [];
+bottle_status = "ON";
+water_level = 20; 
 
 // FUNCTIONS
 var converter = function(input) {
@@ -86,6 +88,7 @@ function updateDeviceTemperature(newTemp) {
     // make sure current_temperature is up to date before calling this to update device
     application.invoke(new Message(deviceURL + "updateTemperature"), Message.JSON);    
 }
+
 
 function updateDeviceSurvivalMode() {
     // make sure survival_mode is up to date before calling this to update device
@@ -116,7 +119,7 @@ var menuButton = BUTTONS.Button.template(function($){ return{
 
 var survivalButton = BUTTONS.Button.template(function($){ return{
 	left: -10, right: -10, top: 2, height:50, skin: navyblueskin,
-	contents: [ new Label({left:0, right:0, height:40, string:"Survival", style: textStyle})],
+	contents: [ new Label({left:0, right:0, height:40, string:"Water Monitoring", style: textStyle})],
 	behavior: Object.create(BUTTONS.ButtonBehavior.prototype, {
 		onTap: { value: function(content){
 			toScreen = "Survival";
@@ -183,6 +186,13 @@ Handler.bind("/currentTemperature", Behavior({
 	}
 }));
 
+Handler.bind("/currentBottleStatus", Behavior({
+	onInvoke: function(handler, message){
+	    message.responseText = bottle_status;
+		trace("inside currentBottleStatus in phone");
+	}
+}));
+
 Handler.bind("/currentSurvivalMode", Behavior({
 	onInvoke: function(handler, message){
 	    message.responseText = survival_mode;
@@ -209,6 +219,30 @@ Handler.bind("/updateTemperature", Behavior({
 	}
 }));
 
+
+Handler.bind("/updateBottleStatus", Behavior({
+	onInvoke: function(handler, message){
+	    handler.invoke( new Message(deviceURL + "currentBottleStatus"), Message.TEXT );
+		trace("inside updateBottleStatus in phone");
+	},
+	onComplete: function(handler, message, text) {
+	    bottle_status = text; 
+		bottle_status_label.string = bottle_status; 
+	}
+}));
+
+Handler.bind("/updateWaterLevel", Behavior({
+	onInvoke: function(handler, message){
+	    handler.invoke( new Message(deviceURL + "currentWaterLevel"), Message.TEXT );
+		trace("inside updateWaterLevel in phone");
+	},
+	onComplete: function(handler, message, text) {
+	    water_level = parseFloat(text); 
+		water_level_label.string = water_level; 
+	}
+}));
+
+
 // Labels
 var current_temperature_label = new Label({string: current_temperature_string, style:bigText, skin: babyblueskin});
 var desired_temperature_label = new Label({string: desired_temperature_string, style:biggerText, skin: babyblueskin});
@@ -216,14 +250,15 @@ var survival_mode_label = new Label({string: survival_mode, style:bottleStyle, s
 var dispense_rate_label = new Label({string: dispense_rate, style:bottleStyle, skin: babyblueskin});
 var dispense_time_label = new Label({string: dispense_time, style:bottleStyle, skin: babyblueskin});
 var save_label = new Label({string: "Changes Saved", style:labelStyle, skin: babyblueskin, visible: false});
-var survival_title_label = new Label({ left: 0, right: 0, top:0, vertical: 'middle', style: bottleStyle, string: 'Survival Mode', skin: babyblueskin});
+var survival_title_label = new Label({ left: 0, right: 0, top:0, vertical: 'middle', style: bottleStyle, string: 'Water Monitoring', skin: babyblueskin});
+var bottle_status_label = new Label({left:0, right:0, height:40, width:70, string: bottle_status, style: labelStyle}); //need to add to main screen 
+var water_level_label = new Label({left:0, right:0, height:40, width:70, string: water_level, style: labelStyle}); //need to add to main screen 
 
 
 
 var SURVIVAL_SCREEN = require('survival.js');
 var CREATE_SCHEDULE_SCREEN = require("createSchedule.js");
 var SCHEDULE_SCREEN = require("schedules.js");
-var TEMPERATURE_SCREEN = require("home.js");
 
 // SCREENS
 var MenuScreen = Column.template(function($) { return { left: 0, right: 0, top: 0, bottom: 0, vertical: 'middle', skin: babyblueskin, contents: [
