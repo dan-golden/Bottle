@@ -36,7 +36,7 @@ var editButton = BUTTONS.Button.template(function($){ return{
 // SCREENS
 no_schedule = new Label({ string:"No schedules created yet!", style:errorStyle,});
 exports.ScheduleScreen = Container.template(function($) { return { left: 0, right: 0, top: 0, bottom: 0, skin: babyblueskin, contents: [
-	new Column({left:0, right:0, top:0, height:80, skin: babyblueskin, vertical: 'middle', 
+	new Column({left:1, right:0, top:0, height:80, skin: babyblueskin, vertical: 'middle', 
 		contents:[
 			new Content({width: 320, height:50, skin:logoSkin}),
 			new Label({ left: 0, right: 0, top:15, style: bottleStyle, vertical: 'middle',  string: 'Schedules', skin: babyblueskin}),
@@ -67,7 +67,7 @@ var schedule_empty = true;
 exports.generateDisplayString = function generateDisplayString(scheds) {
 	result = [];
 	for (var i = 0; i < scheds.length; i++) {
-		title = new Label({left:1, string: scheds[i].name, style:labelStyle});
+		title = new Label({left:1, string: scheds[i].name, style:scheduleTitleStyle});
 		timeString = scheds[i].hours + ":" + scheds[i].minutes;
 		time = new Label({left:1, string: timeString, style:labelStyle});
 		repeat = new Label({left:1, string: "Today, Repeat Off", style: labelStyle});
@@ -93,7 +93,7 @@ exports.generateDisplayString = function generateDisplayString(scheds) {
 		temperature = new Label({left:1, string: scheds[i].temperature + "\xB0 F", style: labelStyle});
 		scheduleContainer = new Container({left:0, right:0, skin:babyblueskin, contents:[
 								new Line({left:0, right:0, contents:[
-									new Column({left:0, right:0, width: 150, contents:[title, time, repeat, temperature]}),
+									new Column({left:4, right:0, width: 150, contents:[title, time, repeat, temperature]}),
 									new editButton()
 								]})
 							]});
