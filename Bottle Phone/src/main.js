@@ -97,7 +97,7 @@ function updateDeviceDispenseRate() {
 }
 
 
-var menuButton = BUTTONS.Button.template(function($){ return{
+/*var menuButton = BUTTONS.Button.template(function($){ return{
 	left: 1, right: 200, top: 1, height:50, skin: navyblueskin,
 	contents: [
 		new Label({left:0, right:0, height:40, string:"Menu", style: textStyle})
@@ -109,7 +109,7 @@ var menuButton = BUTTONS.Button.template(function($){ return{
 			content.bubble("onTriggerTransition");
 		}}
 	})
-}});
+}});*/
 
 var survivalButton = BUTTONS.Button.template(function($){ return{
 	left: -10, right: -10, top: 2, height:50, skin: navyblueskin,
@@ -284,10 +284,10 @@ var CreateScheduleScreen = Container.template(function($) { return { left: 0, ri
 }});
 
 var SurvivalScreen = Container.template(function($) { return { left: 0, right: 0, top: 0, bottom: 0, skin: babyblueskin, contents: [
-	SURVIVAL_SCREEN.mainCol,
+	//SURVIVAL_SCREEN.mainCol,
 	SURVIVAL_SCREEN.SurvivalScreen(),
-	new menuButton(),	
-	SURVIVAL_SCREEN.mainCol,
+	//new menuButton(),	
+	//SURVIVAL_SCREEN.mainCol,
 
 ], }});
 
