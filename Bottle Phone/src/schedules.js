@@ -18,6 +18,21 @@ var plusButton = BUTTONS.Button.template(function($){ return{
 	})
 }});
 
+var editButton = BUTTONS.Button.template(function($){ return{
+	right: 1, top: 1, height: 50, width: 50,skin: navyblueskin,
+	contents: [
+		new Label({left:0, right:0, height:40, string:"Edit", style: buttonStyle})
+	],
+	behavior: Object.create(BUTTONS.ButtonBehavior.prototype, {
+		onTap: { value: function(content){
+			currentScreen = "create";
+			menu.visible = false;
+			main.run( new TRANSITIONS.Push(), main.last, CreateScheduleScreen, {direction: "up", duration : 400 });
+	//		populateFields();
+		}}
+	})
+}});
+
 // SCREENS
 no_schedule = new Label({ string:"No schedules created yet!", style:errorStyle,});
 exports.ScheduleScreen = Container.template(function($) { return { left: 0, right: 0, top: 0, bottom: 0, skin: babyblueskin, contents: [
@@ -31,13 +46,6 @@ exports.ScheduleScreen = Container.template(function($) { return { left: 0, righ
 	new plusButton(),
 	screen	
 ]}});
-
-/* STATIC */
-/* A simple array of objects. Each will be used as a single
- * entry in our scrollable list. */
- 
- 
-//Change this Daniel
 
 function generateRepeatedDaysDict(days) {
 	dict = {};
@@ -59,37 +67,37 @@ var schedule_empty = true;
 exports.generateDisplayString = function generateDisplayString(scheds) {
 	result = [];
 	for (var i = 0; i < scheds.length; i++) {
-        if (scheds[i].name) {
-		    temp = scheds[i].name + " | " + scheds[i].hours + ":";
-		} else {
-		    temp = "Schedule " + i.toString() + " | " + scheds[i].hours + ":";
-		}
-		if(scheds[i].minutes < 10)
-			temp+="0";
-		temp+=scheds[i].minutes;
-		temp += scheds[i].t_of_day + " ";
+		title = new Label({left:1, string: scheds[i].name, style:labelStyle});
+		timeString = scheds[i].hours + ":" + scheds[i].minutes;
+		time = new Label({left:1, string: timeString, style:labelStyle});
+		repeat = new Label({left:1, string: "Today, Repeat Off", style: labelStyle});
 		if(scheds[i].repeat == 1) {
-			temp+= " on ";
 			days = generateRepeatedDaysDict(scheds[i].repeatedDays);
+			repeatString = "Repeats on ";
 			if(days["Su"]) 
-				temp+="Su, ";
+				repeatString+="Su, ";
 			if(days["M"])
-				temp+="M, ";
+				repeatString+="M, ";
 			if(days["Tu"])
-				temp+="Tu, ";
+				repeatString+="Tu, ";
 			if(days["W"])
-				temp+="W, ";
+				repeatString+="W, ";
 			if(days["Th"])
-				temp+="Th, ";
+				repeatString+="Th, ";
 			if(days["f"])
-				temp+="F, ";
+				repeatString+="F, ";
 			if(days["Sa"])
-				temp+="Sa, ";
+				repeatString+="Sa, ";
+			repeat.string = repeatString;
 		}
-		temp += "for " + scheds[i].temperature + "\xB0 F";
-		dict = {};
-		dict["title"] = temp;
-		result.push(dict);
+		temperature = new Label({left:1, string: scheds[i].temperature + "\xB0 F", style: labelStyle});
+		scheduleContainer = new Container({left:0, right:0, skin:babyblueskin, contents:[
+								new Line({left:0, right:0, contents:[
+									new Column({left:0, right:0, width: 150, contents:[title, time, repeat, temperature]}),
+									new editButton()
+								]})
+							]});
+		result.push(scheduleContainer);
 		schedule_empty = false;
 	}
 	if (result.length > 0) {
@@ -98,27 +106,6 @@ exports.generateDisplayString = function generateDisplayString(scheds) {
 	return result;
 }    
 
-/* This is a template that will be used to for each entry populating the list. 
- * Note that it is anticipating an object each time in is instanciated */
-var ProcessorLine = Line.template(function($) { return { left: 0, right: 0, active: true, 
-	contents: [
-     	Column($, { left: 0, right: 0, contents: [
-     		Container($, { left: 4, right: 4, height: 32, 
-     			contents: [
-     			           /* This label expects that the object passed to ProcessorLine() 
-     			            * includes a value for title.  Note that this Label is not marked
-     			            * as active. Touches registered here will bubble back up to the
-     			            * nested objects until it hits one which is active. */
-     			           /* This label is expecting a value for button.  Note that this Label
-     			            * is marked active.  Touches registered here will be handeled here */
-     			           Label($, { left: 0, right: 0, style: labelStyle, skin: babyblueskin, active: true, string: $.title,     			            
-     			           }), 
- 			           ], 
-	           }),
-     		Line($, { left: 0, right: 0, height: 1, skin: separatorSkin, }),
-     	], }),
-     ], 
- }});
 
 /* This is template for a container which takes up the
  * whole screen.  It contains only a single object,
@@ -148,5 +135,5 @@ var screen = new ScreenContainer(data);
  * ProcessorLine() object to the Column named "menu" in the
  * screen object's SCROLLER */
 exports.ListBuilder = function ListBuilder(element, index, array) {
-	screen.first.menu.add(new ProcessorLine(element));
+	screen.first.menu.add(element);
 }
