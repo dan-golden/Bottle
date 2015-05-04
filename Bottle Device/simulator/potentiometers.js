@@ -23,10 +23,10 @@ var configure = exports.configure = function(configuration) {
 						valueLabel : "Water Level",
 						valueID : "waterLevel",
 						minValue: 0,
-						maxValue: 24,
+						maxValue: 100,
 						defaultControl : PinsSimulators.SLIDER,
 						speed : 0,
-						value: 16
+						value: 100
 					}
 				),
 				new PinsSimulators.AnalogInputAxisDescription(

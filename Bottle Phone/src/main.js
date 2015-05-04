@@ -21,7 +21,7 @@ var SCREEN = require('mobile/screen');
 var babyblueskin = new Skin({ fill: "#CEFFF9"});
 var navyblueskin = new Skin({ fill: "#00BAC1"});
 var whiteSkin = new Skin( { fill:"white" } );
-//var blueSkin = new Skin( { fill:"#9898ff", } );
+var blueSkin = new Skin( { fill:"#9898ff", } );
 //var blueSkinLabel = new Skin( { fill:"#9898ff", borders: { left:5, right:5, }, stroke: 'gray',} );
 var whiteSkinLabel = new Skin( { fill:"white", borders: { left:5, right:5, }, stroke: 'white',} );
 //var blueTitleSkin = new Skin( { fill:"#d3d3d3", borders: { top: 5, bottom: 5, left:5, right:5, }, stroke: 'gray', });
@@ -161,7 +161,7 @@ var suButton = new survivalButton();
 Handler.bind("/discover", Behavior({
 	onInvoke: function(handler, message){
 		deviceURL = JSON.parse(message.requestText).url;
-		trace("Discovered the device");
+		trace("Discovered the device\n");
 	}
 }));
 
@@ -175,42 +175,42 @@ Handler.bind("/forget", Behavior({
 Handler.bind("/desiredTemperature", Behavior({
 	onInvoke: function(handler, message){
 	    message.responseText = desired_temperature;
-		trace("inside desiredTemperature in phone");
+		trace("inside desiredTemperature in phone\n");
 	}
 }));
 
 Handler.bind("/currentTemperature", Behavior({
 	onInvoke: function(handler, message){
 	    message.responseText = current_temperature;
-		trace("inside currentTemperature in phone");
+		trace("inside currentTemperature in phone\n");
 	}
 }));
 
 Handler.bind("/currentBottleStatus", Behavior({
 	onInvoke: function(handler, message){
 	    message.responseText = bottle_status;
-		trace("inside currentBottleStatus in phone");
+		trace("inside currentBottleStatus in phone\n");
 	}
 }));
 
 Handler.bind("/currentSurvivalMode", Behavior({
 	onInvoke: function(handler, message){
 	    message.responseText = survival_mode;
-		trace("inside currentSurvivalMode in phone");
+		trace("inside currentSurvivalMode in phone\n");
 	}
 }));
 
 Handler.bind("/currentDispenseRate", Behavior({
 	onInvoke: function(handler, message){
 	    message.responseText = JSON.stringify( { time: dispense_time , rate: dispense_rate} );
-		trace("inside currentDispenseRate in phone");
+		trace("inside currentDispenseRate in phone\n");
 	}
 }));
 
 Handler.bind("/updateTemperature", Behavior({
 	onInvoke: function(handler, message){
 	    handler.invoke( new Message(deviceURL + "currentTemperature"), Message.TEXT );
-		trace("inside updateTemp in phone");
+		trace("inside updateTemp in phone\n");
 	},
 	onComplete: function(handler, message, text) {
 	    current_temperature = parseFloat(text);
@@ -223,7 +223,7 @@ Handler.bind("/updateTemperature", Behavior({
 Handler.bind("/updateBottleStatus", Behavior({
 	onInvoke: function(handler, message){
 	    handler.invoke( new Message(deviceURL + "currentBottleStatus"), Message.TEXT );
-		trace("inside updateBottleStatus in phone");
+		trace("inside updateBottleStatus in phone\n");
 	},
 	onComplete: function(handler, message, text) {
 	    bottle_status = text; 
@@ -234,11 +234,12 @@ Handler.bind("/updateBottleStatus", Behavior({
 Handler.bind("/updateWaterLevel", Behavior({
 	onInvoke: function(handler, message){
 	    handler.invoke( new Message(deviceURL + "currentWaterLevel"), Message.TEXT );
-		trace("inside updateWaterLevel in phone");
+		trace("inside updateWaterLevel in phone\n");
 	},
 	onComplete: function(handler, message, text) {
 	    water_level = parseFloat(text); 
-		water_level_label.string = water_level; 
+		water_level_label.string = water_level;
+		TEMPERATURE_SCREEN.bottleContainer.waterContainer.height = 190 * water_level/100;
 	}
 }));
 
@@ -259,6 +260,7 @@ var water_level_label = new Label({left:0, right:0, height:40, width:70, string:
 var SURVIVAL_SCREEN = require('survival.js');
 var CREATE_SCHEDULE_SCREEN = require("createSchedule.js");
 var SCHEDULE_SCREEN = require("schedules.js");
+var TEMPERATURE_SCREEN = require("home.js");
 
 // SCREENS
 var MenuScreen = Column.template(function($) { return { left: 0, right: 0, top: 0, bottom: 0, vertical: 'middle', skin: babyblueskin, contents: [

@@ -98,9 +98,11 @@ Handler.bind("/potResult", Object.create(Behavior.prototype, {
 					handler.invoke( new Message(phoneURL + "updateBottleStatus"), Message.JSON );
 					}
 				if (old_level != new_level) {
+					trace("Water Level Changed!\n");
 					water_level = new_level; 
 					water_level_label.string = water_level; 
 					old_level = new_level; 
+					handler.invoke( new Message(phoneURL + "updateWaterLevel"), Message.JSON );
 					}
 				if ( new_slider != old_slider ) { // if the slider value changed
 				    current_temperature = new_slider;
@@ -209,6 +211,6 @@ var mainCanvas = new MainCanvas();
                 }
             },
         }));
-        
+application.invoke(new Message("updateWaterLevel"));
 application.behavior = new ApplicationBehavior();
 application.add(mainColumn);
