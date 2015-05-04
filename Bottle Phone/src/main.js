@@ -29,6 +29,7 @@ var textStyle = new Style({font:"bold 25px", color:"white", vertical: "middle", 
 var bottleStyle = new Style({font:"bold 25px", color:"black", vertical: "middle", horizontal: 'center',});
 var barStyle = new Style({font:"bold 25px", color:"black", vertical: "middle", horizontal: 'center',});
 var titleStyle = new Style({font:"bold 30px", color:"black"});
+var scheduleTitleStyle = new Style({font:"bold 20px Helvetica, sans-serif;", color:"black"});
 var labelStyle = new Style( { font: "15px Helvetica, sans-serif;", color:"black" } );
 var redSkin = new Skin({fill:'red'});
 var biggerText = new Style({font:"bold 60px", color:"black"});
