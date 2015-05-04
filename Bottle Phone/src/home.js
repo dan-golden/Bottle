@@ -18,7 +18,7 @@ var IncreaseTemperatureButtonTemplate = BUTTONS.Button.template(function($){ ret
   ],
   behavior: Object.create(BUTTONS.ButtonBehavior.prototype, {
     onTap: { value:  function(button){
-      updateTemperature(current_temperature + 1);
+      updateTemperature(desired_temperature + 1);
       save_label.string = "Changes saved!";
     }}
   })
@@ -83,6 +83,11 @@ var mainCol = new Column({
 	],
 });
 
+exports.bottleContainer = new Container({left:20, width:100, height:225, bottom: 50, contents: [
+										new Container({name: "waterContainer", left:4, right:4, bottom: 4,  height: 190, skin: blueSkin}),
+										new Picture({top:0, bottom: 0, url:"empty bottle.png"}),
+										]});
+
 exports.homeCol = new Column({
 	left:0, right:0, top:0, bottom:0,
 	skin: babyblueskin,
@@ -92,20 +97,22 @@ exports.homeCol = new Column({
 				new Label({right: 90, top: 20, string:"Bot-tle", style:bottleStyle,}),
 			]
 		}),
-		new Column({name: "tempControl", left:0, right:0, top:0, bottom:0, skin: babyblueskin,
-			contents:[
-				increase_button,
-				desired_temperature_label,
-				
-				current_temperature_label,
-				decrease_button,
-				new Line({left:0, right:0, top:0, bottom:0,
-					contents:[ cold_button, room_button, hot_button, boil_button]
-				}),
-				//new Line({left:0, right:0, top:0, bottom:0,
-					//contents:[ water_button, tea_button, coffee_button, iceTea_button]
-				//}),
-			]
+		new Line({left:0, right:0, top:0, bottom:0, skin:babyblueskin, contents: [			
+			exports.bottleContainer,
+			new Column({name: "tempControl", left:0, right:0, top:0, bottom:0, skin: babyblueskin,
+				contents:[
+					increase_button,
+					desired_temperature_label,			
+					current_temperature_label,
+					decrease_button,
+				]
+			}),
+		]}),
+		new Line({left:0, right:0, top:0, bottom:0,
+			contents:[ cold_button, room_button, hot_button, boil_button]
 		}),
+		//new Line({left:0, right:0, top:0, bottom:0,
+			//contents:[ water_button, tea_button, coffee_button, iceTea_button]
+		//}),
 	],
 });

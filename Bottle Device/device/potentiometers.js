@@ -16,14 +16,19 @@
 */
 
 exports.pins = {
+    bottleStatus: { type: "A2D" },  
     slider: { type: "A2D" },  
+    waterLevel: { type: "A2D" },  
 };
 
 exports.configure = function(){
+	this.bottleStatus.init();
 	this.slider.init();
+	this.waterLevel.init(); 
+	
 }
 
 exports.read = function() {
-    return { slider: this.slider.read(), };
+    return { slider: this.slider.read(), waterLevel: waterLevel.read(), bottleStatus: this.bottleStatus.read(), };
 }
 
