@@ -43,11 +43,14 @@ var MySwitchTemplate = SWITCHES.SwitchButton.template(function($){ return{
       	survival_mode = "ON";
       	line1.visible = true; 
       	line2.visible = true;
+      	save_button.visible = true;
       } else {
       	survival_mode = "OFF";
       	save_label.visible = false;
       	line1.visible = false;
       	line2.visible = false; 
+      	save_button.visible = false;
+      	validMessage.visible = false;
       }
       survival_mode_label.string = "Water Monitoring is " + survival_mode;
       updateDeviceSurvivalMode(); 
@@ -57,8 +60,8 @@ var MySwitchTemplate = SWITCHES.SwitchButton.template(function($){ return{
 
 
 
-var MyButtonTemplate = BUTTONS.Button.template(function($){ return{
-  top:25, bottom:25, left:-10, right:-10, height: 50, skin: navyblueskin,
+/*var MyButtonTemplate = BUTTONS.Button.template(function($){ return{
+  top:25, bottom:25, left:-10, right:-10, height: 50, 
   contents:[
     new Label({left:0, right:0, height:50, string:$.textForLabel, style:textStyle})
   ],
@@ -68,11 +71,21 @@ var MyButtonTemplate = BUTTONS.Button.template(function($){ return{
       save_label.visible = true;
     }}
   })
+}});*/
+
+var MyButtonTemplate = BUTTONS.Button.template(function($){ return{
+	height:50, skin: saveLogoSkin, visible: false,
+	behavior: Object.create(BUTTONS.ButtonBehavior.prototype, {
+		onTap: { value: function(content){
+			trace("Button was tapped.\n");
+     		 save_label.visible = true;
+			}}
+	})
 }});
 
 var amount = ""; 
 
-var validMessage = new Label( {left: 0, right:0, style: errorStyle, string: "Selected amount exceeds bottle capacity!", visible: false})	
+var validMessage = new Label( {left: 15, right:0, style: errorStyle, string: "Selected amount exceeds bottle capacity!", visible: false})	
 
 
 var MyField = Container.template(function($) { return { 
@@ -142,7 +155,14 @@ var MyField1 = Container.template(function($) { return {
   ]
 }});
 
-var save_button = new MyButtonTemplate({textForLabel:"Save"});
+var SaveLogo = new Texture("./save.png");
+var saveLogoSkin = new Skin({
+    width: 120,
+    height: 40,
+	texture: SaveLogo,
+});
+
+var save_button = new MyButtonTemplate({textForLabel:"Save", skin: saveLogoSkin, visible: false});
 
 	
 
