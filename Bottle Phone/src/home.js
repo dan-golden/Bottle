@@ -92,8 +92,8 @@ exports.homeCol = new Column({
 	left:0, right:0, top:0, bottom:0,
 	skin: babyblueskin,
 	contents:[
-		new Content({width: 320, height:50, skin:logoSkin}),
-		new Line({left:0, right:0, top:0, bottom:0, skin:babyblueskin, contents: [			
+	    new Content({width: 320, height:50, skin:logoSkin}),
+		new Line({left:0, right:0, top:20, bottom:0, skin:babyblueskin, contents: [			
 			exports.bottleContainer,
 			new Column({name: "tempControl", left:0, right:0, top:0, bottom:0, skin: babyblueskin,
 				contents:[
@@ -104,9 +104,9 @@ exports.homeCol = new Column({
 				]
 			}),
 		]}),
-		new Line({left:0, right:0, top:0, bottom:0,
-			contents:[ cold_button, room_button, hot_button, boil_button]
-		}),
+		//new Line({left:0, right:0, top:0, bottom:0,
+			//contents:[ cold_button, room_button, hot_button, boil_button]
+		//}),
 		//new Line({left:0, right:0, top:0, bottom:0,
 			//contents:[ water_button, tea_button, coffee_button, iceTea_button]
 		//}),

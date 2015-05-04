@@ -23,8 +23,30 @@ var logoSkin = new Skin({
     width: 320,
     height: 50,
 	texture: BottleLogo,
-	fill:"black",
 });
+
+var TemperatureButtonLogo = new Texture("./temperatureButton.png");
+var temperatureButtonSkin = new Skin({
+    width: 120,
+    height: 90,
+	texture: TemperatureButtonLogo,
+});
+
+var ScheduleButtonLogo = new Texture("./scheduleButton.png");
+var scheduleButtonSkin = new Skin({
+    width: 108,
+    height: 66,
+	texture: ScheduleButtonLogo,
+});
+
+var MonitorButtonLogo = new Texture("./monitorButton.png");
+var monitorButtonSkin = new Skin({
+    width: 108,
+    height: 66,
+	texture: MonitorButtonLogo,
+});
+
+
 
 var babyblueskin = new Skin({ fill: "#CEFFF9"});
 var navyblueskin = new Skin({ fill: "#00BAC1"});
@@ -371,8 +393,7 @@ var temperatureButton = BUTTONS.Button.template(function($){ return{
 
 
 var scheduleButton = BUTTONS.Button.template(function($){ return{
-	left: 5, right: 0,top: 2, height: 25,skin: navyblueskin,
-	contents: [ new Label({left:0, right:0, height:20, string:"Schedules", style: smallText})],
+	top: 14, width: 100, height: 64, skin: scheduleButtonSkin,
 	behavior: Object.create(BUTTONS.ButtonBehavior.prototype, {
 		onTap: { value: function(content){
 			if(currentScreen != "schedule") {
@@ -383,8 +404,7 @@ var scheduleButton = BUTTONS.Button.template(function($){ return{
 	})
 }});
 var survivalButton = BUTTONS.Button.template(function($){ return{
-	left: 0, right: 5,top: 2, height: 25,skin: navyblueskin,
-	contents: [ new Label({left:0, right:0, height:20, string:"Water Monitoring", style: smallText})],
+	top: 14, width: 100, height: 64, skin: monitorButtonSkin,
 	behavior: Object.create(BUTTONS.ButtonBehavior.prototype, {
 		onTap: { value: function(content){
 			if(currentScreen != "survival") {
@@ -394,9 +414,9 @@ var survivalButton = BUTTONS.Button.template(function($){ return{
 		}}
 	})
 }});
-var menuTempLabel = new Label({left:0, right:0, height:20, string:"25 \xB0 C", style: smallText});
+var menuTempLabel = new Label({left:0, right:0, height:80, string:"25 \xB0 C", style: buttonStyle});
 var temperatureButton = BUTTONS.Button.template(function($){ return{
-	left: 10, right: 10,top: 2, height: 25,skin: navyblueskin,
+	width: 120, height: 90 ,skin: temperatureButtonSkin,
 	contents: [ menuTempLabel ],
 	behavior: Object.create(BUTTONS.ButtonBehavior.prototype, {
 		onTap: { value: function(content){
@@ -413,11 +433,11 @@ var sButton = new scheduleButton();
 var suButton = new survivalButton();
 
 var menu = new Line({
-	left:0, right: 0, height:30, contents: [
+	left:0, right: 0, height:72, contents: [
 		sButton,
 		tButton,
 		suButton
-	], skin: menuBarSkin
+	], skin: babyblueskin
 });
 var main = new MainScreen();
 var full = new FullScreen();
