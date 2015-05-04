@@ -18,7 +18,7 @@ var IncreaseTemperatureButtonTemplate = BUTTONS.Button.template(function($){ ret
   ],
   behavior: Object.create(BUTTONS.ButtonBehavior.prototype, {
     onTap: { value:  function(button){
-      updateTemperature(current_temperature + 1);
+      updateTemperature(desired_temperature + 1);
       save_label.string = "Changes saved!";
     }}
   })
