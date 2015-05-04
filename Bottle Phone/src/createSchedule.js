@@ -48,6 +48,8 @@ function checkValidSchedule(schedule) {
 		return false;
 	} else if(schedule.repeat == 1 && schedule.repeatedDays.length == 0) {
 		return false;
+	} else if(schedule.minutes.length !=2) {
+		return false;
 	}
 	return true;
 }
