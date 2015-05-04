@@ -33,11 +33,11 @@ var configure = exports.configure = function(configuration) {
 					{
 						valueLabel : "Current Temperature",
 						valueID : "slider",
-						minValue: 32,
-						maxValue: 212,
+						minValue: 0,
+						maxValue: 100,
 						defaultControl : PinsSimulators.SLIDER,
 						speed : 0,
-						value: 70
+						value: 25
 					}
 				),
 				

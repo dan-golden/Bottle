@@ -6,10 +6,10 @@ var labelStyle = new Style( { font: "bold 20px", color:"black" } );
 
 // Internal Variables
 phoneURL = "";
-temperature_unit = "\xB0 F"; 
-current_temperature = 70; 
+temperature_unit = "\xB0 C"; 
+current_temperature = 25; 
 current_temperature_string = current_temperature + temperature_unit;
-desired_temperature = 70 + temperature_unit; 
+desired_temperature = 25 + temperature_unit; 
 desired_temperature_string = desired_temperature + temperature_unit;
 old_slider = 32;
 new_slider = 32;
@@ -59,7 +59,10 @@ Handler.bind("/updateBottleStatus", Behavior({
 	},
 	onComplete: function(handler, message, text) {
 		bottle_status = parseFloat(text); 
-		bottle_status_label.string = bottle_status; 
+		if (bottle_status == 1) {
+		bottle_status_label.string = "ON"; }
+		else {
+		bottle_status_label.string = "OFF";} 
 	}
 }));
 
@@ -93,14 +96,17 @@ Handler.bind("/potResult", Object.create(Behavior.prototype, {
 				application.distribute( "receiveSliderChange", message.requestObject );
 				if (old_status != new_status) {
 					bottle_status = new_status; 
-					bottle_status_label.string = bottle_status; 
+					if (bottle_status == 1) {
+					bottle_status_label.string = "ON" }
+					else {bottle_status_label.string = "OFF" }
+					//bottle_status_label.string = bottle_status; 
 					old_status = new_status; 
 					handler.invoke( new Message(phoneURL + "updateBottleStatus"), Message.JSON );
 					}
 				if (old_level != new_level) {
 					trace("Water Level Changed!\n");
 					water_level = new_level; 
-					water_level_label.string = water_level; 
+					water_level_label.string = water_level + "%"; 
 					old_level = new_level; 
 					handler.invoke( new Message(phoneURL + "updateWaterLevel"), Message.JSON );
 					}
@@ -116,7 +122,7 @@ Handler.bind("/potResult", Object.create(Behavior.prototype, {
 				}
 			}}
 }));
-var water_level_label = new Label({left:0, right:0, height:40, width:70, string:water_level, style: labelStyle});
+var water_level_label = new Label({left:0, right:0, height:40, width:70, string:water_level + "%", style: labelStyle});
 var bottle_status_label = new Label({left:0, right:0, height:40, width:70, string:bottle_status, style: labelStyle});
 var desired_temperature_label = new Label({left:0, right:0, height:40, width:70, string:desired_temperature, style: labelStyle});
 var current_temperature_label = new Label({left:0, right:0, height:40, width:70, string:current_temperature, style: labelStyle});
@@ -128,7 +134,7 @@ var mainColumn = new Column({
 	contents: [
 		new Line({left:10, right:10, top:10, bottom:0,
 				contents:[
-				    new Label({left:20, right:0, width: 160, height:40, string:"Bottle Status", style: labelStyle}),
+				    new Label({left:20, right:0, width: 160, height:40, string:"Bottle Status: ", style: labelStyle}),
 				    bottle_status_label,
       			]
 			}),
@@ -152,7 +158,7 @@ var mainColumn = new Column({
 			}),
 		new Line({left:10, right:10, top:10, bottom:0,
 				contents:[
-				    new Label({left:20, right:0, width: 160, height:40, string:"Water Monitoring", style: labelStyle}),
+				    new Label({left:20, right:0, width: 160, height:40, string:"Water Monitoring: ", style: labelStyle}),
 				    survival_mode_switch,
       			]
 			}),

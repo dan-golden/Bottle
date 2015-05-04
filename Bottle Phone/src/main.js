@@ -61,9 +61,9 @@ var errorStyle = new Style( { font: "15px Helvetica, sans-serif;", color:"red" }
 
 // Internal Variables
 var deviceURL = "";
-var temperature_unit = "\xB0 F"; //default temperature to Fahrenheit
-var current_temperature = 70;
-var desired_temperature = 70; 
+var temperature_unit = "\xB0 C"; 
+var current_temperature =25;
+var desired_temperature = 25; 
 var current_temperature_string = current_temperature + temperature_unit + " now"; // range of temp should be 32 degrees for freezing to 212 degrees for boiling
 var desired_temperature_string = desired_temperature + temperature_unit;
 var survival_mode = "OFF";
@@ -216,7 +216,7 @@ Handler.bind("/updateTemperature", Behavior({
 	    menuTempLabel.string = current_temperature + ""; 
 	    if (bottle_status == 0 ) {
 	    menuTempLabel.string = "OFF"} 
-	    else { menuTempLabel.string = current_temperature + " F"; }
+	    else { menuTempLabel.string = current_temperature + "\xB0 C"; }
 	    
 	}
 }));
@@ -355,7 +355,7 @@ var survivalButton = BUTTONS.Button.template(function($){ return{
 		}}
 	})
 }});
-var menuTempLabel = new Label({left:0, right:0, height:20, string:"70", style: smallText});
+var menuTempLabel = new Label({left:0, right:0, height:20, string:"25 \xB0 C" , style: smallText});
 var temperatureButton = BUTTONS.Button.template(function($){ return{
 	left: 10, right: 10,top: 2, height: 25,skin: navyblueskin,
 	contents: [ menuTempLabel ],
@@ -394,7 +394,7 @@ var survivalButton = BUTTONS.Button.template(function($){ return{
 		}}
 	})
 }});
-var menuTempLabel = new Label({left:0, right:0, height:20, string:"70", style: smallText});
+var menuTempLabel = new Label({left:0, right:0, height:20, string:"25 \xB0 C", style: smallText});
 var temperatureButton = BUTTONS.Button.template(function($){ return{
 	left: 10, right: 10,top: 2, height: 25,skin: navyblueskin,
 	contents: [ menuTempLabel ],
