@@ -41,17 +41,23 @@ var MySwitchTemplate = SWITCHES.SwitchButton.template(function($){ return{
       trace("Value is: " + this.data.value + "\n");
       if (this.data.value == 1) {
       	survival_mode = "ON";
+      	line1.visible = true; 
+      	line2.visible = true;
       } else {
       	survival_mode = "OFF";
+      	save_label.visible = false;
+      	line1.visible = false;
+      	line2.visible = false; 
       }
       survival_mode_label.string = "Water Monitoring is " + survival_mode;
       updateDeviceSurvivalMode(); 
+      
   }}})
 }});
 
 
 
-/*var MyButtonTemplate = BUTTONS.Button.template(function($){ return{
+var MyButtonTemplate = BUTTONS.Button.template(function($){ return{
   top:25, bottom:25, left:-10, right:-10, height: 50, skin: navyblueskin,
   contents:[
     new Label({left:0, right:0, height:50, string:$.textForLabel, style:textStyle})
@@ -62,7 +68,7 @@ var MySwitchTemplate = SWITCHES.SwitchButton.template(function($){ return{
       save_label.visible = true;
     }}
   })
-}});*/
+}});
 
 var amount = ""; 
 
@@ -136,20 +142,10 @@ var MyField1 = Container.template(function($) { return {
   ]
 }});
 
-//var save_button = new MyButtonTemplate({textForLabel:"Save"});
+var save_button = new MyButtonTemplate({textForLabel:"Save"});
 
 	
-/**var save_Button = BUTTONS.Button.template(function($){ return{
-	left:10, right: 10, height:50,skin: navyblueskin,
-	contents: [
-		new Label({left:0, right:0, height:40, string:"Save", style: buttonStyle})
-	],
-	behavior: Object.create(BUTTONS.ButtonBehavior.prototype, {
-		onTap: { value: function(content){
-			
-		}}
-	})
-}});**/
+
 var BottleLogo = new Texture("./bottleTitle.png");
 var logoSkin = new Skin({
     width: 320,
@@ -159,6 +155,19 @@ var logoSkin = new Skin({
 });
 var rateField = new MyField1({ name: "",});
 var amountField = new MyField({ name: "",});
+var line1 = new Line({left:0, right:0, top:0, height: 40, skin: babyblueskin, visible: false, contents: [
+				new Label({string: "Dispense " }),
+				amountField, 
+				new Label({string: " oz "}),	
+					
+				]})
+var line2 = new Line({left:26, right:0, top:0, skin: babyblueskin, visible: false, contents: [
+				new Label({string: "Every " }),
+				rateField, 
+				new Label({string: " minutes "}),	
+					
+				]
+			})
 exports.SurvivalScreen = Container.template(function($) {return { left: 0, right: 0, top: 0, bottom: 0, skin: babyblueskin, active: true, contents: [ 
 
 	new Column({left:0, right:0, top:0, bottom:0, skin: babyblueskin,
@@ -167,7 +176,7 @@ exports.SurvivalScreen = Container.template(function($) {return { left: 0, right
 		validMessage,
 		new Column({name: "secondCol", left:0, right:0, top:0, skin: babyblueskin,
 			contents:[
-				//save_label,
+				save_label,
 				survival_title_label,
 				new Line({left:0, right:0, top:0, bottom:0, skin: babyblueskin, contents: [
 					alert_label, 
@@ -176,20 +185,10 @@ exports.SurvivalScreen = Container.template(function($) {return { left: 0, right
 				]
 			}),
 
-				new Line({left:0, right:0, top:0, height: 40, skin: babyblueskin, contents: [
-				new Label({string: "Dispense " }),
-				amountField, 
-				new Label({string: " oz "}),	
-					
-				]
-			}),
-				new Line({left:26, right:0, top:0, skin: babyblueskin, contents: [
-				new Label({string: "Every " }),
-				rateField, 
-				new Label({string: " minutes "}),	
-					
-				]
-			}),
+				line1, 
+				line2, 
+				
+				save_button,
 				
 				
 			], 
