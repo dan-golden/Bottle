@@ -53,9 +53,9 @@ var SmallTextButtonTemplate = BUTTONS.Button.template(function($){ return{
 // Buttons
 var increase_button = new IncreaseTemperatureButtonTemplate({textForLabel:"^", height: 50});
 var decrease_button = new DecreaseTemperatureButtonTemplate({textForLabel:"v", height: 50});
-var cold_button = new SmallTextButtonTemplate({textForLabel:"c", temp: 40});
+var cold_button = new SmallTextButtonTemplate({textForLabel:"i", temp: 40});
 var room_button = new SmallTextButtonTemplate({textForLabel:"r", temp: 72});
-var hot_button = new SmallTextButtonTemplate({textForLabel:"h", temp: 150});
+var hot_button = new SmallTextButtonTemplate({textForLabel:"hot", temp: 150});
 var boil_button = new SmallTextButtonTemplate({textForLabel:"b", temp: 212});
 //var water_button = new SmallTextButtonTemplate({textForLabel:"water", temp: current_temperature});
 //var tea_button = new SmallTextButtonTemplate({textForLabel:"tea", temp: current_temperature});

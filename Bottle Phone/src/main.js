@@ -17,6 +17,15 @@ var SCREEN = require('mobile/screen');
 
 //THEME.buttonStyle = new Style({ font:"bold 25px", color:"white", fill: "white", skin: { fill: "blue"}, stroke: "white", vertical: "middle", horizontal: 'center',});
 // Skins and Styles
+
+var BottleLogo = new Texture("./bottleTitle.png");
+var logoSkin = new Skin({
+    width: 320,
+    height: 50,
+	texture: BottleLogo,
+	fill:"black",
+});
+
 var babyblueskin = new Skin({ fill: "#CEFFF9"});
 var navyblueskin = new Skin({ fill: "#00BAC1"});
 var whiteSkin = new Skin( { fill:"white" } );
@@ -28,15 +37,17 @@ var whiteS = new Skin({fill:"white", borders:{left:0, right:0, top:0, bottom:0},
 var textStyle = new Style({font:"bold 25px", color:"white", vertical: "middle", horizontal: 'center',});
 var bottleStyle = new Style({font:"bold 25px", color:"black", vertical: "middle", horizontal: 'center',});
 var barStyle = new Style({font:"bold 25px", color:"black", vertical: "middle", horizontal: 'center',});
+var inputStyle = new Style({font:"12px", color:"black", vertical: "middle", horizontal: 'center',});
 var titleStyle = new Style({font:"bold 30px", color:"black"});
 var labelStyle = new Style( { font: "15px Helvetica, sans-serif;", color:"black" } );
 var redSkin = new Skin({fill:'red'});
 var biggerText = new Style({font:"bold 60px", color:"black"});
 var bigText = new Style({font:"bold 30px", color:"black"});
 var smallText = new Style({font:"bold 20px", color:"black"});
-var nameInputSkin = new Skin({ borders: { left:2, right:2, top:2, bottom:2 }, stroke: 'gray',});
+var nameInputSkin = new Skin({borders: { left:2, right:2, top:2, bottom:2 }, stroke: 'gray',});
 var fieldStyle = new Style({ color: 'black', fill: "white", font: 'bold 24px', horizontal: 'left', vertical: 'middle', left: 5, right: 5, top: 5, bottom: 5, });
-var fieldHintStyle = new Style({ color: 'gray', font: '24px', horizontal: 'left', fill: "white", vertical: 'middle', left: 5, right: 5, top: 5, bottom: 5, });
+var fieldHintStyle = new Style({ color: 'gray', font: '18px', horizontal: 'left', fill: "white", vertical: 'middle', left: 5, right: 5, top: 5, bottom: 5, });
+var timeHintStyle = new Style({ color: 'gray', font: 'bold 16px', horizontal: 'left', fill: "white", vertical: 'middle', });
 
 var buttonStyle = new Style({ font: "bold 25px", color:"white", fill: "white", skin: navyblueskin, stroke: "white"});
 

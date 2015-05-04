@@ -1,5 +1,19 @@
 SCHEDULE_SCREEN = require('schedules.js');
 
+var CancelLogo = new Texture("./cancel.png");
+var cancelLogoSkin = new Skin({
+    width: 120,
+    height: 40,
+	texture: CancelLogo,
+});
+
+var SaveLogo = new Texture("./save.png");
+var saveLogoSkin = new Skin({
+    width: 120,
+    height: 40,
+	texture: SaveLogo,
+});
+
 function checkValidHours(hour) {
 	if(isNaN(hour) || hour=="") {
 		return false;
@@ -56,10 +70,7 @@ function reset() {
 }
 
 var cancelButton = BUTTONS.Button.template(function($){ return{
-	left:10, right:10, height:50, skin:redSkin,
-	contents: [
-		new Label({left:0, right:0, height:40, string:"Cancel", style: buttonStyle})
-	],
+	height:50, skin: cancelLogoSkin,
 	behavior: Object.create(BUTTONS.ButtonBehavior.prototype, {
 		onTap: { value: function(content){
 			currentScreen = "schedule";
@@ -70,10 +81,7 @@ var cancelButton = BUTTONS.Button.template(function($){ return{
 }});
 
 var saveButton = BUTTONS.Button.template(function($){ return{
-	left:10, right: 10, height:50,skin: navyblueskin,
-	contents: [
-		new Label({left:0, right:0, height:40, string:"Save", style: buttonStyle})
-	],
+	height:50, skin: saveLogoSkin,
 	behavior: Object.create(BUTTONS.ButtonBehavior.prototype, {
 		onTap: { value: function(content){
 			var newSchedule = {name: nameField.scroller.textbox.string, 
@@ -203,6 +211,7 @@ var MySwitchTemplate = SWITCHES.SwitchButton.template(function($){ return{
       for(i = 0; i<7; i++){
       	checkbox[i].visible = !checkbox[i].visible;
       }
+      daysLabel.visible = !daysLabel.visible;
   }}})
 }});
 
@@ -227,15 +236,13 @@ hourField.scroller.hint.string = "Hr.";
 var minuteField = new MyTimeField({name: "",});
 minuteField.scroller.hint.string = "Min.";
 var validMessage = new Label( {left: 100, right:100, style: errorStyle, string: "Error!", visible: false})
+var daysLabel = new Label( {left: 0, right: 0, style: labelStyle, skin: whiteSkin, string: "Select Days: ", visible: false});
 
 exports.CreateScheduleScreen = Container.template(function($) { return { left: 0, right: 0, top: 0, bottom: 0, skin: babyblueskin, active: true, contents: [ 
 	new Column( { left: 0, right: 0, top:0, contents: [
-		new Column({left:0, right:0, top:0, height:80, skin: babyblueskin,
-			contents:[
-				new Label({top: 30, string:"Bot-tle", style:bottleStyle,}),
-			]
-		}),
+		new Content({width: 320, height:50, skin:logoSkin}),
 		validMessage,
+		new Label( {bottom: 10, style: bottleStyle, string: "Create a New Schedule", }),
 		new Line( { left:0, right:20, bottom: 5, contents: [
 			Label($, {left: 20, right: 0, style: labelStyle, string: "Title (Optional): "}),
 			nameField
@@ -263,8 +270,8 @@ exports.CreateScheduleScreen = Container.template(function($) { return { left: 0
 			repeatSwitch
 		]}),
 		new Column( { left:20, right:0, contents: [
-			Label($, {left: 0, right: 0, style: labelStyle, string: "Days: "}),
 			new Column({left:0, right: 0, contents:[
+			    daysLabel,
 				new Line({left:0, right:0, contents:[
 					checkbox[0], checkbox[1], checkbox[2], checkbox[3]]
 				}),

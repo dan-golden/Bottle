@@ -19,7 +19,7 @@ var plusButton = BUTTONS.Button.template(function($){ return{
 }});
 
 // SCREENS
-no_schedule = new Label({ string:"No schedule created yet!", style:errorStyle,});
+no_schedule = new Label({ string:"No schedules created yet!", style:errorStyle,});
 exports.ScheduleScreen = Container.template(function($) { return { left: 0, right: 0, top: 0, bottom: 0, skin: babyblueskin, contents: [
 	new Column({left:0, right:0, top:0, height:80, skin: babyblueskin, vertical: 'middle', 
 		contents:[
@@ -60,9 +60,9 @@ exports.generateDisplayString = function generateDisplayString(scheds) {
 	result = [];
 	for (var i = 0; i < scheds.length; i++) {
         if (scheds[i].name) {
-		    temp = scheds[i].name + " scheduled at " + scheds[i].hours + ":";
+		    temp = scheds[i].name + " | " + scheds[i].hours + ":";
 		} else {
-		    temp = "Scheduled at " + scheds[i].hours + ":";
+		    temp = "Schedule " + i.toString() + " | " + scheds[i].hours + ":";
 		}
 		if(scheds[i].minutes < 10)
 			temp+="0";
@@ -86,7 +86,7 @@ exports.generateDisplayString = function generateDisplayString(scheds) {
 			if(days["Sa"])
 				temp+="Sa, ";
 		}
-		temp += " for " + scheds[i].temperature + "\xB0 F";
+		temp += "for " + scheds[i].temperature + "\xB0 F";
 		dict = {};
 		dict["title"] = temp;
 		result.push(dict);
