@@ -201,6 +201,8 @@ Handler.bind("/currentDispenseRate", Behavior({
 	}
 }));
 
+
+
 Handler.bind("/updateTemperature", Behavior({
 	onInvoke: function(handler, message){
 	    handler.invoke( new Message(deviceURL + "currentTemperature"), Message.TEXT );
@@ -214,7 +216,7 @@ Handler.bind("/updateTemperature", Behavior({
 	    menuTempLabel.string = current_temperature + ""; 
 	    if (bottle_status == 0 ) {
 	    menuTempLabel.string = "OFF"} 
-	    else {menuTempLabel.string = current_temperature + ""; }
+	    else { menuTempLabel.string = current_temperature + " F"; }
 	    
 	}
 }));
@@ -230,7 +232,9 @@ Handler.bind("/updateBottleStatus", Behavior({
 		bottle_status_label.string = bottle_status; 
 		if (bottle_status == 0 ) {
 	    menuTempLabel.string = "OFF"} 
-	    else {menuTempLabel.string = current_temperature + ""; }
+	    else { handler.invoke(new Message("/updateTemperature")) }
+		
+		
 		
 	}
 }));
