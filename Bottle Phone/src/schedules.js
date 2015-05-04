@@ -18,10 +18,17 @@ var plusButton = BUTTONS.Button.template(function($){ return{
 	})
 }});
 
+var EditLogo = new Texture("./edit.png");
+var editLogoSkin = new Skin({
+	width: 50,
+	height: 22,
+	texture: EditLogo,
+});
+
 var editButton = BUTTONS.Button.template(function($){ return{
-	right: 1, top: 1, height: 50, width: 50,skin: navyblueskin,
+	right: 1, top: 1, skin: editLogoSkin,
 	contents: [
-		new Label({left:0, right:0, height:40, string:"Edit", style: buttonStyle})
+		new Label({left:0, right:0, height:40, style: buttonStyle})
 	],
 	behavior: Object.create(BUTTONS.ButtonBehavior.prototype, {
 		onTap: { value: function(content){
@@ -33,10 +40,17 @@ var editButton = BUTTONS.Button.template(function($){ return{
 	})
 }});
 
+var DeleteLogo = new Texture("./delete.png");
+var deleteLogoSkin = new Skin({
+	width: 50,
+	height: 22,
+	texture: DeleteLogo,
+});
+
 var deleteButton = BUTTONS.Button.template(function($){ return{
-	right: 1, top: 1, height: 50, width: 50,skin: redSkin,
+	right: 1, top: 1, skin: deleteLogoSkin,
 	contents: [
-		new Label({left:0, right:0, height:40, string:"Delete", style: buttonStyle})
+		new Label({left:0, right:0, height:40, style: buttonStyle})
 	],
 	behavior: Object.create(BUTTONS.ButtonBehavior.prototype, {
 		onTap: { value: function(content){
@@ -109,8 +123,10 @@ exports.generateDisplayContainer = function generateDisplayString(scheds) {
 		scheduleContainer = new Container({left:0, right:0, skin:babyblueskin, contents:[
 								new Line({left:0, right:0, contents:[
 									new Column({left:4, right:0, width: 150, contents:[title, time, repeat, temperature]}),
-									new deleteButton({schedule: scheds[i], name: "delete"}),
-									new editButton({schedule: scheds[i]})
+									new Column({left:4, right:0, contents: [
+										new editButton({schedule: scheds[i]}),
+										new deleteButton({schedule: scheds[i], name: "delete"}),
+									]})
 								]})
 							]});
 		scheds[i].container = scheduleContainer;
