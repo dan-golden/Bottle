@@ -152,7 +152,7 @@ var mainColumn = new Column({
 			}),
 		new Line({left:10, right:10, top:10, bottom:0,
 				contents:[
-				    new Label({left:20, right:0, width: 160, height:40, string:"Survival Mode:", style: labelStyle}),
+				    new Label({left:20, right:0, width: 160, height:40, string:"Water Monitoring", style: labelStyle}),
 				    survival_mode_switch,
       			]
 			}),

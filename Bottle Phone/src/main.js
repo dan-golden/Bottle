@@ -384,7 +384,7 @@ var scheduleButton = BUTTONS.Button.template(function($){ return{
 }});
 var survivalButton = BUTTONS.Button.template(function($){ return{
 	left: 0, right: 5,top: 2, height: 25,skin: navyblueskin,
-	contents: [ new Label({left:0, right:0, height:20, string:"Survival", style: smallText})],
+	contents: [ new Label({left:0, right:0, height:20, string:"Water Monitoring", style: smallText})],
 	behavior: Object.create(BUTTONS.ButtonBehavior.prototype, {
 		onTap: { value: function(content){
 			if(currentScreen != "survival") {

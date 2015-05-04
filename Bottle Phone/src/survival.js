@@ -150,19 +150,20 @@ var MyField1 = Container.template(function($) { return {
 		}}
 	})
 }});**/
-
+var BottleLogo = new Texture("./bottleTitle.png");
+var logoSkin = new Skin({
+    width: 320,
+    height: 50,
+	texture: BottleLogo,
+	fill:"black",
+});
 var rateField = new MyField1({ name: "",});
 var amountField = new MyField({ name: "",});
 exports.SurvivalScreen = Container.template(function($) {return { left: 0, right: 0, top: 0, bottom: 0, skin: babyblueskin, active: true, contents: [ 
 
 	new Column({left:0, right:0, top:0, bottom:0, skin: babyblueskin,
 	contents:[
-		new Column({left:0, right:0, top:0, height:80, skin: babyblueskin,
-			contents:[
-				new Label({right: 90, top: 20, string:"Bot-tle", style:bottleStyle,}),
-				
-			]
-		}),
+		new Content({width: 320, height:50, skin:logoSkin}),
 		validMessage,
 		new Column({name: "secondCol", left:0, right:0, top:0, skin: babyblueskin,
 			contents:[
