@@ -52,8 +52,8 @@ function reset() {
 		checkbox[i].distribute("setSelected",false,true); 
 	}
 	selectedBoxes = [];
+	menu.visible = true;
 }
-
 
 var cancelButton = BUTTONS.Button.template(function($){ return{
 	left:10, right:10, height:50, skin:redSkin,
@@ -62,10 +62,9 @@ var cancelButton = BUTTONS.Button.template(function($){ return{
 	],
 	behavior: Object.create(BUTTONS.ButtonBehavior.prototype, {
 		onTap: { value: function(content){
-			toScreen = "Schedule";
-			currentScreen = "CreateSchedule";
+			currentScreen = "schedule";
 			reset();
-			content.bubble("onTriggerTransition");
+			main.run( new TRANSITIONS.Push(), main.last, ScheduleScreen, {direction: "down", duration : 400 });
 		}}
 	})
 }});
@@ -90,10 +89,9 @@ var saveButton = BUTTONS.Button.template(function($){ return{
 				var tempScheds = [newSchedule];
 				var str = SCHEDULE_SCREEN.generateDisplayString(tempScheds);
 				str.forEach(SCHEDULE_SCREEN.ListBuilder);
-				toScreen = "Schedule";
 				reset();
-				currentScreen = "CreateSchedule";
-				content.bubble("onTriggerTransition");
+				currentScreen = "schedule";
+				main.run( new TRANSITIONS.Push(), main.last, ScheduleScreen, {direction: "down", duration : 400 });
 			} else {
 				validMessage.visible = true;
 			}
