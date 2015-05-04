@@ -7,17 +7,16 @@
 var plusButton = BUTTONS.Button.template(function($){ return{
 	left: 250, right: 1, top: 1, height: 50, width: 50,skin: navyblueskin,
 	contents: [
-		new Label({left:0, right:0, height:40, string:"+", style: buttonStyle1})
+		new Label({left:0, right:0, height:40, string:"+", style: buttonStyle})
 	],
 	behavior: Object.create(BUTTONS.ButtonBehavior.prototype, {
 		onTap: { value: function(content){
-			currentScreen = "Schedule";
-			toScreen = "CreateSchedule"; // change to new schedule screen 
-			content.bubble("onTriggerTransition");
+			currentScreen = "create";
+			menu.visible = false;
+			main.run( new TRANSITIONS.Push(), main.last, CreateScheduleScreen, {direction: "up", duration : 400 });
 		}}
 	})
 }});
-
 
 // SCREENS
 no_schedule = new Label({ string:"No schedule created yet!", style:errorStyle,});
@@ -29,7 +28,6 @@ exports.ScheduleScreen = Container.template(function($) { return { left: 0, righ
 			no_schedule,
 		]
 	}),
-	new menuButton(),
 	new plusButton(),
 	screen	
 ]}});
