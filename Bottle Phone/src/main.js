@@ -20,11 +20,9 @@ var SCREEN = require('mobile/screen');
 var babyblueskin = new Skin({ fill: "#CEFFF9"});
 var navyblueskin = new Skin({ fill: "#00BAC1"});
 var whiteSkin = new Skin( { fill:"white" } );
-<<<<<<< HEAD
 var blueSkin = new Skin( { fill:"#9898ff", } );
 //var blueSkinLabel = new Skin( { fill:"#9898ff", borders: { left:5, right:5, }, stroke: 'gray',} );
-=======
->>>>>>> Bottom-Menu
+
 var whiteSkinLabel = new Skin( { fill:"white", borders: { left:5, right:5, }, stroke: 'white',} );
 var whiteS = new Skin({fill:"white", borders:{left:0, right:0, top:0, bottom:0}, stroke:"white"});
 var textStyle = new Style({font:"bold 25px", color:"white", vertical: "middle", horizontal: 'center',});
@@ -61,12 +59,11 @@ var survival_mode = "OFF";
 var dispense_rate = 0;
 var dispense_time = 0;
 var schedules = [];
-<<<<<<< HEAD
+
 bottle_status = "ON";
 water_level = 20; 
-=======
+
 var currentScreen = "temperature";
->>>>>>> Bottom-Menu
 
 // FUNCTIONS
 function updateDeviceTemperature(newTemp) {
@@ -87,7 +84,7 @@ function updateDeviceDispenseRate() {
     application.invoke(new Message(deviceURL + "updateDispenseRate"), Message.JSON);    
 }
 
-<<<<<<< HEAD
+
 
 var menuButton = BUTTONS.Button.template(function($){ return{
 	left: 1, right: 200, top: 1, height:50, skin: navyblueskin,
@@ -142,8 +139,6 @@ var tButton = new temperatureButton();
 var sButton = new scheduleButton();
 var suButton = new survivalButton();
 
-=======
->>>>>>> Bottom-Menu
 //HANDLERS
 
 Handler.bind("/discover", Behavior({
@@ -204,7 +199,11 @@ Handler.bind("/updateTemperature", Behavior({
 	    current_temperature = parseFloat(text);
 	    current_temperature_string = current_temperature + temperature_unit + " now";
 	    current_temperature_label.string = current_temperature_string;
-	    menuTempLabel.string = current_temperature + "";   
+	    menuTempLabel.string = current_temperature + ""; 
+	    if (bottle_status == 0 ) {
+	    menuTempLabel.string = "OFF"} 
+	    else {menuTempLabel.string = current_temperature + ""; }
+	    
 	}
 }));
 
@@ -217,6 +216,10 @@ Handler.bind("/updateBottleStatus", Behavior({
 	onComplete: function(handler, message, text) {
 	    bottle_status = text; 
 		bottle_status_label.string = bottle_status; 
+		if (bottle_status == 0 ) {
+	    menuTempLabel.string = "OFF"} 
+	    else {menuTempLabel.string = current_temperature + ""; }
+		
 	}
 }));
 
@@ -265,12 +268,12 @@ var CreateScheduleScreen = Container.template(function($) { return { left: 0, ri
 }});
 
 var SurvivalScreen = Container.template(function($) { return { left: 0, right: 0, top: 0, bottom: 0, skin: babyblueskin, contents: [
-<<<<<<< HEAD
+
 	SURVIVAL_SCREEN.SurvivalScreen(),
 	new menuButton(),	
-=======
+
 	SURVIVAL_SCREEN.mainCol,
->>>>>>> Bottom-Menu
+
 ], }});
 
 var TemperatureScreen = Container.template(function($) { return { left: 0, right: 0, top: 0, bottom: 0, skin: babyblueskin, contents: [
