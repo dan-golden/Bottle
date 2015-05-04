@@ -119,20 +119,12 @@ function updateDeviceDispenseRate() {
     application.invoke(new Message(deviceURL + "updateDispenseRate"), Message.JSON);    
 }
 
+function repopulateScheduleFields(schedule) {
+	CREATE_SCHEDULE_SCREEN.populateFields(schedule);
+}
 
-/*var menuButton = BUTTONS.Button.template(function($){ return{
-	left: 1, right: 200, top: 1, height:50, skin: navyblueskin,
-	contents: [
-		new Label({left:0, right:0, height:40, string:"Menu", style: textStyle})
-	],
-	behavior: Object.create(BUTTONS.ButtonBehavior.prototype, {
-		onTap: { value: function(content){
-			toScreen = "Menu";
-			currentScreen = "NotCreateSchedule";
-			content.bubble("onTriggerTransition");
-		}}
-	})
-}});*/
+//BUTTONS
+
 
 var survivalButton = BUTTONS.Button.template(function($){ return{
 	left: -10, right: -10, top: 2, height:50, skin: navyblueskin,

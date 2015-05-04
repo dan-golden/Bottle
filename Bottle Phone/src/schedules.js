@@ -28,7 +28,21 @@ var editButton = BUTTONS.Button.template(function($){ return{
 			currentScreen = "create";
 			menu.visible = false;
 			main.run( new TRANSITIONS.Push(), main.last, CreateScheduleScreen, {direction: "up", duration : 400 });
-	//		populateFields();
+			repopulateScheduleFields($.schedule);
+		}}
+	})
+}});
+
+var deleteButton = BUTTONS.Button.template(function($){ return{
+	right: 1, top: 1, height: 50, width: 50,skin: redSkin,
+	contents: [
+		new Label({left:0, right:0, height:40, string:"Delete", style: buttonStyle})
+	],
+	behavior: Object.create(BUTTONS.ButtonBehavior.prototype, {
+		onTap: { value: function(content){
+			sched = $.schedule;
+			container = sched.container;
+			exports.removeSchedule(container);
 		}}
 	})
 }});
@@ -54,7 +68,7 @@ function generateRepeatedDaysDict(days) {
 	dict["Tu"] = false;
 	dict["W"] = false;
 	dict["Th"] = false;
-	dict["f"] = false;
+	dict["F"] = false;
 	dict["Sa"] = false;
 	for(i = 0; i<days.length; i++) {
 		dict[days[i]] = true;
@@ -64,11 +78,11 @@ function generateRepeatedDaysDict(days) {
 
 var schedule_empty = true;
 
-exports.generateDisplayString = function generateDisplayString(scheds) {
+exports.generateDisplayContainer = function generateDisplayString(scheds) {
 	result = [];
 	for (var i = 0; i < scheds.length; i++) {
 		title = new Label({left:1, string: scheds[i].name, style:scheduleTitleStyle});
-		timeString = scheds[i].hours + ":" + scheds[i].minutes;
+		timeString = scheds[i].hours + ":" + scheds[i].minutes + " "+ scheds[i].t_of_day;
 		time = new Label({left:1, string: timeString, style:labelStyle});
 		repeat = new Label({left:1, string: "Today, Repeat Off", style: labelStyle});
 		if(scheds[i].repeat == 1) {
@@ -84,19 +98,22 @@ exports.generateDisplayString = function generateDisplayString(scheds) {
 				repeatString+="W, ";
 			if(days["Th"])
 				repeatString+="Th, ";
-			if(days["f"])
+			if(days["F"])
 				repeatString+="F, ";
 			if(days["Sa"])
 				repeatString+="Sa, ";
 			repeat.string = repeatString;
 		}
 		temperature = new Label({left:1, string: scheds[i].temperature + "\xB0 F", style: labelStyle});
+		scheds[i].existing = true;
 		scheduleContainer = new Container({left:0, right:0, skin:babyblueskin, contents:[
 								new Line({left:0, right:0, contents:[
 									new Column({left:4, right:0, width: 150, contents:[title, time, repeat, temperature]}),
-									new editButton()
+									new deleteButton({schedule: scheds[i], name: "delete"}),
+									new editButton({schedule: scheds[i]})
 								]})
 							]});
+		scheds[i].container = scheduleContainer;
 		result.push(scheduleContainer);
 		schedule_empty = false;
 	}
@@ -105,7 +122,6 @@ exports.generateDisplayString = function generateDisplayString(scheds) {
 	}
 	return result;
 }    
-
 
 /* This is template for a container which takes up the
  * whole screen.  It contains only a single object,
@@ -136,4 +152,8 @@ var screen = new ScreenContainer(data);
  * screen object's SCROLLER */
 exports.ListBuilder = function ListBuilder(element, index, array) {
 	screen.first.menu.add(element);
+}
+
+exports.removeSchedule = function removeSchedule(container) {
+	screen.first.menu.remove(container);
 }

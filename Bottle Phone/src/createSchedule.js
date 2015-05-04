@@ -66,7 +66,48 @@ function reset() {
 		checkbox[i].distribute("setSelected",false,true); 
 	}
 	selectedBoxes = [];
+    am_pm[1].distribute("setSelected", false, true);
+    am_pm[0].distribute("setSelected", true, true);
+    existingValue = false;
 	menu.visible = true;
+}
+
+var oldSchedule = null;
+
+exports.populateFields = function populateFields(schedule) {
+	oldSchedule = schedule;
+	tempField.scroller.textbox.string = schedule.temperature; 
+	hourField.scroller.textbox.string = schedule.hours;
+	minuteField.scroller.textbox.string = schedule.minutes;
+	nameField.scroller.textbox.string = schedule.name;
+	if(schedule.repeat) {
+		repeatSwitch.behavior.onValueChanged(repeatSwitch);
+		repeatSwitch.behavior.data.value = 1;
+	}
+	selectedBoxes = schedule.repeatedDays;
+	for(i = 0; i<selectedBoxes.length; i++) {
+		trace(selectedBoxes[i]+"\n");
+		if(selectedBoxes[i] == 'M')
+			checkbox[1].distribute("setSelected",true,true);
+		if(selectedBoxes[i] == 'Tu')
+			checkbox[2].distribute("setSelected",true,true);
+		if(selectedBoxes[i] == 'W')
+			checkbox[3].distribute("setSelected",true,true);
+		if(selectedBoxes[i] == 'Th')
+			checkbox[4].distribute("setSelected",true,true);
+		if(selectedBoxes[i] == 'F')
+			checkbox[5].distribute("setSelected",true,true);
+		if(selectedBoxes[i] == 'Sa')
+			checkbox[6].distribute("setSelected",true,true);
+		if(selectedBoxes[i] == 'Su')
+			checkbox[0].distribute("setSelected",true,true);
+		if (schedule.t_of_day == "AM") {
+            am_pm[1].distribute("setSelected", false, true);
+        } else {
+            am_pm[0].distribute("setSelected", false, true);
+        }
+        existingValue = true;
+	}
 }
 
 var cancelButton = BUTTONS.Button.template(function($){ return{
@@ -90,13 +131,17 @@ var saveButton = BUTTONS.Button.template(function($){ return{
 							repeatedDays: selectedBoxes, 
 							hours: hourField.scroller.textbox.string,
 							minutes: minuteField.scroller.textbox.string,
-							t_of_day: time_of_day};
+							t_of_day: time_of_day,
+							existing: existingValue,
+							container: null};
 			if(checkValidSchedule(newSchedule)) {
 				validMessage.visible = false;
-				schedules.push(newSchedule);
-				var tempScheds = [newSchedule];
-				var str = SCHEDULE_SCREEN.generateDisplayString(tempScheds);
-				str.forEach(SCHEDULE_SCREEN.ListBuilder);
+				if(newSchedule.existing) {
+					SCHEDULE_SCREEN.removeSchedule(oldSchedule.container);
+				}
+				var schedule = [newSchedule];
+				var container = SCHEDULE_SCREEN.generateDisplayContainer(schedule);
+				container.forEach(SCHEDULE_SCREEN.ListBuilder);
 				reset();
 				currentScreen = "schedule";
 				main.run( new TRANSITIONS.Push(), main.last, ScheduleScreen, {direction: "down", duration : 400 });
@@ -237,6 +282,7 @@ var minuteField = new MyTimeField({name: "",});
 minuteField.scroller.hint.string = "Min.";
 var validMessage = new Label( {left: 100, right:100, style: errorStyle, string: "Error!", visible: false})
 var daysLabel = new Label( {left: 0, right: 0, style: labelStyle, skin: whiteSkin, string: "Select Days: ", visible: false});
+var existingValue = false;
 
 exports.CreateScheduleScreen = Container.template(function($) { return { left: 0, right: 0, top: 0, bottom: 0, skin: babyblueskin, active: true, contents: [ 
 	new Column( { left: 0, right: 0, top:0, contents: [
