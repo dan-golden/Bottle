@@ -23,7 +23,7 @@ no_schedule = new Label({ string:"No schedules created yet!", style:errorStyle,}
 exports.ScheduleScreen = Container.template(function($) { return { left: 0, right: 0, top: 0, bottom: 0, skin: babyblueskin, contents: [
 	new Column({left:0, right:0, top:0, height:80, skin: babyblueskin, vertical: 'middle', 
 		contents:[
-			new Label({right: 90, top: 20, string:"Bot-tle", style:bottleStyle,}),
+			new Content({width: 320, height:50, skin:logoSkin}),
 			new Label({ left: 0, right: 0, top:15, style: bottleStyle, vertical: 'middle',  string: 'Schedules', skin: babyblueskin}),
 			no_schedule,
 		]

@@ -92,11 +92,7 @@ exports.homeCol = new Column({
 	left:0, right:0, top:0, bottom:0,
 	skin: babyblueskin,
 	contents:[
-		new Column({left:0, right:0, top:0, height:80, skin: babyblueskin,
-			contents:[
-				new Label({right: 90, top: 20, string:"Bot-tle", style:bottleStyle,}),
-			]
-		}),
+		new Content({width: 320, height:50, skin:logoSkin}),
 		new Line({left:0, right:0, top:0, bottom:0, skin:babyblueskin, contents: [			
 			exports.bottleContainer,
 			new Column({name: "tempControl", left:0, right:0, top:0, bottom:0, skin: babyblueskin,
