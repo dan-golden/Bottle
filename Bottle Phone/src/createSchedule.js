@@ -17,7 +17,7 @@ var saveLogoSkin = new Skin({
 function checkValidHours(hour) {
 	if(isNaN(hour) || hour=="") {
 		return false;
-	} else if(+hour > 24 || +hour < 0) {
+	} else if(+hour > 12 || +hour < 0) {
 		return false;
 	}
 	return true;
