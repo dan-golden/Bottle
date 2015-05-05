@@ -75,9 +75,11 @@ exports.resetCreateScreen = function reset() {
 }
 
 var oldSchedule = null;
+var pm = false;
 
 exports.addAMPM = function addAMPM() {
-	am_pm = new myRadioGroup({buttonNames:"AM,PM"})
+	am_pm = new myRadioGroup({buttonNames:"AM,PM"});
+	trace(am_pm.first+":addAMPM\n");
 	createScreen.column.timeFields.add(am_pm);
 }
 
@@ -109,10 +111,7 @@ exports.populateFields = function populateFields(schedule) {
 			checkbox[0].distribute("setSelected",true,true);
 	}
 	exports.addAMPM();
-	if (schedule.t_of_day == "PM") {
-    	trace(am_pm.first);
-		am_pm.delegate("setSelected",false,true);
-    }
+	pm = (schedule.t_of_day == "PM");
     existingValue = true;
 }
 
@@ -227,15 +226,16 @@ var MyCheckBoxTemplate = BUTTONS.LabeledCheckbox.template(function($){ return{
 
 var time_of_day = "AM";
 
-var myRadioGroup = Column.template(function($){ return{
-	top:10, bottom:0, left:0, right:0, active: true, name: "timeButtons",
+var myRadioGroup = BUTTONS.RadioGroup.template(function($){ return{
+	top:10, bottom:0, left:0, right:0, name: "timeButtons",
 	behavior: Object.create(BUTTONS.RadioGroupBehavior.prototype, {
 		onRadioButtonSelected: { value: function(buttonName){
 			time_of_day = buttonName;
+			this.selectedName = buttonName;
 	}}})
 }});
 
-am_pm = new myRadioGroup({buttonNames:"AM,PM"})
+var am_pm = new myRadioGroup({buttonNames:"AM,PM"})
 
 var checkbox = [];
 checkbox[0] = new MyCheckBoxTemplate({name:"Su"});
@@ -245,12 +245,7 @@ checkbox[3] = new MyCheckBoxTemplate({name:"W"});
 checkbox[4] = new MyCheckBoxTemplate({name:"Th"});
 checkbox[5] = new MyCheckBoxTemplate({name:"F"});
 checkbox[6] = new MyCheckBoxTemplate({name:"Sa"});
-/*
-var am_pm = [];
-am_pm[0] = new MyTimeBoxTemplate({name:"AM"});
-am_pm[0].distribute("setSelected", true, true);
-am_pm[1] = new MyTimeBoxTemplate({name:"PM"});
-*/
+
 var MySwitchTemplate = SWITCHES.SwitchButton.template(function($){ return{
   height:30,skin: babyblueskin,
   behavior: Object.create(SWITCHES.SwitchButtonBehavior.prototype, {
@@ -306,14 +301,7 @@ exports.CreateScheduleScreen = Container.template(function($) { return { left: 0
 			    Label($, {right: 20, style: labelStyle, string: "Time: "}),
 			    hourField,
 			    Label($, {style: labelStyle, string: ":"}),
-			    minuteField,
-			    /*
-			    new Column({left:10, right:0, top:10, height:80, skin: babyblueskin,
-			        contents:[
-			            am_pm[0],
-			            am_pm[1],
-			        ]
-		        }),*/
+			    minuteField
 			]
 		}),
 		new Line( { left:20, right:100, contents: [
@@ -335,7 +323,15 @@ exports.CreateScheduleScreen = Container.template(function($) { return { left: 0
 		        new cancelButton(),
 		        new saveButton(),
 		] } ),
-	]})
+	], behavior: Object.create(Container.prototype, {
+        onDisplayed: { value: function(content){
+        	if(pm) {
+        		trace("heyyyy\n");
+            	am_pm.first.next.distribute("setSelected", true, true);
+           		am_pm.first.distribute("setSelected", false, true);
+           	}
+        }}
+    })})
 ],
 behavior: Object.create(Container.prototype, {
     onTouchEnded: { value: function(content){
