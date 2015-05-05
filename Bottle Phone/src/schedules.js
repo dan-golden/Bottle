@@ -157,7 +157,7 @@ exports.generateDisplayContainer = function generateDisplayString(scheds) {
 			}
 			repeat.string = repeatString;
 		}
-		temperature = new Label({left:1, string: scheds[i].temperature + "\xB0 F", style: labelStyle});
+		temperature = new Label({left:1, string: scheds[i].temperature + "\xB0 C", style: labelStyle});
 		scheds[i].existing = true;
 		scheduleContainer = new Container({left:0, right:0, skin:babyblueskin, contents:[
 								new Line({left:0, right:0, contents:[

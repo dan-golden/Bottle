@@ -35,6 +35,8 @@ function checkValidMinutes(min) {
 function checkValidTemp(temp) {
 	if(isNaN(temp) || temp == "") {
 		return false;
+	} else if(+temp > 100 || +temp < 0) {
+		return false;
 	}
 	return true;
 }
@@ -68,7 +70,6 @@ exports.resetCreateScreen = function reset() {
 		checkbox[i].distribute("setSelected",false,true); 
 	}
 	selectedBoxes = [];
-	trace(createScreen.column.timeFields.last.name+"\n");
 	createScreen.column.timeFields.remove(createScreen.column.timeFields.timeButtons);
     existingValue = false;
 	menu.visible = true;
@@ -79,7 +80,6 @@ var pm = false;
 
 exports.addAMPM = function addAMPM() {
 	am_pm = new myRadioGroup({buttonNames:"AM,PM"});
-	trace(am_pm.first+":addAMPM\n");
 	createScreen.column.timeFields.add(am_pm);
 }
 
@@ -326,7 +326,6 @@ exports.CreateScheduleScreen = Container.template(function($) { return { left: 0
 	], behavior: Object.create(Container.prototype, {
         onDisplayed: { value: function(content){
         	if(pm) {
-        		trace("heyyyy\n");
             	am_pm.first.next.distribute("setSelected", true, true);
            		am_pm.first.distribute("setSelected", false, true);
            	}
