@@ -92,6 +92,7 @@ function generateRepeatedDaysDict(days) {
 }
 
 var schedule_empty = true;
+var numSchedules = 0;
 
 exports.generateDisplayContainer = function generateDisplayString(scheds) {
 	result = [];
@@ -171,9 +172,10 @@ exports.generateDisplayContainer = function generateDisplayString(scheds) {
 		scheds[i].container = scheduleContainer;
 		result.push(scheduleContainer);
 		schedule_empty = false;
+		numSchedules++;
 	}
 	if (result.length > 0) {
-	    no_schedule.string = "";
+	    no_schedule.visible = false;
 	}
 	return result;
 }    
@@ -211,4 +213,7 @@ exports.ListBuilder = function ListBuilder(element, index, array) {
 
 exports.removeSchedule = function removeSchedule(container) {
 	screen.first.menu.remove(container);
+	numSchedules--;
+	if(numSchedules == 0)
+		no_schedule.visible = true;
 }

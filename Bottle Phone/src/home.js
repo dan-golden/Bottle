@@ -18,8 +18,10 @@ var IncreaseTemperatureButtonTemplate = BUTTONS.Button.template(function($){ ret
   ],
   behavior: Object.create(BUTTONS.ButtonBehavior.prototype, {
     onTap: { value:  function(button){
-      updateTemperature(desired_temperature + 5);
-      save_label.string = "Changes saved!";
+    	newTemp = desired_temperature + 5;
+    	if(desired_temperature >= 100) newTemp = desired_temperature;
+        updateTemperature(newTemp);
+        save_label.string = "Changes saved!";
     }}
   })
 }});
@@ -31,7 +33,9 @@ var DecreaseTemperatureButtonTemplate = BUTTONS.Button.template(function($){ ret
   ],
   behavior: Object.create(BUTTONS.ButtonBehavior.prototype, {
     onTap: { value:  function(button){
-      updateTemperature(current_temperature - 5);
+      	newTemp = desired_temperature - 5;
+		if(desired_temperature <= 0) newTemp = desired_temperature;
+        updateTemperature(newTemp);
       save_label.string = "Changes saved!";
     }}
   })
