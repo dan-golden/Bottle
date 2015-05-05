@@ -54,7 +54,7 @@ function checkValidSchedule(schedule) {
 	return true;
 }
 
-function reset() {
+exports.resetCreateScreen = function reset() {
 	tempField.scroller.textbox.string = ""; 
 	hourField.scroller.textbox.string = "";
 	minuteField.scroller.textbox.string = "";
@@ -68,13 +68,18 @@ function reset() {
 		checkbox[i].distribute("setSelected",false,true); 
 	}
 	selectedBoxes = [];
-    am_pm[1].distribute("setSelected", false, true);
-    am_pm[0].distribute("setSelected", true, true);
+	trace(createScreen.column.timeFields.last.name+"\n");
+	createScreen.column.timeFields.remove(createScreen.column.timeFields.timeButtons);
     existingValue = false;
 	menu.visible = true;
 }
 
 var oldSchedule = null;
+
+exports.addAMPM = function addAMPM() {
+	am_pm = new myRadioGroup({buttonNames:"AM,PM"})
+	createScreen.column.timeFields.add(am_pm);
+}
 
 exports.populateFields = function populateFields(schedule) {
 	oldSchedule = schedule;
@@ -88,7 +93,6 @@ exports.populateFields = function populateFields(schedule) {
 	}
 	selectedBoxes = schedule.repeatedDays;
 	for(i = 0; i<selectedBoxes.length; i++) {
-		trace(selectedBoxes[i]+"\n");
 		if(selectedBoxes[i] == 'M')
 			checkbox[1].distribute("setSelected",true,true);
 		if(selectedBoxes[i] == 'Tu')
@@ -103,13 +107,13 @@ exports.populateFields = function populateFields(schedule) {
 			checkbox[6].distribute("setSelected",true,true);
 		if(selectedBoxes[i] == 'Su')
 			checkbox[0].distribute("setSelected",true,true);
-		if (schedule.t_of_day == "AM") {
-            am_pm[1].distribute("setSelected", false, true);
-        } else {
-            am_pm[0].distribute("setSelected", false, true);
-        }
-        existingValue = true;
 	}
+	exports.addAMPM();
+	if (schedule.t_of_day == "PM") {
+    	trace(am_pm.first);
+		am_pm.delegate("setSelected",false,true);
+    }
+    existingValue = true;
 }
 
 var cancelButton = BUTTONS.Button.template(function($){ return{
@@ -117,7 +121,7 @@ var cancelButton = BUTTONS.Button.template(function($){ return{
 	behavior: Object.create(BUTTONS.ButtonBehavior.prototype, {
 		onTap: { value: function(content){
 			currentScreen = "schedule";
-			reset();
+			exports.resetCreateScreen();
 			main.run( new TRANSITIONS.Push(), main.last, ScheduleScreen, {direction: "down", duration : 400 });
 		}}
 	})
@@ -144,7 +148,7 @@ var saveButton = BUTTONS.Button.template(function($){ return{
 				var schedule = [newSchedule];
 				var container = SCHEDULE_SCREEN.generateDisplayContainer(schedule);
 				container.forEach(SCHEDULE_SCREEN.ListBuilder);
-				reset();
+				exports.resetCreateScreen();
 				currentScreen = "schedule";
 				main.run( new TRANSITIONS.Push(), main.last, ScheduleScreen, {direction: "down", duration : 400 });
 			} else {
@@ -208,9 +212,11 @@ var MyCheckBoxTemplate = BUTTONS.LabeledCheckbox.template(function($){ return{
     top:10, bottom:10, left:10, right:10, visible: false, active: true,
     behavior: Object.create(BUTTONS.LabeledCheckboxBehavior.prototype, {
         onSelected: { value:  function(checkBox){
+        	trace(checkBox.buttonLabel.string+" selected\n");
             selectedBoxes.push(checkBox.buttonLabel.string);
         }},
         onUnselected: { value:  function(checkBox){
+            trace(checkBox.buttonLabel.string+" unselected\n");
             selectedBoxes.pop(checkBox.buttonLabel.string);
         }},
         setSelected: { value: function(checkBox, selected) {
@@ -221,19 +227,15 @@ var MyCheckBoxTemplate = BUTTONS.LabeledCheckbox.template(function($){ return{
 
 var time_of_day = "AM";
 
-var MyTimeBoxTemplate = BUTTONS.LabeledCheckbox.template(function($){ return{
-    active: true,
-    behavior: Object.create(BUTTONS.LabeledCheckboxBehavior.prototype, {
-        onSelected: { value:  function(checkBox){
-            time_of_day = checkBox.buttonLabel.string;
-            if (time_of_day == "AM") {
-                am_pm[1].distribute("setSelected", false, true);
-            } else {
-                am_pm[0].distribute("setSelected", false, true);
-            }
-        }},
-    })
+var myRadioGroup = Column.template(function($){ return{
+	top:10, bottom:0, left:0, right:0, active: true, name: "timeButtons",
+	behavior: Object.create(BUTTONS.RadioGroupBehavior.prototype, {
+		onRadioButtonSelected: { value: function(buttonName){
+			time_of_day = buttonName;
+	}}})
 }});
+
+am_pm = new myRadioGroup({buttonNames:"AM,PM"})
 
 var checkbox = [];
 checkbox[0] = new MyCheckBoxTemplate({name:"Su"});
@@ -243,12 +245,12 @@ checkbox[3] = new MyCheckBoxTemplate({name:"W"});
 checkbox[4] = new MyCheckBoxTemplate({name:"Th"});
 checkbox[5] = new MyCheckBoxTemplate({name:"F"});
 checkbox[6] = new MyCheckBoxTemplate({name:"Sa"});
-
+/*
 var am_pm = [];
 am_pm[0] = new MyTimeBoxTemplate({name:"AM"});
 am_pm[0].distribute("setSelected", true, true);
 am_pm[1] = new MyTimeBoxTemplate({name:"PM"});
-
+*/
 var MySwitchTemplate = SWITCHES.SwitchButton.template(function($){ return{
   height:30,skin: babyblueskin,
   behavior: Object.create(SWITCHES.SwitchButtonBehavior.prototype, {
@@ -287,7 +289,7 @@ var daysLabel = new Label( {left: 0, right: 0, style: labelStyle, skin: whiteSki
 var existingValue = false;
 
 exports.CreateScheduleScreen = Container.template(function($) { return { left: 0, right: 0, top: 0, bottom: 0, skin: babyblueskin, active: true, contents: [ 
-	new Column( { left: 0, right: 0, top:0, contents: [
+	new Column( {name:"column", left: 0, right: 0, top:0, contents: [
 		new Content({width: 320, height:50, skin:logoSkin}),
 		validMessage,
 		new Label( {bottom: 10, style: bottleStyle, string: "Create a New Schedule", }),
@@ -299,18 +301,19 @@ exports.CreateScheduleScreen = Container.template(function($) { return { left: 0
 			Label($, {left: 20, right: 20, style: labelStyle, string: "Temperature: "}),
 			tempField
 		]}),
-		new Line({ left:20, right: 20, height:80, skin: babyblueskin,
+		new Line({name:"timeFields", left:20, right: 20, height:80, skin: babyblueskin,
 			contents:[
 			    Label($, {right: 20, style: labelStyle, string: "Time: "}),
 			    hourField,
 			    Label($, {style: labelStyle, string: ":"}),
 			    minuteField,
+			    /*
 			    new Column({left:10, right:0, top:10, height:80, skin: babyblueskin,
 			        contents:[
 			            am_pm[0],
 			            am_pm[1],
 			        ]
-		        }),
+		        }),*/
 			]
 		}),
 		new Line( { left:20, right:100, contents: [

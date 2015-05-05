@@ -18,7 +18,7 @@ var IncreaseTemperatureButtonTemplate = BUTTONS.Button.template(function($){ ret
   ],
   behavior: Object.create(BUTTONS.ButtonBehavior.prototype, {
     onTap: { value:  function(button){
-      updateTemperature(desired_temperature + 1);
+      updateTemperature(desired_temperature + 5);
       save_label.string = "Changes saved!";
     }}
   })
@@ -31,7 +31,7 @@ var DecreaseTemperatureButtonTemplate = BUTTONS.Button.template(function($){ ret
   ],
   behavior: Object.create(BUTTONS.ButtonBehavior.prototype, {
     onTap: { value:  function(button){
-      updateTemperature(current_temperature - 1);
+      updateTemperature(current_temperature - 5);
       save_label.string = "Changes saved!";
     }}
   })
@@ -62,30 +62,12 @@ var boil_button = new SmallTextButtonTemplate({textForLabel:"b", temp: 212});
 //var coffee_button = new SmallTextButtonTemplate({textForLabel:"coffee", temp: current_temperature});
 //var iceTea_button = new SmallTextButtonTemplate({textForLabel:"iced tea", temp: current_temperature});
 
-// Labels
-// var current_temperature_label = new Label({string: current_temperature_string, style:textStyle, skin: blueSkin});
-
 // Columns
-var mainCol = new Column({
-	left:0, right:0, top:0, bottom:0,
-	skin: babyblueskin,
-	contents:[
-		new Line({left:0, right:0, top:0, height:80, skin: babyblueskin,
-			contents:[
-				new Label({left:-18, right:0, string:"Bot-tle", style:textStyle,}),
-			]
-		}),
-		new Line({left:0, right:0, top:0, bottom:0, skin: babyblueskin,
-			contents:[
-				new Label({left:10, right:20, string:"Current Temperature:", style:textStyle, skin: babyblueskin}),
-			]
-		}),
-	],
-});
 
 exports.bottleContainer = new Container({left:20, width:100, height:225, bottom: 50, contents: [
 										new Container({name: "waterContainer", left:4, right:4, bottom: 4,  height: 190, skin: blueSkin}),
 										new Picture({top:0, bottom: 0, url:"empty bottle.png"}),
+										new Label({name:"waterLabel", bottom:-25, left:4, right:4, string:"100% Full", style: waterLevelStyle})
 										]});
 
 exports.homeCol = new Column({

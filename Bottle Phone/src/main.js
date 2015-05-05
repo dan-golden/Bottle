@@ -63,6 +63,7 @@ var inputStyle = new Style({font:"12px", color:"black", vertical: "middle", hori
 var titleStyle = new Style({font:"bold 30px", color:"black"});
 var scheduleTitleStyle = new Style({font:"bold 20px Helvetica, sans-serif;", color:"black"});
 var labelStyle = new Style( { font: "15px Helvetica, sans-serif;", color:"black" } );
+var waterLevelStyle = new Style({font:"bold 20px", color:"black", vertical: "middle", horizontal: 'center',});
 var redSkin = new Skin({fill:'red'});
 var biggerText = new Style({font:"bold 60px", color:"black"});
 var bigText = new Style({font:"bold 30px", color:"black"});
@@ -121,6 +122,14 @@ function updateDeviceDispenseRate() {
 
 function repopulateScheduleFields(schedule) {
 	CREATE_SCHEDULE_SCREEN.populateFields(schedule);
+}
+
+function addAMPM() {
+	CREATE_SCHEDULE_SCREEN.addAMPM();
+}
+
+function resetCreateScreen() {
+	CREATE_SCHEDULE_SCREEN.resetCreateScreen();
 }
 
 //BUTTONS
@@ -263,6 +272,7 @@ Handler.bind("/updateWaterLevel", Behavior({
 	    water_level = parseFloat(text); 
 		water_level_label.string = water_level;
 		TEMPERATURE_SCREEN.bottleContainer.waterContainer.height = 190 * water_level/100;
+		TEMPERATURE_SCREEN.bottleContainer.waterLabel.string = Math.round(water_level)+"% Full";
 	}
 }));
 
@@ -289,9 +299,10 @@ var ScheduleScreen = Container.template(function($) { return { left: 0, right: 0
 	SCHEDULE_SCREEN.ScheduleScreen(new Object()),
 ], }});
 
+createScreen = CREATE_SCHEDULE_SCREEN.CreateScheduleScreen();
 var CreateScheduleScreen = Container.template(function($) { return { left: 0, right: 0, top: 0, bottom: 0, skin: babyblueskin, 
 	contents: [
-		CREATE_SCHEDULE_SCREEN.CreateScheduleScreen(),
+		createScreen,
 	], onTouchEnded: { value: function(content){
 		KEYBOARD.hide();
 		content.focus();

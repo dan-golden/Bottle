@@ -13,6 +13,7 @@ var plusButton = BUTTONS.Button.template(function($){ return{
 		onTap: { value: function(content){
 			currentScreen = "create";
 			menu.visible = false;
+			addAMPM();
 			main.run( new TRANSITIONS.Push(), main.last, CreateScheduleScreen, {direction: "up", duration : 400 });
 		}}
 	})
@@ -100,22 +101,60 @@ exports.generateDisplayContainer = function generateDisplayString(scheds) {
 		time = new Label({left:1, string: timeString, style:labelStyle});
 		repeat = new Label({left:1, string: "Today, Repeat Off", style: labelStyle});
 		if(scheds[i].repeat == 1) {
+			numDays = scheds[i].repeatedDays.length;
+			trace(numDays+"\n");
 			days = generateRepeatedDaysDict(scheds[i].repeatedDays);
 			repeatString = "Repeats on ";
-			if(days["Su"]) 
-				repeatString+="Su, ";
-			if(days["M"])
-				repeatString+="M, ";
-			if(days["Tu"])
-				repeatString+="Tu, ";
-			if(days["W"])
-				repeatString+="W, ";
-			if(days["Th"])
-				repeatString+="Th, ";
-			if(days["F"])
-				repeatString+="F, ";
-			if(days["Sa"])
-				repeatString+="Sa, ";
+			if(days["Su"]) {
+				if(numDays == 1)
+					repeatString+="Su";
+				else
+					repeatString+="Su, ";
+				numDays--;
+			}
+			if(days["M"]) {
+				trace(numDays+"\n");
+				if(numDays == 1)
+					repeatString+="M";
+				else
+					repeatString+="M, ";
+				numDays--;
+			}
+			if(days["Tu"]) {
+				if(numDays == 1)
+					repeatString+="Tu";
+				else
+					repeatString+="Tu, ";
+				numDays--;
+			}
+			if(days["W"]) {
+				if(numDays == 1)
+					repeatString+="W";
+				else
+					repeatString+="W, ";
+				numDays--;
+			}
+			if(days["Th"]) {
+				if(numDays == 1)
+					repeatString+="Th";
+				else
+					repeatString+="Th, ";
+				numDays--;
+			}
+			if(days["F"]) {
+				if(numDays == 1)
+					repeatString+="F";
+				else
+					repeatString+="F, ";
+				numDays--;
+			}
+			if(days["Sa"]) {
+				if(numDays == 1)
+					repeatString+="Sa";
+				else
+					repeatString+="Sa, ";
+				numDays--;
+			}
 			repeat.string = repeatString;
 		}
 		temperature = new Label({left:1, string: scheds[i].temperature + "\xB0 F", style: labelStyle});
