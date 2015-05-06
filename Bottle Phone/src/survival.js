@@ -188,7 +188,7 @@ var logoSkin = new Skin({
 	texture: BottleLogo,
 	fill:"black",
 });
-var rateField = new MyField1({ name: "",});
+var rateField = new MyField1({ name: "", string: 0});
 var amountField = new MyField({ name: "",});
 var line1 = new Line({left:0, right:0, top:0, height: 40, skin: babyblueskin, visible: false, contents: [
 				new Label({string: "Dispense " }),

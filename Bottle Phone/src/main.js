@@ -286,18 +286,17 @@ Handler.bind("/updateTemperature", Behavior({
 	    menuTempLabel.string = current_temperature + "";   
 
 	    if (bottle_status == 0 ) {
-	    current_temperature_label.string = "OFF"} 
-	    else { current_temperature_label.string = current_temperature_string; }
-	    if (bottle_status == 0 ) {
-	    current_temperature_label.string = "OFF"} 
-	    else { current_temperature_label.string = current_temperature_string; }
-	    if (bottle_status == 0 ) {
-
+	    current_temperature_label.string = "OFF";
 	    menuTempLabel.string = "OFF"; 
-	    heating_cooling_label.string = "";} 
-	    else { menuTempLabel.string = current_temperature + "\xB0 C"; 
-	    heating_cooling_label.string = heating_cooling;}
-	    menuTempLabel.string = "OFF"} 
+	    heating_cooling_label.string = "";
+	    heating_cooling_label.visible = false;} 
+	    else { 
+	    
+	    menuTempLabel.string = current_temperature + "\xB0 C";
+	    current_temperature_label.string = current_temperature_string; 
+	    heating_cooling_label.string = heating_cooling;
+	    heating_cooling_label.visible = true;}
+	    } 
 
 	    
 	}
@@ -315,9 +314,11 @@ Handler.bind("/updateBottleStatus", Behavior({
 		if (bottle_status == 0 ) {
 	    menuTempLabel.string = "OFF"; 
 	    heating_cooling_label.string = "";
+	    heating_cooling_label.visible = false;
 	    current_temperature_label.string = "OFF"; } 
 	    else { menuTempLabel.string = current_temperature + "\xB0 C"; 
 	    heating_cooling_label.string = heating_cooling;
+	    heating_cooling_label.visible = true;
 	    handler.invoke(new Message("/updateTemperature")) }
 		
 		
