@@ -91,13 +91,26 @@ var desired_temperature = 25;
 var current_temperature_string = current_temperature + temperature_unit + " now"; // range of temp should be 32 degrees for freezing to 212 degrees for boiling
 var desired_temperature_string = desired_temperature + temperature_unit;
 var survival_mode = "OFF";
-var dispense_rate = 0;
-var dispense_time = 0;
+var dispense_rate = "0";
+var dispense_time = "0";
 var schedules = [];
 var currentScreen = "temperature";
+var heating_cooling = "Ready";
+var heating_cooling_label = new Label({ left: 0, right: 0, top:0, style: bottleStyle, string: heating_cooling});
+var real_desired = 25; 
+var real_current = 25; 
+
 
 bottle_status = "ON";
 water_level = 20; 
+consumption_level = 0; 
+
+function checkValidAmount(amount) {
+	if (amount>24 | amount <0) {
+		return false; 
+	} else {
+		return true;
+	}}
 
 var currentScreen = "temperature";
 
@@ -111,8 +124,8 @@ function updateDeviceTemperature(newTemp) {
 function updateDeviceSurvivalMode() {
     // make sure survival_mode is up to date before calling this to update device
     var message = new Message(deviceURL + "updateSurvivalMode");
-    message.responseText = survival_mode;
-    application.invoke(message, Message.JSON);    
+    message.responseText = JSON.stringify({survival_mode: survival_mode, dispense_rate: dispense_rate, dispense_time: dispense_time});
+    application.invoke(message, Message.JSON); 
 }
 
 function updateDeviceDispenseRate() {
@@ -137,7 +150,7 @@ function resetCreateScreen() {
 
 var survivalButton = BUTTONS.Button.template(function($){ return{
 	left: -10, right: -10, top: 2, height:50, skin: navyblueskin,
-	contents: [ new Label({left:0, right:0, height:40, string:"Water Monitoring", style: textStyle})],
+	contents: [ new Label({left:0, right:0, height:40, string:"Tracking", style: textStyle})],
 	behavior: Object.create(BUTTONS.ButtonBehavior.prototype, {
 		onTap: { value: function(content){
 			toScreen = "Survival";
@@ -179,6 +192,10 @@ var suButton = new survivalButton();
 Handler.bind("/discover", Behavior({
 	onInvoke: function(handler, message){
 		deviceURL = JSON.parse(message.requestText).url;
+		handler.invoke(new Message("/updateTemperature")); 
+		handler.invoke(new Message("/updateBottleStatus")); 
+		handler.invoke(new Message("/updateWaterLevel")); 
+		handler.invoke(new Message(deviceURL + "updateTemperature"), Message.TEXT);
 		trace("Discovered the device\n");
 	}
 }));
@@ -193,70 +210,108 @@ Handler.bind("/forget", Behavior({
 Handler.bind("/desiredTemperature", Behavior({
 	onInvoke: function(handler, message){
 	    message.responseText = desired_temperature;
-		trace("inside desiredTemperature in phone\n");
+	    real_current = desired_temperature;
+	    if (real_current > real_desired) {heating_cooling = "Cooling"; }
+	    else if (real_current < real_desired) {heating_cooling = "Heating"; }
+	    else {heating_cooling = "Ready";}
+	    heating_cooling_label.string = heating_cooling;
+		//trace("inside desiredTemperature in phone\n");
 	}
 }));
 
 Handler.bind("/currentTemperature", Behavior({
 	onInvoke: function(handler, message){
 	    message.responseText = current_temperature;
-		trace("inside currentTemperature in phone\n");
+	    real_desired = current_temperature;
+	    //trace('real_current' + real_current + "\n");
+	    //trace('real_desired'+ real_desired + "\n");
+	    if (real_current > real_desired) {heating_cooling = "Cooling"; }
+	    else if (real_current < real_desired) {heating_cooling = "Heating"; }
+	    else {heating_cooling = "Ready";}
+	    heating_cooling_label.string = heating_cooling;
+		//trace("inside currentTemperature in phone\n");
+		
+		
+		
 	}
 }));
 
 Handler.bind("/currentBottleStatus", Behavior({
 	onInvoke: function(handler, message){
 	    message.responseText = bottle_status;
-		trace("inside currentBottleStatus in phone\n");
+		//trace("inside currentBottleStatus in phone\n");
 	}
 }));
 
 Handler.bind("/currentSurvivalMode", Behavior({
 	onInvoke: function(handler, message){
-	    message.responseText = survival_mode;
-		trace("inside currentSurvivalMode in phone\n");
+	    //message.responseText = survival_mode;
+	    message.responseText = JSON.stringify({survival_mode: survival_mode, dispense_rate: dispense_rate, dispense_time: dispense_time});
+		//trace("inside currentSurvivalMode in phone\n");
+		message.status = 200;
 	}
 }));
 
-Handler.bind("/currentDispenseRate", Behavior({
+
+Handler.bind("/currentConsumption", Behavior({
 	onInvoke: function(handler, message){
-	    message.responseText = JSON.stringify( { time: dispense_time , rate: dispense_rate} );
-		trace("inside currentDispenseRate in phone\n");
+		    message.responseText = consumption_level;
 	}
 }));
 
+
+Handler.bind("/delayShowMenu", {
+    onInvoke: function(handler, message){
+        handler.wait(250);
+    },
+    onComplete: function(handler, message){
+        menu.visible = true;
+    }});
 
 
 Handler.bind("/updateTemperature", Behavior({
 	onInvoke: function(handler, message){
 	    handler.invoke( new Message(deviceURL + "currentTemperature"), Message.TEXT );
-		trace("inside updateTemp in phone\n");
+		//trace("inside updateTemp in phone\n");
 	},
 	onComplete: function(handler, message, text) {
 	    current_temperature = parseFloat(text);
+	    real_current = parseFloat(text);
+	    if (real_current > real_desired) {heating_cooling = "Cooling"; }
+	    else if (real_current < real_desired) {heating_cooling = "Heating"; }
+	    else {heating_cooling = "Ready";}
+	    heating_cooling_label.string = heating_cooling;
 	    current_temperature_string = current_temperature + temperature_unit + " now";
-	    current_temperature_label.string = current_temperature_string;
 	    menuTempLabel.string = current_temperature + "";   
-	    menuTempLabel.string = current_temperature + ""; 
 	    if (bottle_status == 0 ) {
+	    current_temperature_label.string = "OFF"} 
+	    else { current_temperature_label.string = current_temperature_string; }
+	    if (bottle_status == 0 ) {
+
+	    menuTempLabel.string = "OFF"; 
+	    heating_cooling_label.string = "";} 
+	    else { menuTempLabel.string = current_temperature + "\xB0 C"; 
+	    heating_cooling_label.string = heating_cooling;}
 	    menuTempLabel.string = "OFF"} 
-	    else { menuTempLabel.string = current_temperature + "\xB0 C"; }
-	    
-	}
+	
 }));
 
 
 Handler.bind("/updateBottleStatus", Behavior({
 	onInvoke: function(handler, message){
 	    handler.invoke( new Message(deviceURL + "currentBottleStatus"), Message.TEXT );
-		trace("inside updateBottleStatus in phone\n");
+		//trace("inside updateBottleStatus in phone\n");
 	},
 	onComplete: function(handler, message, text) {
 	    bottle_status = text; 
 		bottle_status_label.string = bottle_status; 
 		if (bottle_status == 0 ) {
-	    menuTempLabel.string = "OFF"} 
-	    else { handler.invoke(new Message("/updateTemperature")) }
+	    menuTempLabel.string = "OFF"; 
+	    heating_cooling_label.string = "";
+	    current_temperature_label.string = "OFF"; } 
+	    else { menuTempLabel.string = current_temperature + "\xB0 C"; 
+	    heating_cooling_label.string = heating_cooling;
+	    handler.invoke(new Message("/updateTemperature")) }
 		
 		
 		
@@ -266,7 +321,7 @@ Handler.bind("/updateBottleStatus", Behavior({
 Handler.bind("/updateWaterLevel", Behavior({
 	onInvoke: function(handler, message){
 	    handler.invoke( new Message(deviceURL + "currentWaterLevel"), Message.TEXT );
-		trace("inside updateWaterLevel in phone\n");
+		//trace("inside updateWaterLevel in phone\n");
 	},
 	onComplete: function(handler, message, text) {
 	    water_level = parseFloat(text); 
@@ -276,18 +331,30 @@ Handler.bind("/updateWaterLevel", Behavior({
 	}
 }));
 
+Handler.bind("/updateConsumptionLevel", Behavior({
+	onInvoke: function(handler, message){
+	    handler.invoke( new Message(deviceURL + "currentConsumptionLevel"), Message.TEXT );
+	},
+	onComplete: function(handler, message, text) {
+	    consumption_level = parseFloat(text); 
+		consumption_level_label.string = consumption_level;
+	}
+}));
+
+
 
 // Labels
 var current_temperature_label = new Label({string: current_temperature_string, style:bigText, skin: babyblueskin});
 var desired_temperature_label = new Label({string: desired_temperature_string, style:biggerText, skin: babyblueskin});
 var survival_mode_label = new Label({string: survival_mode, style:bottleStyle, skin: babyblueskin});
-var dispense_rate_label = new Label({string: dispense_rate, style:bottleStyle, skin: babyblueskin});
-var dispense_time_label = new Label({string: dispense_time, style:bottleStyle, skin: babyblueskin});
+//var dispense_rate_label = new Label({string: dispense_rate, style:bottleStyle, skin: babyblueskin});
+//var dispense_time_label = new Label({string: dispense_time, style:bottleStyle, skin: babyblueskin});
 var save_label = new Label({string: "Changes Saved!", style:labelStyle, skin: babyblueskin, visible: false});
 var survival_title_label = new Label({ left: 0, right: 0, top:0, vertical: 'middle', style: bottleStyle, string: 'Survival Mode', skin: babyblueskin});
-var survival_title_label = new Label({ left: 0, right: 0, top:0, vertical: 'middle', style: bottleStyle, string: 'Water Monitoring', skin: babyblueskin});
+var survival_title_label = new Label({ left: 0, right: 0, top:0, vertical: 'middle', style: bottleStyle, string: 'Advanced Tracking', skin: babyblueskin});
 var bottle_status_label = new Label({left:0, right:0, height:40, width:70, string: bottle_status, style: labelStyle}); //need to add to main screen 
 var water_level_label = new Label({left:0, right:0, height:40, width:70, string: water_level, style: labelStyle}); //need to add to main screen 
+var consumption_level_label = new Label({height:40, width:30, left: 0, string: consumption_level, style: labelStyle}); //need to add to main screen 
 var SURVIVAL_SCREEN = require('survival.js');
 var CREATE_SCHEDULE_SCREEN = require("createSchedule.js");
 var SCHEDULE_SCREEN = require("schedules.js");
@@ -310,11 +377,7 @@ var CreateScheduleScreen = Container.template(function($) { return { left: 0, ri
 }});
 
 var SurvivalScreen = Container.template(function($) { return { left: 0, right: 0, top: 0, bottom: 0, skin: babyblueskin, contents: [
-	//SURVIVAL_SCREEN.mainCol,
 	SURVIVAL_SCREEN.SurvivalScreen(),
-	//new menuButton(),	
-	//SURVIVAL_SCREEN.mainCol,
-
 ], }});
 
 var TemperatureScreen = Container.template(function($) { return { left: 0, right: 0, top: 0, bottom: 0, skin: babyblueskin, contents: [

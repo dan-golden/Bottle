@@ -18,6 +18,18 @@ var configure = exports.configure = function(configuration) {
 						defaultControl : PinsSimulators.BUTTON
 					}
 				),
+				
+				new PinsSimulators.AnalogInputAxisDescription(
+					{
+						valueLabel : "Current Temperature",
+						valueID : "slider",
+						minValue: 0,
+						maxValue: 100,
+						defaultControl : PinsSimulators.SLIDER,
+						speed : 0,
+						value: 25
+					}
+				),
 				new PinsSimulators.AnalogInputAxisDescription(
 					{
 						valueLabel : "Water Level",
@@ -31,16 +43,15 @@ var configure = exports.configure = function(configuration) {
 				),
 				new PinsSimulators.AnalogInputAxisDescription(
 					{
-						valueLabel : "Current Temperature",
-						valueID : "slider",
+						valueLabel : "Water Consumed",
+						valueID : "consumption",
 						minValue: 0,
-						maxValue: 100,
+						maxValue: 150,
 						defaultControl : PinsSimulators.SLIDER,
 						speed : 0,
-						value: 25
+						value: 0
 					}
 				),
-				
 				
 			]
 		});
@@ -61,4 +72,5 @@ exports.pins = {
 			bottleStatus: { type: "A2D" }, 
 			waterLevel: { type: "A2D" }, 
 			slider: { type: "A2D" }, 
+			consumption: { type: "A2D" }, 
 		};

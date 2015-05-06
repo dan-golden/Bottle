@@ -36,6 +36,7 @@ var DecreaseTemperatureButtonTemplate = BUTTONS.Button.template(function($){ ret
       	newTemp = desired_temperature - 5;
 		if(desired_temperature <= 0) newTemp = desired_temperature;
         updateTemperature(newTemp);
+        
       save_label.string = "Changes saved!";
     }}
   })
@@ -66,6 +67,7 @@ var boil_button = new SmallTextButtonTemplate({textForLabel:"b", temp: 212});
 //var coffee_button = new SmallTextButtonTemplate({textForLabel:"coffee", temp: current_temperature});
 //var iceTea_button = new SmallTextButtonTemplate({textForLabel:"iced tea", temp: current_temperature});
 
+
 // Columns
 
 exports.bottleContainer = new Container({left:20, width:100, height:225, bottom: 50, contents: [
@@ -87,6 +89,7 @@ exports.homeCol = new Column({
 					desired_temperature_label,			
 					current_temperature_label,
 					decrease_button,
+					heating_cooling_label,
 				]
 			}),
 		]}),

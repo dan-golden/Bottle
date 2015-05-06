@@ -1,17 +1,12 @@
 var alert_label = new Label({ left: 50, right: 0, top:15, vertical: 'middle', style: bottleStyle, string: 'Alert: '});
-function checkValidAmount(amount) {
-	if (amount>24) {
-		return false; 
-	} else {
-		return true;
-	}}
+
 
 var MySlider = SLIDERS.HorizontalSlider.template(function($){ return{
   height:50, left:50, right:50,
   behavior: Object.create(SLIDERS.HorizontalSliderBehavior.prototype, {
     onValueChanged: { value: function(container){
       SLIDERS.HorizontalSliderBehavior.prototype.onValueChanged.call(this, container);
-      trace("Value is: " + this.data.value + "\n");
+      //trace("Value is: " + this.data.value + "\n");
       dispense_rate = this.data.value.toFixed(0);
       dispense_rate_label.string = "Dispense " + dispense_rate + " oz";
       updateDeviceDispenseRate();
@@ -20,7 +15,7 @@ var MySlider = SLIDERS.HorizontalSlider.template(function($){ return{
 }});
 
 
-var MySlider1 = SLIDERS.HorizontalSlider.template(function($){ return{
+/*var MySlider1 = SLIDERS.HorizontalSlider.template(function($){ return{
   height:50, left:50, right:50,
   behavior: Object.create(SLIDERS.HorizontalSliderBehavior.prototype, {
     onValueChanged: { value: function(container){
@@ -31,14 +26,14 @@ var MySlider1 = SLIDERS.HorizontalSlider.template(function($){ return{
       updateDeviceDispenseRate();
       
   }}})
-}});
+}});*/
 
 var MySwitchTemplate = SWITCHES.SwitchButton.template(function($){ return{
   height:50, width: 10, right: 70, left: 0, top: 0, 
   behavior: Object.create(SWITCHES.SwitchButtonBehavior.prototype, {
     onValueChanged: { value: function(container){
       SWITCHES.SwitchButtonBehavior.prototype.onValueChanged.call(this, container);
-      trace("Value is: " + this.data.value + "\n");
+      //trace("Value is: " + this.data.value + "\n");
       if (this.data.value == 1) {
       	survival_mode = "ON";
       	line1.visible = true; 
@@ -52,41 +47,36 @@ var MySwitchTemplate = SWITCHES.SwitchButton.template(function($){ return{
       	save_button.visible = false;
       	validMessage.visible = false;
       }
-      survival_mode_label.string = "Water Monitoring is " + survival_mode;
+      survival_mode_label.string = "Water Tracking is " + survival_mode;
       updateDeviceSurvivalMode(); 
       
   }}})
 }});
 
 
-
-/*var MyButtonTemplate = BUTTONS.Button.template(function($){ return{
-  top:25, bottom:25, left:-10, right:-10, height: 50, 
-  contents:[
-    new Label({left:0, right:0, height:50, string:$.textForLabel, style:textStyle})
-  ],
-  behavior: Object.create(BUTTONS.ButtonBehavior.prototype, {
-    onTap: { value:  function(button){
-      trace("Button was tapped.\n");
-      save_label.visible = true;
-    }}
-  })
-}});*/
-
 var MyButtonTemplate = BUTTONS.Button.template(function($){ return{
 	height:50, skin: saveLogoSkin, visible: false,
 	behavior: Object.create(BUTTONS.ButtonBehavior.prototype, {
 		onTap: { value: function(content){
-			trace("Button was tapped.\n");
-     		 save_label.visible = true;
-			}}
+			//trace("Button was tapped.\n");
+     		 if(checkValidAmount(dispense_rate) == false) {
+				save_label.visible = false;
+			} else {
+				save_label.visible = true;
+			}
+     		 
+     		 //content.invoke(new Message("/currentSurvivalMode"));
+     		 content.invoke(new Message(deviceURL + "updateSurvivalMode"), Message.JSON);
+     		 //trace("calling device's update survival handler");
+     		 
+			}}, 
+			
 	})
 }});
 
-var amount = ""; 
 
-var validMessage = new Label( {left: 15, right:0, style: errorStyle, string: "Selected amount exceeds bottle capacity!", visible: false})	
 
+var validMessage = new Label( {left: 0, right:0, top: 15, style: errorStyle, string: "Please enter a valid amount up to 24oz", visible: false})	
 
 var MyField = Container.template(function($) { return { 
   width: 170, height: 36, top: 0, skin: nameInputSkin, contents: [
@@ -99,24 +89,40 @@ var MyField = Container.template(function($) { return {
          	behavior: Object.create( CONTROL.FieldLabelBehavior.prototype, {
          		onEdited: { value: function(label){
          			var data = this.data;
+
          			
               data.name = label.string;
-              amount = label.string;
-              
+              //amount = label.string;
+              dispense_rate = parseFloat(label.string);
+              //trace("printing dispense rate " + dispense_rate); 
               label.container.hint.visible = ( data.name.length == 0 );	
               
 
-			if(checkValidAmount(amount) == true) {
+			if(checkValidAmount(dispense_rate) == true) {
 				validMessage.visible = false;
+				save_label.visible = false;
 			} else {
 				validMessage.visible = true;
 			}
 			
+
+              		data.name = label.string;
+              		amount = label.string;
+              		label.container.hint.visible = ( data.name.length == 0 );	
+					if(checkValidAmount(amount) == true) {
+						validMessage.visible = false;
+					} else {
+						validMessage.visible = true;
+					}	
+         		}},
+         		onFocused: { value: function(label){
+         			menu.visible = false;
+         			KEYBOARD.show();
          		}}
          	}),
          }),
          Label($, {
-   			 	left:4, right:4, top:4, bottom:4, style:fieldHintStyle, string:"", name:"hint",
+   			 left:4, right:4, top:4, bottom:4, style:fieldHintStyle, string:"", name:"hint",
          })
       ]
     })
@@ -137,13 +143,23 @@ var MyField1 = Container.template(function($) { return {
          			var data = this.data;
          			
               data.name = label.string;
-              amount = label.string;
+              //amount = label.string;
               
+              dispense_time = parseFloat(label.string);
+              //trace("printing dispense time " + dispense_time); 
               label.container.hint.visible = ( data.name.length == 0 );	
               
 
 			
 			
+         			var data = this.data;	
+          		    data.name = label.string;
+              		amount = label.string;
+	                label.container.hint.visible = ( data.name.length == 0 );	
+         		}},
+         		onFocused: { value: function(label){
+         			menu.visible = false;
+         			KEYBOARD.show();
          		}}
          	}),
          }),
@@ -164,7 +180,6 @@ var saveLogoSkin = new Skin({
 
 var save_button = new MyButtonTemplate({textForLabel:"Save", skin: saveLogoSkin, visible: false});
 
-	
 
 var BottleLogo = new Texture("./bottleTitle.png");
 var logoSkin = new Skin({
@@ -199,23 +214,27 @@ exports.SurvivalScreen = Container.template(function($) {return { left: 0, right
 				save_label,
 				survival_title_label,
 				new Line({left:0, right:0, top:0, bottom:0, skin: babyblueskin, contents: [
+					new Label({left:50, right:0, top:0, bottom:0, width: 80, string: "Water Consumed: "}),	
+					consumption_level_label, 
+					new Label({left:0, right:0, top:0, bottom:0, string: " oz", }),	
+					
+				]
+			}),
+				new Line({left:0, right:0, top:0, bottom:0, skin: babyblueskin, contents: [
 					alert_label, 
 					new MySwitchTemplate({value: 0}),	
 					
 				]
 			}),
-
 				line1, 
 				line2, 
-				
-				save_button,
-				
-				
+				save_button,	
 			], 
 behavior: Object.create(Container.prototype, {
     onTouchEnded: { value: function(content){
       KEYBOARD.hide();
       content.focus();
+      application.invoke(new Message("/delayShowMenu"));
     }}
   })
 		}),
@@ -227,6 +246,7 @@ behavior: Object.create(Container.prototype, {
     onTouchEnded: { value: function(content){
       KEYBOARD.hide();
       content.focus();
+      application.invoke(new Message("/delayShowMenu"));
     }}
   })
 }});

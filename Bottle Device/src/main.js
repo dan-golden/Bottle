@@ -19,6 +19,14 @@ new_status = 0;
 old_level = 16; 
 new_level = 16;  
 water_level = 16;  
+dispense_rate = "0"; 
+dispense_time = "0"; 
+old_consumption = 0; 
+new_consumption = 0; 
+consumption_level = 0; 
+water_left = 24; 
+function getWaterLeft(water_level) {
+	water_left = 24 * (water_level/100)}
 
 // Handler calls
 Handler.bind("/discover", Behavior({
@@ -51,11 +59,17 @@ Handler.bind("/currentWaterLevel", Behavior({
 	}
 }));
 
+Handler.bind("/currentConsumptionLevel", Behavior({
+	onInvoke: function(handler, message){
+	    message.responseText = consumption_level;
+	}
+}));
+
 
 Handler.bind("/updateBottleStatus", Behavior({
 	onInvoke: function(handler, message){
 	    handler.invoke( new Message(phoneURL + "currentBottleStatus"), Message.TEXT );
-		trace("inside updateBottleStatus in device");
+		//trace("inside updateBottleStatus in device");
 	},
 	onComplete: function(handler, message, text) {
 		bottle_status = parseFloat(text); 
@@ -77,18 +91,59 @@ Handler.bind("/updateTemperature", Behavior({
 		desired_temperature = parseFloat(text);
 		desired_temperature_string = desired_temperature + temperature_unit;
 		desired_temperature_label.string = desired_temperature_string;
-		trace("desired temp " + desired_temperature);
+		//trace("desired temp " + desired_temperature);
 	}
 }));
 
-Handler.bind("/updateSurvivalMode", Behavior({
+Handler.bind("/updateConsumption", Behavior({
 	onInvoke: function(handler, message){
-	    handler.invoke(new Message(phoneURL + "currentSurvivalMode"), Message.TEXT);
+	    handler.invoke(new Message(phoneURL + "currentConsumption"), Message.TEXT);
 	},
 	onComplete: function(handler, message, text) {
-	    survival_mode_switch.string = text;
+		desired_temperature = parseFloat(text);
+		desired_temperature_string = desired_temperature + temperature_unit;
+		desired_temperature_label.string = desired_temperature_string;
+		//trace("desired temp " + desired_temperature);
 	}
 }));
+
+
+function checkValidAmount(amount) {
+	if (amount>24 | amount < 0) {
+		return false; 
+	} else {
+		return true;
+	}}
+
+Handler.bind("/updateSurvivalMode", Behavior({
+	onInvoke: function(handler, message){
+		    //trace("update survival mode was called \n");
+	
+	    handler.invoke(new Message(phoneURL + "currentSurvivalMode"), Message.JSON);
+	},
+	onComplete: function(handler, message, json) {
+		//trace("finished call to survival mode in phone");
+	    survival_mode_switch.string = json.survival_mode;
+	    if (json.survival_mode == "OFF") {
+	    	dispense_rate = "0"; 
+	    	dispense_time = "0" 
+	    	dispense_rate_label.string = "0";
+	    	dispense_time_label.string = "0";
+	    	}else {
+	    	
+	    	
+	    	if (checkValidAmount(json.dispense_rate) == true) {
+	    	dispense_rate = json.dispense_rate; 
+	    	dispense_time = json.dispense_time;
+	    	} 
+	    	
+	    	dispense_rate_label.string = dispense_rate;
+	   		dispense_time_label.string = dispense_time;
+	   	}
+	   
+	}
+}));
+
 
 
 Handler.bind("/potResult", Object.create(Behavior.prototype, {
@@ -104,7 +159,7 @@ Handler.bind("/potResult", Object.create(Behavior.prototype, {
 					handler.invoke( new Message(phoneURL + "updateBottleStatus"), Message.JSON );
 					}
 				if (old_level != new_level) {
-					trace("Water Level Changed!\n");
+					//trace("Water Level Changed!\n");
 					water_level = new_level; 
 					water_level_label.string = water_level + "%"; 
 					old_level = new_level; 
@@ -120,14 +175,27 @@ Handler.bind("/potResult", Object.create(Behavior.prototype, {
 				    handler.invoke( new Message(phoneURL + "updateTemperature"), Message.JSON );
 				    
 				}
+				if (old_consumption != new_consumption) {
+					//trace("Water Level Changed!\n");
+					consumption_level = new_consumption; 
+					consumption_level_label.string = consumption_level + " oz"; 
+					old_consumption = new_consumption; 
+					handler.invoke( new Message(phoneURL + "updateConsumptionLevel"), Message.JSON );
+					}
 			}}
 }));
+
+
+
 var water_level_label = new Label({left:0, right:0, height:40, width:70, string:water_level + "%", style: labelStyle});
+var consumption_level_label = new Label({left:0, right:0, height:40, width:70, string:consumption_level + " oz", style: labelStyle});
 var bottle_status_label = new Label({left:0, right:0, height:40, width:70, string:bottle_status, style: labelStyle});
 var desired_temperature_label = new Label({left:0, right:0, height:40, width:70, string:desired_temperature, style: labelStyle});
 var current_temperature_label = new Label({left:0, right:0, height:40, width:70, string:current_temperature, style: labelStyle});
 var last_time_updated = new Label({left:20, right:20, height:40, string:new Date(), style: labelStyle});
 var survival_mode_switch = new Label({left:0, right:0, height:40, width:80, string:"OFF", style: labelStyle});
+var dispense_rate_label = new Label({left:0, right:0, height:40, string:"0", style: labelStyle});
+var dispense_time_label = new Label({left:0, right:0, height:40, string:"0", style: labelStyle});
 
 var mainColumn = new Column({
 	left: 0, right: 0, top: 0, bottom: 0, skin: whiteSkin,
@@ -158,10 +226,27 @@ var mainColumn = new Column({
 			}),
 		new Line({left:10, right:10, top:10, bottom:0,
 				contents:[
+				    new Label({left:20, right:0, width: 160, height:40, string:"Water Consumed: ", style: labelStyle}),
+				    consumption_level_label,
+      			]
+			}),
+		new Line({left:10, right:10, top:10, bottom:0,
+				contents:[
 				    new Label({left:20, right:0, width: 160, height:40, string:"Water Monitoring: ", style: labelStyle}),
 				    survival_mode_switch,
       			]
 			}),
+		new Line({left:10, right:10, top:10, bottom:0,
+				contents:[
+				   new Label({left:0, right:0, height:40, width:80, string:"Dispensing ", style: labelStyle}),
+				   dispense_rate_label,
+				   new Label({left:0, right:0, height:40, width: 70, string:" oz every ", style: labelStyle}),
+				   dispense_time_label,
+				   new Label({left:0, right:0, height:40, width: 40, string:" mins", style: labelStyle}),
+
+      			]
+			}),	
+			
 		new Line({left:10, right:10, top:10, bottom:0,
 				contents:[
 				    new Label({left:0, right:0, height:40, string:"Last Updated At:", style: labelStyle}),
@@ -202,6 +287,7 @@ MainCanvas.behaviors[0] = Behavior.template({
 	    new_slider = (data.slider).toFixed(0);
 	    new_status = (data.bottleStatus).toFixed(0); 
 	    new_level = (data.waterLevel).toFixed(0); 
+	    new_consumption = (data.consumption).toFixed(0); 
 	},
 })
 var mainCanvas = new MainCanvas();
@@ -214,6 +300,7 @@ var mainCanvas = new MainCanvas();
                 	bottleStatus:  { pin: 58 },
                 	waterLevel: { pin: 62 },
 					slider: { pin: 64 },
+					consumption: { pin: 66 },
                 }
             },
         }));
