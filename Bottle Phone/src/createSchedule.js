@@ -286,7 +286,7 @@ checkbox[5] = new MyCheckBoxTemplate({name:"F"});
 checkbox[6] = new MyCheckBoxTemplate({name:"Sa"});
 
 var MySwitchTemplate = SWITCHES.SwitchButton.template(function($){ return{
-  height:30,skin: babyblueskin,
+  height:30,skin: whiteS,
   behavior: Object.create(SWITCHES.SwitchButtonBehavior.prototype, {
     onValueChanged: { value: function(container){
       KEYBOARD.hide();
@@ -301,7 +301,7 @@ var MySwitchTemplate = SWITCHES.SwitchButton.template(function($){ return{
 
 
 var TextContainerTemplate = Container.template(function($) { return {
-  skin: babyblueskin, active: true,
+  skin: whiteS, active: true,
   behavior: Object.create(Container.prototype, {
     onTouchEnded: { value: function(content){
       KEYBOARD.hide();
@@ -319,11 +319,11 @@ hourField.scroller.hint.string = "Hr.";
 var minuteField = new MyTimeField({name: "",});
 minuteField.scroller.hint.string = "Min.";
 var validMessage = new Label( {style: errorStyle, string: "Error!", visible: false})
-var daysLabel = new Label( {left: 0, right: 0, style: labelStyle, skin: babyblueskin, string: "Select Days: ", visible: false});
+var daysLabel = new Label( {left: 0, right: 0, style: labelStyle, skin: whiteS, string: "Select Days: ", visible: false});
 var existingValue = false;
 var title = new Label( {bottom: 10, style: bottleStyle, string: "Create a New Schedule", });
 
-exports.CreateScheduleScreen = Container.template(function($) { return { left: 0, right: 0, top: 0, bottom: 0, skin: babyblueskin, active: true, contents: [ 
+exports.CreateScheduleScreen = Container.template(function($) { return { left: 0, right: 0, top: 0, bottom: 0, skin: whiteS, active: true, contents: [ 
 	new Column( {name:"column", left: 0, right: 0, top:0, contents: [
 		new Content({width: 320, height:50, skin:logoSkin}),
 		validMessage,
@@ -337,7 +337,7 @@ exports.CreateScheduleScreen = Container.template(function($) { return { left: 0
 			tempField,
 			Label($, {left: 10, right: 0, width: 20, style: labelStyle, string: temperature_unit}),
 		]}),
-		new Line({name:"timeFields", left:20, right: 20, height:80, skin: babyblueskin,
+		new Line({name:"timeFields", left:20, right: 20, height:80, skin: whiteS,
 			contents:[
 			    Label($, {right: 35, style: labelStyle, string: "Time: "}),
 			    hourField,

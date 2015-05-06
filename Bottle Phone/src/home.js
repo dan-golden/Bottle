@@ -1,5 +1,19 @@
 // KPR Script file
 
+var UpLogo = new Texture("./up.png");
+var upLogoSkin = new Skin({
+    width: 54,
+    height: 50,
+	texture: UpLogo,
+});
+
+var DownLogo = new Texture("./down.png");
+var downLogoSkin = new Skin({
+    width: 54,
+    height: 50,
+	texture: DownLogo,
+});
+
 // Update Phone and Device Temperature
 function updateTemperature(newTemp) {
     // make sure current_temperature is up to date before calling this to update device
@@ -12,32 +26,25 @@ function updateTemperature(newTemp) {
 
 // Button Templates
 var IncreaseTemperatureButtonTemplate = BUTTONS.Button.template(function($){ return{
-  top:35, bottom:35, left:50, right:50,height: 50, width: 50, skin: navyblueskin,
-  contents:[
-    new Label({name: "label", left:0, right:0, height:55, string:$.textForLabel, style:textStyle}),
-  ],
+  top:20, bottom:10, left:50, right:50,height: 50, width: 50, skin: upLogoSkin,
   behavior: Object.create(BUTTONS.ButtonBehavior.prototype, {
     onTap: { value:  function(button){
     	newTemp = desired_temperature + 5;
     	if(desired_temperature >= 100) newTemp = desired_temperature;
-        updateTemperature(newTemp);
-        save_label.string = "Changes saved!";
+            updateTemperature(newTemp);
+            save_label.string = "Changes saved!";
     }}
   })
 }});
 
 var DecreaseTemperatureButtonTemplate = BUTTONS.Button.template(function($){ return{
-  top:35, bottom:35, left:50, right:50, height: 50, width: 50, skin: navyblueskin,
-  contents:[
-    new Label({name: "label", left:0, right:0, height:55, string:$.textForLabel, style:textStyle}),
-  ],
+  top:10, bottom:20, left:50, right:50, height: 50, width: 50, skin: downLogoSkin,
   behavior: Object.create(BUTTONS.ButtonBehavior.prototype, {
     onTap: { value:  function(button){
       	newTemp = desired_temperature - 5;
 		if(desired_temperature <= 0) newTemp = desired_temperature;
-        updateTemperature(newTemp);
-        
-      save_label.string = "Changes saved!";
+            updateTemperature(newTemp);
+            save_label.string = "Changes saved!";
     }}
   })
 }});
@@ -56,16 +63,12 @@ var SmallTextButtonTemplate = BUTTONS.Button.template(function($){ return{
 }});
 
 // Buttons
-var increase_button = new IncreaseTemperatureButtonTemplate({textForLabel:"^", height: 50});
-var decrease_button = new DecreaseTemperatureButtonTemplate({textForLabel:"v", height: 50});
+var increase_button = new IncreaseTemperatureButtonTemplate({height: 50});
+var decrease_button = new DecreaseTemperatureButtonTemplate({height: 50});
 var cold_button = new SmallTextButtonTemplate({textForLabel:"i", temp: 40});
 var room_button = new SmallTextButtonTemplate({textForLabel:"r", temp: 72});
 var hot_button = new SmallTextButtonTemplate({textForLabel:"hot", temp: 150});
 var boil_button = new SmallTextButtonTemplate({textForLabel:"b", temp: 212});
-//var water_button = new SmallTextButtonTemplate({textForLabel:"water", temp: current_temperature});
-//var tea_button = new SmallTextButtonTemplate({textForLabel:"tea", temp: current_temperature});
-//var coffee_button = new SmallTextButtonTemplate({textForLabel:"coffee", temp: current_temperature});
-//var iceTea_button = new SmallTextButtonTemplate({textForLabel:"iced tea", temp: current_temperature});
 
 
 // Columns
@@ -78,12 +81,12 @@ exports.bottleContainer = new Container({left:20, width:100, height:225, bottom:
 
 exports.homeCol = new Column({
 	left:0, right:0, top:0, bottom:0,
-	skin: babyblueskin,
+	skin: whiteS,
 	contents:[
 	    new Content({width: 320, height:50, skin:logoSkin}),
-		new Line({left:0, right:0, top:20, bottom:0, skin:babyblueskin, contents: [			
+		new Line({left:0, right:0, top:20, bottom:0, skin: whiteS, contents: [			
 			exports.bottleContainer,
-			new Column({name: "tempControl", left:0, right:0, top:0, bottom:0, skin: babyblueskin,
+			new Column({name: "tempControl", left:0, right:0, top:-23, bottom:-23, skin: whiteS,
 				contents:[
 					increase_button,
 					desired_temperature_label,			
@@ -93,11 +96,5 @@ exports.homeCol = new Column({
 				]
 			}),
 		]}),
-		//new Line({left:0, right:0, top:0, bottom:0,
-			//contents:[ cold_button, room_button, hot_button, boil_button]
-		//}),
-		//new Line({left:0, right:0, top:0, bottom:0,
-			//contents:[ water_button, tea_button, coffee_button, iceTea_button]
-		//}),
 	],
 });

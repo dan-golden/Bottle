@@ -47,17 +47,15 @@ var monitorButtonSkin = new Skin({
 });
 
 
-
-var babyblueskin = new Skin({ fill: "#CEFFF9"});
 var navyblueskin = new Skin({ fill: "#00BAC1"});
 var whiteSkin = new Skin( { fill:"white" } );
-var blueSkin = new Skin( { fill:"#9898ff", } );
+var blueSkin = new Skin( { fill:"#0078B6", } );
 //var blueSkinLabel = new Skin( { fill:"#9898ff", borders: { left:5, right:5, }, stroke: 'gray',} );
 
 var whiteSkinLabel = new Skin( { fill:"white", borders: { left:5, right:5, }, stroke: 'white',} );
 var whiteS = new Skin({fill:"white", borders:{left:0, right:0, top:0, bottom:0}, stroke:"white"});
 var textStyle = new Style({font:"bold 25px", color:"white", vertical: "middle", horizontal: 'center',});
-var bottleStyle = new Style({font:"bold 25px", color:"black", vertical: "middle", horizontal: 'center',});
+var bottleStyle = new Style({font:"bold 25px", color:"#0078B6", vertical: "middle", horizontal: 'center',});
 var barStyle = new Style({font:"bold 25px", color:"black", vertical: "middle", horizontal: 'center',});
 var inputStyle = new Style({font:"12px", color:"black", vertical: "middle", horizontal: 'center',});
 var titleStyle = new Style({font:"bold 30px", color:"black"});
@@ -96,7 +94,7 @@ var dispense_time = "0";
 var schedules = [];
 var currentScreen = "temperature";
 var heating_cooling = "Ready";
-var heating_cooling_label = new Label({ left: 0, right: 0, top:0, style: bottleStyle, string: heating_cooling});
+var heating_cooling_label = new Label({ left: 0, right: 0, bottom: 10, style: bottleStyle, string: heating_cooling});
 var real_desired = 25; 
 var real_current = 25; 
 
@@ -352,14 +350,12 @@ Handler.bind("/updateConsumptionLevel", Behavior({
 
 
 // Labels
-var current_temperature_label = new Label({string: current_temperature_string, style:bigText, skin: babyblueskin});
-var desired_temperature_label = new Label({string: desired_temperature_string, style:biggerText, skin: babyblueskin});
-var survival_mode_label = new Label({string: survival_mode, style:bottleStyle, skin: babyblueskin});
-//var dispense_rate_label = new Label({string: dispense_rate, style:bottleStyle, skin: babyblueskin});
-//var dispense_time_label = new Label({string: dispense_time, style:bottleStyle, skin: babyblueskin});
-var save_label = new Label({string: "Changes Saved!", style:labelStyle, skin: babyblueskin, visible: false});
-var survival_title_label = new Label({ left: 0, right: 0, top:0, vertical: 'middle', style: bottleStyle, string: 'Survival Mode', skin: babyblueskin});
-var survival_title_label = new Label({ left: 0, right: 0, top:0, vertical: 'middle', style: bottleStyle, string: 'Advanced Tracking', skin: babyblueskin});
+var current_temperature_label = new Label({string: current_temperature_string, style:bigText, skin: whiteS});
+var desired_temperature_label = new Label({string: desired_temperature_string, style:biggerText, skin: whiteS});
+var survival_mode_label = new Label({string: survival_mode, style:bottleStyle, skin: whiteS});
+var save_label = new Label({string: "Changes Saved!", style:labelStyle, skin: whiteS, visible: false});
+var survival_title_label = new Label({ left: 0, right: 0, top:0, vertical: 'middle', style: bottleStyle, string: 'Survival Mode', skin: whiteS});
+var survival_title_label = new Label({ left: 0, right: 0, top:0, vertical: 'middle', style: bottleStyle, string: 'Advanced Tracking', skin: whiteS});
 var bottle_status_label = new Label({left:0, right:0, height:40, width:70, string: bottle_status, style: labelStyle}); //need to add to main screen 
 var water_level_label = new Label({left:0, right:0, height:40, width:70, string: water_level, style: labelStyle}); //need to add to main screen 
 var consumption_level_label = new Label({height:40, width:30, left: 0, string: consumption_level, style: labelStyle}); //need to add to main screen 
@@ -369,13 +365,13 @@ var SCHEDULE_SCREEN = require("schedules.js");
 var TEMPERATURE_SCREEN = require("home.js");
 
 // SCREENS
-var ScheduleScreen = Container.template(function($) { return { left: 0, right: 0, top: 0, bottom: 0, skin: babyblueskin, contents: [
+var ScheduleScreen = Container.template(function($) { return { left: 0, right: 0, top: 0, bottom: 0, skin: whiteS, contents: [
 	Label($, { left: 0, right: 0, style: textStyle, string: 'Current Schedules', }),
 	SCHEDULE_SCREEN.ScheduleScreen(new Object()),
 ], }});
 
 createScreen = CREATE_SCHEDULE_SCREEN.CreateScheduleScreen();
-var CreateScheduleScreen = Container.template(function($) { return { left: 0, right: 0, top: 0, bottom: 0, skin: babyblueskin, 
+var CreateScheduleScreen = Container.template(function($) { return { left: 0, right: 0, top: 0, bottom: 0, skin: whiteS, 
 	contents: [
 		createScreen,
 	], onTouchEnded: { value: function(content){
@@ -384,11 +380,11 @@ var CreateScheduleScreen = Container.template(function($) { return { left: 0, ri
 	}}, 
 }});
 
-var SurvivalScreen = Container.template(function($) { return { left: 0, right: 0, top: 0, bottom: 0, skin: babyblueskin, contents: [
+var SurvivalScreen = Container.template(function($) { return { left: 0, right: 0, top: 0, bottom: 0, skin: whiteS, contents: [
 	SURVIVAL_SCREEN.SurvivalScreen(),
 ], }});
 
-var TemperatureScreen = Container.template(function($) { return { left: 0, right: 0, top: 0, bottom: 0, skin: babyblueskin, contents: [
+var TemperatureScreen = Container.template(function($) { return { left: 0, right: 0, top: 0, bottom: 0, skin: whiteS, contents: [
 	Label($, { left: 0, right: 0, style: textStyle, string: 'Manual Temperature Control', }),
 	TEMPERATURE_SCREEN.homeCol,
 ], }});
@@ -414,14 +410,14 @@ var ApplicationBehavior = Behavior.template({
 	},
 })
 
-var FullScreen = Column.template(function($) { return { left: 0, right: 0, top: 0, bottom: 0, active: true, skin: babyblueskin,
+var FullScreen = Column.template(function($) { return { left: 0, right: 0, top: 0, bottom: 0, active: true, skin: whiteS,
 	onTouchEnded: { value: function(content){
 		KEYBOARD.hide();
 		content.focus();
 	}}
 }});
 
-var MainScreen = Container.template(function($) { return { left: 0, right: 0, top: 0, bottom: 30, active: true, skin: babyblueskin, 
+var MainScreen = Container.template(function($) { return { left: 0, right: 0, top: 0, bottom: 30, active: true, skin: whiteS, 
 	onTouchEnded: { value: function(content){
 		KEYBOARD.hide();
 		content.focus();
@@ -512,7 +508,7 @@ var menu = new Line({
 		sButton,
 		tButton,
 		suButton
-	], skin: babyblueskin
+	], skin: whiteS
 });
 var main = new MainScreen();
 var full = new FullScreen();

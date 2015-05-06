@@ -190,37 +190,37 @@ var logoSkin = new Skin({
 });
 var rateField = new MyField1({ name: "", string: 0});
 var amountField = new MyField({ name: "",});
-var line1 = new Line({left:0, right:0, top:0, height: 40, skin: babyblueskin, visible: false, contents: [
+var line1 = new Line({left:0, right:0, top:0, height: 40, skin: whiteS, visible: false, contents: [
 				new Label({string: "Dispense " }),
 				amountField, 
 				new Label({string: " oz "}),	
 					
 				]})
-var line2 = new Line({left:26, right:0, top:0, skin: babyblueskin, visible: false, contents: [
+var line2 = new Line({left:26, right:0, top:0, skin: whiteS, visible: false, contents: [
 				new Label({string: "Every " }),
 				rateField, 
 				new Label({string: " minutes "}),	
 					
 				]
 			})
-exports.SurvivalScreen = Container.template(function($) {return { left: 0, right: 0, top: 0, bottom: 0, skin: babyblueskin, active: true, contents: [ 
+exports.SurvivalScreen = Container.template(function($) {return { left: 0, right: 0, top: 0, bottom: 0, skin: whiteS, active: true, contents: [ 
 
-	new Column({left:0, right:0, top:0, bottom:0, skin: babyblueskin,
+	new Column({left:0, right:0, top:0, bottom:0, skin: whiteS,
 	contents:[
 		new Content({width: 320, height:50, skin:logoSkin}),
 		validMessage,
-		new Column({name: "secondCol", left:0, right:0, top:0, skin: babyblueskin,
+		new Column({name: "secondCol", left:0, right:0, top:0, skin: whiteS,
 			contents:[
 				save_label,
 				survival_title_label,
-				new Line({left:0, right:0, top:0, bottom:0, skin: babyblueskin, contents: [
+				new Line({left:0, right:0, top:0, bottom:0, skin: whiteS, contents: [
 					new Label({left:50, right:0, top:0, bottom:0, width: 80, string: "Water Consumed: "}),	
 					consumption_level_label, 
 					new Label({left:0, right:0, top:0, bottom:0, string: " oz", }),	
 					
 				]
 			}),
-				new Line({left:0, right:0, top:0, bottom:0, skin: babyblueskin, contents: [
+				new Line({left:0, right:0, top:0, bottom:0, skin: whiteS, contents: [
 					alert_label, 
 					new MySwitchTemplate({value: 0}),	
 					
