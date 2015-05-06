@@ -58,21 +58,6 @@ var MySwitchTemplate = SWITCHES.SwitchButton.template(function($){ return{
   }}})
 }});
 
-
-
-/*var MyButtonTemplate = BUTTONS.Button.template(function($){ return{
-  top:25, bottom:25, left:-10, right:-10, height: 50, 
-  contents:[
-    new Label({left:0, right:0, height:50, string:$.textForLabel, style:textStyle})
-  ],
-  behavior: Object.create(BUTTONS.ButtonBehavior.prototype, {
-    onTap: { value:  function(button){
-      trace("Button was tapped.\n");
-      save_label.visible = true;
-    }}
-  })
-}});*/
-
 var MyButtonTemplate = BUTTONS.Button.template(function($){ return{
 	height:50, skin: saveLogoSkin, visible: false,
 	behavior: Object.create(BUTTONS.ButtonBehavior.prototype, {
@@ -87,7 +72,6 @@ var amount = "";
 
 var validMessage = new Label( {left: 15, right:0, style: errorStyle, string: "Selected amount exceeds bottle capacity!", visible: false})	
 
-
 var MyField = Container.template(function($) { return { 
   width: 170, height: 36, top: 0, skin: nameInputSkin, contents: [
     Scroller($, { 
@@ -99,24 +83,23 @@ var MyField = Container.template(function($) { return {
          	behavior: Object.create( CONTROL.FieldLabelBehavior.prototype, {
          		onEdited: { value: function(label){
          			var data = this.data;
-         			
-              data.name = label.string;
-              amount = label.string;
-              
-              label.container.hint.visible = ( data.name.length == 0 );	
-              
-
-			if(checkValidAmount(amount) == true) {
-				validMessage.visible = false;
-			} else {
-				validMessage.visible = true;
-			}
-			
+              		data.name = label.string;
+              		amount = label.string;
+              		label.container.hint.visible = ( data.name.length == 0 );	
+					if(checkValidAmount(amount) == true) {
+						validMessage.visible = false;
+					} else {
+						validMessage.visible = true;
+					}	
+         		}},
+         		onFocused: { value: function(label){
+         			menu.visible = false;
+         			KEYBOARD.show();
          		}}
          	}),
          }),
          Label($, {
-   			 	left:4, right:4, top:4, bottom:4, style:fieldHintStyle, string:"", name:"hint",
+   			 left:4, right:4, top:4, bottom:4, style:fieldHintStyle, string:"", name:"hint",
          })
       ]
     })
@@ -134,16 +117,14 @@ var MyField1 = Container.template(function($) { return {
           editable: true, string: $.name,
          	behavior: Object.create( CONTROL.FieldLabelBehavior.prototype, {
          		onEdited: { value: function(label){
-         			var data = this.data;
-         			
-              data.name = label.string;
-              amount = label.string;
-              
-              label.container.hint.visible = ( data.name.length == 0 );	
-              
-
-			
-			
+         			var data = this.data;	
+          		    data.name = label.string;
+              		amount = label.string;
+	                label.container.hint.visible = ( data.name.length == 0 );	
+         		}},
+         		onFocused: { value: function(label){
+         			menu.visible = false;
+         			KEYBOARD.show();
          		}}
          	}),
          }),
@@ -163,8 +144,6 @@ var saveLogoSkin = new Skin({
 });
 
 var save_button = new MyButtonTemplate({textForLabel:"Save", skin: saveLogoSkin, visible: false});
-
-	
 
 var BottleLogo = new Texture("./bottleTitle.png");
 var logoSkin = new Skin({
@@ -204,18 +183,15 @@ exports.SurvivalScreen = Container.template(function($) {return { left: 0, right
 					
 				]
 			}),
-
 				line1, 
 				line2, 
-				
-				save_button,
-				
-				
+				save_button,	
 			], 
 behavior: Object.create(Container.prototype, {
     onTouchEnded: { value: function(content){
       KEYBOARD.hide();
       content.focus();
+      application.invoke(new Message("/delayShowMenu"));
     }}
   })
 		}),
@@ -227,6 +203,7 @@ behavior: Object.create(Container.prototype, {
     onTouchEnded: { value: function(content){
       KEYBOARD.hide();
       content.focus();
+      application.invoke(new Message("/delayShowMenu"));
     }}
   })
 }});

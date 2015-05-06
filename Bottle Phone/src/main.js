@@ -225,7 +225,14 @@ Handler.bind("/currentDispenseRate", Behavior({
 	}
 }));
 
-
+Handler.bind("/delayShowMenu", {
+    onInvoke: function(handler, message){
+        handler.wait(250);
+    },
+    onComplete: function(handler, message){
+        menu.visible = true;
+    }
+});
 
 Handler.bind("/updateTemperature", Behavior({
 	onInvoke: function(handler, message){
@@ -242,7 +249,6 @@ Handler.bind("/updateTemperature", Behavior({
 	    if (bottle_status == 0 ) {
 	    menuTempLabel.string = "OFF"} 
 	    else { menuTempLabel.string = current_temperature + "\xB0 C"; }
-	    
 	}
 }));
 
