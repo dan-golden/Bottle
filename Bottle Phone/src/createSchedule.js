@@ -1,5 +1,11 @@
 SCHEDULE_SCREEN = require('schedules.js');
 
+var nameInputSkin = new Skin({ borders: { left:2, right:2, top:2, bottom:2 }, stroke: 'gray',});
+var fieldStyle = new Style({ color: 'black', font: 'bold 24px', horizontal: 'left', vertical: 'middle', left: 5, right: 5, top: 5, bottom: 5, });
+var fieldHintStyle = new Style({ color: '#aaa', font: 'bold 24px', horizontal: 'left', vertical: 'middle', left: 5, right: 5, top: 5, bottom: 5, });
+var fieldHintStyle2 = new Style({ color: '#aaa', font: 'bold 18px', horizontal: 'left', vertical: 'middle', left: 2, right: 2, top: 2, bottom: 2, });
+var whiteSkin = new Skin({fill:"white"});
+
 var CancelLogo = new Texture("./cancel.png");
 var cancelLogoSkin = new Skin({
     width: 120,
@@ -42,15 +48,21 @@ function checkValidTemp(temp) {
 }
 
 function checkValidSchedule(schedule) {
+    validMessage.string = "Error! ";
 	if(!checkValidTemp(schedule.temperature)){
+		validMessage.string += "Must input valid temperature.";
 		return false;
 	} else if(!checkValidHours(schedule.hours)) {
+	    validMessage.string += "Must input valid hour (1-12).";
 		return false;
 	} else if(!checkValidMinutes(schedule.minutes)) {
+	    validMessage.string += "Must input valid minute (:00-:59).";
 		return false;
 	} else if(schedule.repeat == 1 && schedule.repeatedDays.length == 0) {
+	    validMessage.string += "Must check days to repeat if repeat is on.";
 		return false;
 	} else if(schedule.minutes.length !=2) {
+	    validMessage.string += "Must input valid minute (2 digits).";
 		return false;
 	}
 	return true;
@@ -156,25 +168,49 @@ var saveButton = BUTTONS.Button.template(function($){ return{
 		}}
 	})
 }});
-              
+
 var MyField = Container.template(function($) { return { 
-  width: 170, height: 36, skin: nameInputSkin, contents: [
+  width: 160, height: 36, skin: nameInputSkin, contents: [
     Scroller($, { 
-      left: 4, right: 4, top: 4, bottom: 4, active: true, name: "scroller", fill: "white", style: bottleStyle,
+      left: 4, right: 4, top: 4, bottom: 4, active: true, 
       behavior: Object.create(CONTROL.FieldScrollerBehavior.prototype), clip: true, contents: [
         Label($, { 
-          name: "textbox", left: 0, top: 0, bottom: 0, skin: THEME.fieldLabelSkin, style: bottleStyle, anchor: 'NAME',
+          left: 0, top: 0, bottom: 0, skin: THEME.fieldLabelSkin, style: fieldStyle, anchor: 'NAME',
           editable: true, string: $.name,
          	behavior: Object.create( CONTROL.FieldLabelBehavior.prototype, {
          		onEdited: { value: function(label){
          			var data = this.data;
-              data.name = label.string;
-              label.container.hint.visible = ( data.name.length == 0 );	
+                    data.name = label.string;
+                    label.container.hint.visible = ( data.name.length == 0 );
          		}}
          	}),
          }),
          Label($, {
-   			 	left:4, right:4, top:4, bottom:4, style:fieldHintStyle, string:"Tap to edit", name:"hint",
+   			 	left:4, right:4, top:4, bottom:4, style:fieldHintStyle2, string:"Add a Title Here...", name:"hint"
+         })
+      ]
+    })
+  ]
+}});
+
+var MyTempField = Container.template(function($) { return { 
+  left: 26, width: 70, height: 36, skin: nameInputSkin, contents: [
+    Scroller($, { 
+      left: 4, right: 4, top: 4, bottom: 4, active: true, 
+      behavior: Object.create(CONTROL.FieldScrollerBehavior.prototype), clip: true, contents: [
+        Label($, { 
+          left: 0, top: 0, bottom: 0, skin: THEME.fieldLabelSkin, style: fieldStyle, anchor: 'NAME',
+          editable: true, string: $.name,
+         	behavior: Object.create( CONTROL.FieldLabelBehavior.prototype, {
+         		onEdited: { value: function(label){
+         			var data = this.data;
+                    data.name = label.string;
+                    label.container.hint.visible = ( data.name.length == 0 );	
+         		}}
+         	}),
+         }),
+         Label($, {
+   			 	left:4, right:4, top:4, bottom:4, style:fieldHintStyle2, string:"0-100", name:"hint"
          })
       ]
     })
@@ -182,12 +218,12 @@ var MyField = Container.template(function($) { return {
 }});
 
 var MyTimeField = Container.template(function($) { return { 
-  width: 70, height: 36, skin: nameInputSkin, contents: [
+  width: 55, height: 36, skin: nameInputSkin, contents: [
     Scroller($, { 
-      left: 4, right: 4, top: 4, bottom: 4, active: true, name: "scroller", fill: 'white',
+      left: 4, right: 4, top: 4, bottom: 4, active: true, name: "scroller",
       behavior: Object.create(CONTROL.FieldScrollerBehavior.prototype), clip: true, contents: [
         Label($, { 
-          name: "textbox", left: 0, top: 0, bottom: 0, skin: THEME.fieldLabelSkin, style: bottleStyle, anchor: 'NAME',
+          name: "textbox", left: 0, top: 0, bottom: 0, skin: THEME.fieldLabelSkin, style: fieldStyle, anchor: 'NAME',
           editable: true, string: $.name,
          	behavior: Object.create( CONTROL.FieldLabelBehavior.prototype, {
          		onEdited: { value: function(label){
@@ -198,7 +234,7 @@ var MyTimeField = Container.template(function($) { return {
          	}),
          }),
          Label($, {
-   			 	left:4, right:4, top:4, bottom:4, style:fieldHintStyle, string:"Input here...", name:"hint"
+   			 	left:4, right:4, top:4, bottom:4, style:fieldHintStyle2, string:"Input here...", name:"hint"
          })
       ]
     })
@@ -250,6 +286,7 @@ var MySwitchTemplate = SWITCHES.SwitchButton.template(function($){ return{
   height:30,skin: babyblueskin,
   behavior: Object.create(SWITCHES.SwitchButtonBehavior.prototype, {
     onValueChanged: { value: function(container){
+      KEYBOARD.hide();
       repeatSwitchValue = 1-repeatSwitchValue;
       SWITCHES.SwitchButtonBehavior.prototype.onValueChanged.call(this, container);
       for(i = 0; i<7; i++){
@@ -272,15 +309,14 @@ var TextContainerTemplate = Container.template(function($) { return {
 
 var repeatSwitch = new MySwitchTemplate({right:100, value:0 });
 var repeatSwitchValue = 0;
-var tempField = new MyField({ name: "",});
-tempField.scroller.hint.string = temperature_unit;
+var tempField = new MyTempField({ name: "",});
 var nameField = new MyField({name: "",});
 var hourField = new MyTimeField({name: "",});
 hourField.scroller.hint.string = "Hr.";
 var minuteField = new MyTimeField({name: "",});
 minuteField.scroller.hint.string = "Min.";
-var validMessage = new Label( {left: 100, right:100, style: errorStyle, string: "Error!", visible: false})
-var daysLabel = new Label( {left: 0, right: 0, style: labelStyle, skin: whiteSkin, string: "Select Days: ", visible: false});
+var validMessage = new Label( {style: errorStyle, string: "Error!", visible: false})
+var daysLabel = new Label( {left: 0, right: 0, style: labelStyle, skin: babyblueskin, string: "Select Days: ", visible: false});
 var existingValue = false;
 
 exports.CreateScheduleScreen = Container.template(function($) { return { left: 0, right: 0, top: 0, bottom: 0, skin: babyblueskin, active: true, contents: [ 
@@ -293,15 +329,17 @@ exports.CreateScheduleScreen = Container.template(function($) { return { left: 0
 			nameField
 		]}),
 		new Line( { left:0, right:20, contents: [
-			Label($, {left: 20, right: 20, style: labelStyle, string: "Temperature: "}),
-			tempField
+			Label($, {left: 20, style: labelStyle, string: "Temperature: "}),
+			tempField,
+			Label($, {left: 10, right: 0, width: 20, style: labelStyle, string: temperature_unit}),
 		]}),
 		new Line({name:"timeFields", left:20, right: 20, height:80, skin: babyblueskin,
 			contents:[
-			    Label($, {right: 20, style: labelStyle, string: "Time: "}),
+			    Label($, {right: 35, style: labelStyle, string: "Time: "}),
 			    hourField,
 			    Label($, {style: labelStyle, string: ":"}),
-			    minuteField
+			    minuteField,
+			    Label($, {width: 15, style: labelStyle, string: ""}),
 			]
 		}),
 		new Line( { left:20, right:100, contents: [
