@@ -1,9 +1,9 @@
 SCHEDULE_SCREEN = require('schedules.js');
 
 var nameInputSkin = new Skin({ borders: { left:2, right:2, top:2, bottom:2 }, stroke: 'gray',});
-var fieldStyle = new Style({ color: 'black', font: 'bold 24px', horizontal: 'left', vertical: 'middle', left: 5, right: 5, top: 5, bottom: 5, });
-var fieldHintStyle = new Style({ color: '#aaa', font: 'bold 24px', horizontal: 'left', vertical: 'middle', left: 5, right: 5, top: 5, bottom: 5, });
-var fieldHintStyle2 = new Style({ color: '#aaa', font: 'bold 18px', horizontal: 'left', vertical: 'middle', left: 2, right: 2, top: 2, bottom: 2, });
+var fieldStyle = new Style({ color: 'black', font: 'bold 24px Lato', horizontal: 'left', vertical: 'middle', left: 5, right: 5, top: 5, bottom: 5, });
+var fieldHintStyle = new Style({ color: '#aaa', font: 'bold 24px Lato', horizontal: 'left', vertical: 'middle', left: 5, right: 5, top: 5, bottom: 5, });
+var fieldHintStyle2 = new Style({ color: '#aaa', font: 'bold 18px Lato', horizontal: 'left', vertical: 'middle', left: 2, right: 2, top: 2, bottom: 2, });
 var whiteSkin = new Skin({fill:"white"});
 
 var CancelLogo = new Texture("./cancel.png");
@@ -286,7 +286,7 @@ checkbox[5] = new MyCheckBoxTemplate({name:"F"});
 checkbox[6] = new MyCheckBoxTemplate({name:"Sa"});
 
 var MySwitchTemplate = SWITCHES.SwitchButton.template(function($){ return{
-  height:30,skin: whiteS,
+  height:30,
   behavior: Object.create(SWITCHES.SwitchButtonBehavior.prototype, {
     onValueChanged: { value: function(container){
       KEYBOARD.hide();
@@ -319,11 +319,11 @@ hourField.scroller.hint.string = "Hr.";
 var minuteField = new MyTimeField({name: "",});
 minuteField.scroller.hint.string = "Min.";
 var validMessage = new Label( {style: errorStyle, string: "Error!", visible: false})
-var daysLabel = new Label( {left: 0, right: 0, style: labelStyle, skin: whiteS, string: "Select Days: ", visible: false});
+var daysLabel = new Label( {left: 0, right: 0, style: labelStyle,  string: "Select Days: ", visible: false});
 var existingValue = false;
 var title = new Label( {bottom: 10, style: bottleStyle, string: "Create a New Schedule", });
 
-exports.CreateScheduleScreen = Container.template(function($) { return { left: 0, right: 0, top: 0, bottom: 0, skin: whiteS, active: true, contents: [ 
+exports.CreateScheduleScreen = Container.template(function($) { return { left: 0, right: 0, top: 0, bottom: 0,  active: true, contents: [ 
 	new Column( {name:"column", left: 0, right: 0, top:0, contents: [
 		new Content({width: 320, height:50, skin:logoSkin}),
 		validMessage,
@@ -337,7 +337,7 @@ exports.CreateScheduleScreen = Container.template(function($) { return { left: 0
 			tempField,
 			Label($, {left: 10, right: 0, width: 20, style: labelStyle, string: temperature_unit}),
 		]}),
-		new Line({name:"timeFields", left:20, right: 20, height:80, skin: whiteS,
+		new Line({name:"timeFields", left:20, right: 20, height:80, 
 			contents:[
 			    Label($, {right: 35, style: labelStyle, string: "Time: "}),
 			    hourField,

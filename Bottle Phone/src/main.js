@@ -15,7 +15,6 @@ var SWITCHES = require('controls/switch');
 var SCROLLER = require('mobile/scroller');
 var SCREEN = require('mobile/screen');
 
-//THEME.buttonStyle = new Style({ font:"bold 25px", color:"white", fill: "white", skin: { fill: "blue"}, stroke: "white", vertical: "middle", horizontal: 'center',});
 // Skins and Styles
 
 var BottleLogo = new Texture("./bottleTitle.png");
@@ -32,14 +31,16 @@ var temperatureButtonSkin = new Skin({
 	texture: TemperatureButtonLogo,
 });
 
-var ScheduleButtonLogo = new Texture("./scheduleButton.png");
+//var ScheduleButtonLogo = new Texture("./scheduleButton.png");
+var ScheduleButtonLogo = new Texture("./clock40.png");
 var scheduleButtonSkin = new Skin({
     width: 108,
     height: 66,
 	texture: ScheduleButtonLogo,
 });
 
-var MonitorButtonLogo = new Texture("./monitorButton.png");
+//var MonitorButtonLogo = new Texture("./monitorButton.png");
+var MonitorButtonLogo = new Texture("./graphic45.png");
 var monitorButtonSkin = new Skin({
     width: 108,
     height: 66,
@@ -50,37 +51,54 @@ var monitorButtonSkin = new Skin({
 var navyblueskin = new Skin({ fill: "#00BAC1"});
 var whiteSkin = new Skin( { fill:"white" } );
 var blueSkin = new Skin( { fill:"#0078B6", } );
+var greySkin = new Skin( { fill:"#EAEAEA", } );
+var lightblueSkin = new Skin( { fill:"#009AE0", } );
+var darkblueSkin = new Skin( { fill:"#008BC2", } );
+var navyblueSkin = new Skin( { fill:"#002945", } );
+var peachSkin = new Skin( { fill:"#E36453", } );
 //var blueSkinLabel = new Skin( { fill:"#9898ff", borders: { left:5, right:5, }, stroke: 'gray',} );
 
 var whiteSkinLabel = new Skin( { fill:"white", borders: { left:5, right:5, }, stroke: 'white',} );
 var whiteS = new Skin({fill:"white", borders:{left:0, right:0, top:0, bottom:0}, stroke:"white"});
-var textStyle = new Style({font:"bold 25px", color:"white", vertical: "middle", horizontal: 'center',});
-var bottleStyle = new Style({font:"bold 25px", color:"#0078B6", vertical: "middle", horizontal: 'center',});
-var barStyle = new Style({font:"bold 25px", color:"black", vertical: "middle", horizontal: 'center',});
-var inputStyle = new Style({font:"12px", color:"black", vertical: "middle", horizontal: 'center',});
-var titleStyle = new Style({font:"bold 30px", color:"black"});
-var scheduleTitleStyle = new Style({font:"bold 20px Helvetica, sans-serif;", color:"black"});
-var labelStyle = new Style( { font: "15px Helvetica, sans-serif;", color:"black" } );
-var waterLevelStyle = new Style({font:"bold 20px", color:"black", vertical: "middle", horizontal: 'center',});
+var textStyle = new Style({font:"bold 25px Lato", color:"white", vertical: "middle", horizontal: 'center',});
+var bottleStyle = new Style({font:"bold 25px Lato", color:"#0078B6", vertical: "middle", horizontal: 'center',});
+var barStyle = new Style({font:"bold 25px Lato", color:"black", vertical: "middle", horizontal: 'center',});
+var inputStyle = new Style({font:"12px Lato", color:"black", vertical: "middle", horizontal: 'center',});
+var titleStyle = new Style({font:"bold 30px Lato", color:"black"});
+var scheduleTitleStyle = new Style({font:"bold 20px Lato", color:"black"});
+var labelStyle = new Style( { font: "20px Lato", color:"black" } );
+var waterLevelStyle = new Style({font:"bold 20px Lato", color:"black", vertical: "middle", horizontal: 'center',});
 var redSkin = new Skin({fill:'red'});
+<<<<<<< HEAD
 var blackSkin = new Skin({fill:'black'});
 var biggerText = new Style({font:"bold 60px", color:"black"});
 var bigText = new Style({font:"bold 30px", color:"black"});
 var smallText = new Style({font:"bold 20px", color:"black"});
+=======
+var biggerText = new Style({font: 'bold 60px Lato', color:"black"});
+var bigText = new Style({font:"bold 30px Lato", color:"black"});
+var smallText = new Style({font:"bold 20px Lato", color:"black"});
+>>>>>>> f64db80b9fbbc915368ac0a41fb2cd837267a0e5
 var nameInputSkin = new Skin({borders: { left:2, right:2, top:2, bottom:2 }, stroke: 'gray',});
-var fieldStyle = new Style({ color: 'black', fill: "white", font: 'bold 24px', horizontal: 'left', vertical: 'middle', left: 5, right: 5, top: 5, bottom: 5, });
-var fieldHintStyle = new Style({ color: 'gray', font: '18px', horizontal: 'left', fill: "white", vertical: 'middle', left: 5, right: 5, top: 5, bottom: 5, });
-var timeHintStyle = new Style({ color: 'gray', font: 'bold 16px', horizontal: 'left', fill: "white", vertical: 'middle', });
+var fieldStyle = new Style({ color: 'black', fill: "white", font: 'bold 24px Lato', horizontal: 'left', vertical: 'middle', left: 5, right: 5, top: 5, bottom: 5, });
+var fieldHintStyle = new Style({ color: 'gray', font: '18px Lato', horizontal: 'left', fill: "white", vertical: 'middle', left: 5, right: 5, top: 5, bottom: 5, });
+var timeHintStyle = new Style({ color: 'gray', font: 'bold 16px Lato', horizontal: 'left', fill: "white", vertical: 'middle', });
 
-var buttonStyle = new Style({ font: "bold 25px", color:"white", fill: "white", skin: navyblueskin, stroke: "white"});
+var buttonStyle = new Style({ font: "bold 25px Lato", color:"white", fill: "white", skin: navyblueskin, stroke: "white"});
 
-var taskNameStyle = new Style({ font: "25px Helvetica, sans-serif; bold;", color:"black" });
-var taskStyle = new Style({ font: "20px Helvetica, sans-serif;", color:"black" });
+var taskNameStyle = new Style({ font: "bold 25px Lato", color:"black" });
+var taskStyle = new Style({ font: "20px Lato", color:"black" });
 var menuBarSkin = new Skin({ fill: "#CCCCDD",});
 var separatorSkin = new Skin({ fill: 'silver',});
-var productNameStyle = new Style({  font: 'bold 22px', horizontal: 'left', vertical: 'middle', lines: 1, });
-var productDescriptionStyle = new Style({  font: '16px', horizontal: 'left', vertical: 'middle', left: 1, color: 'black' });
-var errorStyle = new Style( { font: "15px Helvetica, sans-serif;", color:"red" } );
+var productNameStyle = new Style({  font: 'bold 22px Lato', horizontal: 'left', vertical: 'middle', lines: 1, });
+var productDescriptionStyle = new Style({  font: '16px Lato', horizontal: 'left', vertical: 'middle', left: 1, color: 'black' });
+var errorStyle = new Style( { font: "15px Lato", color:"red" } );
+var rectangleLogo = new Texture("./rectangle.png"); 
+var rectangleSkin = new Skin({
+    width: 142,
+    height: 77,
+	texture: rectangleLogo,
+});
 
 // Internal Variables
 var deviceURL = "";
@@ -95,7 +113,7 @@ var dispense_time = "0";
 var schedules = [];
 var currentScreen = "temperature";
 var heating_cooling = "Ready";
-var heating_cooling_label = new Label({ left: 0, right: 0, bottom: 10, style: bottleStyle, string: heating_cooling});
+var heating_cooling_label = new Label({ left: 0, right: 0,  style: bottleStyle, skin: rectangleSkin, string: heating_cooling});
 var real_desired = 25; 
 var real_current = 25; 
 var goal = -1;
@@ -360,12 +378,12 @@ Handler.bind("/updateConsumptionLevel", Behavior({
 
 
 // Labels
-var current_temperature_label = new Label({string: current_temperature_string, style:bigText, skin: whiteS});
-var desired_temperature_label = new Label({string: desired_temperature_string, style:biggerText, skin: whiteS});
+var current_temperature_label = new Label({string: current_temperature_string, style:bigText,});
+var desired_temperature_label = new Label({string: desired_temperature_string, style:biggerText, });
 var survival_mode_label = new Label({string: survival_mode, style:bottleStyle, skin: whiteS});
 var save_label = new Label({string: "Changes Saved!", style:labelStyle, skin: whiteS, visible: false});
-var survival_title_label = new Label({ left: 0, right: 0, top:0, vertical: 'middle', style: bottleStyle, string: 'Survival Mode', skin: whiteS});
-var survival_title_label = new Label({ left: 0, right: 0, top:0, vertical: 'middle', style: bottleStyle, string: 'Advanced Tracking', skin: whiteS});
+var survival_title_label = new Label({ left: 0, right: 0, top:0, vertical: 'middle', style: bottleStyle, string: 'Survival Mode'});
+var survival_title_label = new Label({ left: 0, right: 0, top:0, vertical: 'middle', style: bottleStyle, string: 'Advanced Tracking'});
 var bottle_status_label = new Label({left:0, right:0, height:40, width:70, string: bottle_status, style: labelStyle}); //need to add to main screen 
 var water_level_label = new Label({left:0, right:0, height:40, width:70, string: water_level, style: labelStyle}); //need to add to main screen 
 var consumption_level_label = new Label({height:40, width:30, left: 0, string: consumption_level, style: labelStyle}); //need to add to main screen 
@@ -375,13 +393,13 @@ var SCHEDULE_SCREEN = require("schedules.js");
 var TEMPERATURE_SCREEN = require("home.js");
 
 // SCREENS
-var ScheduleScreen = Container.template(function($) { return { left: 0, right: 0, top: 0, bottom: 0, skin: whiteS, contents: [
-	Label($, { left: 0, right: 0, style: textStyle, string: 'Current Schedules', }),
+var ScheduleScreen = Container.template(function($) { return { left: 0, right: 0, top: 0, bottom: 0, skin: greySkin, contents: [
+	Label($, { left: 0, right: 0, style: textStyle, string: '', }),
 	SCHEDULE_SCREEN.ScheduleScreen(new Object()),
 ], }});
 
 createScreen = CREATE_SCHEDULE_SCREEN.CreateScheduleScreen();
-var CreateScheduleScreen = Container.template(function($) { return { left: 0, right: 0, top: 0, bottom: 0, skin: whiteS, 
+var CreateScheduleScreen = Container.template(function($) { return { left: 0, right: 0, top: 0, bottom: 0, skin: greySkin, 
 	contents: [
 		createScreen,
 	], onTouchEnded: { value: function(content){
@@ -395,7 +413,7 @@ var SurvivalScreen = Container.template(function($) { return { left: 0, right: 0
 	survival,
 ], }});
 
-var TemperatureScreen = Container.template(function($) { return { left: 0, right: 0, top: 0, bottom: 0, skin: whiteS, contents: [
+var TemperatureScreen = Container.template(function($) { return { left: 0, right: 0, top: 0, bottom: 0, skin: greySkin, contents: [
 	Label($, { left: 0, right: 0, style: textStyle, string: 'Manual Temperature Control', }),
 	TEMPERATURE_SCREEN.homeCol,
 ], }});
@@ -421,14 +439,14 @@ var ApplicationBehavior = Behavior.template({
 	},
 })
 
-var FullScreen = Column.template(function($) { return { left: 0, right: 0, top: 0, bottom: 0, active: true, skin: whiteS,
+var FullScreen = Column.template(function($) { return { left: 0, right: 0, top: 0, bottom: 0, active: true, skin: greySkin,
 	onTouchEnded: { value: function(content){
 		KEYBOARD.hide();
 		content.focus();
 	}}
 }});
 
-var MainScreen = Container.template(function($) { return { left: 0, right: 0, top: 0, bottom: 30, active: true, skin: whiteS, 
+var MainScreen = Container.template(function($) { return { left: 0, right: 0, top: 0, bottom: 30, active: true, skin: greySkin, 
 	onTouchEnded: { value: function(content){
 		KEYBOARD.hide();
 		content.focus();
@@ -519,7 +537,7 @@ var menu = new Line({
 		sButton,
 		tButton,
 		suButton
-	], skin: whiteS
+	], skin: greySkin,
 });
 var main = new MainScreen();
 var full = new FullScreen();
