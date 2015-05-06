@@ -235,9 +235,10 @@ Handler.bind("/updateTemperature", Behavior({
 	onComplete: function(handler, message, text) {
 	    current_temperature = parseFloat(text);
 	    current_temperature_string = current_temperature + temperature_unit + " now";
-	    current_temperature_label.string = current_temperature_string;
 	    menuTempLabel.string = current_temperature + "";   
-	    menuTempLabel.string = current_temperature + ""; 
+	    if (bottle_status == 0 ) {
+	    current_temperature_label.string = "OFF"} 
+	    else { current_temperature_label.string = current_temperature_string; }
 	    if (bottle_status == 0 ) {
 	    menuTempLabel.string = "OFF"} 
 	    else { menuTempLabel.string = current_temperature + "\xB0 C"; }
@@ -255,8 +256,9 @@ Handler.bind("/updateBottleStatus", Behavior({
 	    bottle_status = text; 
 		bottle_status_label.string = bottle_status; 
 		if (bottle_status == 0 ) {
-	    menuTempLabel.string = "OFF"} 
-	    else { handler.invoke(new Message("/updateTemperature")) }
+	    menuTempLabel.string = "OFF";
+	    current_temperature_label.string = "OFF";
+	    } else { handler.invoke(new Message("/updateTemperature")) }
 		
 		
 		
