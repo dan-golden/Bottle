@@ -159,7 +159,7 @@ Handler.bind("/potResult", Object.create(Behavior.prototype, {
 					handler.invoke( new Message(phoneURL + "updateBottleStatus"), Message.JSON );
 					}
 				if (old_level != new_level) {
-					//trace("Water Level Changed!\n");
+					trace("Water Level Changed!\n");
 					water_level = new_level; 
 					water_level_label.string = water_level + "%"; 
 					old_level = new_level; 

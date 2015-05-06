@@ -63,6 +63,7 @@ var scheduleTitleStyle = new Style({font:"bold 20px Helvetica, sans-serif;", col
 var labelStyle = new Style( { font: "15px Helvetica, sans-serif;", color:"black" } );
 var waterLevelStyle = new Style({font:"bold 20px", color:"black", vertical: "middle", horizontal: 'center',});
 var redSkin = new Skin({fill:'red'});
+var blackSkin = new Skin({fill:'black'});
 var biggerText = new Style({font:"bold 60px", color:"black"});
 var bigText = new Style({font:"bold 30px", color:"black"});
 var smallText = new Style({font:"bold 20px", color:"black"});
@@ -97,7 +98,8 @@ var heating_cooling = "Ready";
 var heating_cooling_label = new Label({ left: 0, right: 0, bottom: 10, style: bottleStyle, string: heating_cooling});
 var real_desired = 25; 
 var real_current = 25; 
-
+var goal = -1;
+var goal_label = new Label({ style: bottleStyle, string: "No goal set!"});
 
 bottle_status = "ON";
 water_level = 20; 
@@ -344,6 +346,14 @@ Handler.bind("/updateConsumptionLevel", Behavior({
 	onComplete: function(handler, message, text) {
 	    consumption_level = parseFloat(text); 
 		consumption_level_label.string = consumption_level;
+		percent = consumption_level/goal * 100;
+		if(percent>100)
+			percent = 100;
+		if(percent>=0)
+			goal_label.string = percent + "%"
+		else
+			goal_label.string = "No gaol set!"
+		survival.column.secondCol.bar.progress.width = 200 * percent/100;
 	}
 }));
 
@@ -380,8 +390,9 @@ var CreateScheduleScreen = Container.template(function($) { return { left: 0, ri
 	}}, 
 }});
 
+survival = SURVIVAL_SCREEN.SurvivalScreen();
 var SurvivalScreen = Container.template(function($) { return { left: 0, right: 0, top: 0, bottom: 0, skin: whiteS, contents: [
-	SURVIVAL_SCREEN.SurvivalScreen(),
+	survival,
 ], }});
 
 var TemperatureScreen = Container.template(function($) { return { left: 0, right: 0, top: 0, bottom: 0, skin: whiteS, contents: [

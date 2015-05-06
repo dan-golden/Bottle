@@ -34,7 +34,7 @@ var editLogoSkin = new Skin({
 });
 
 var editButton = BUTTONS.Button.template(function($){ return{
-	right: 1, top: 1, skin: editLogoSkin,
+	right: 5, top: 1, skin: editLogoSkin,
 	contents: [
 		new Label({left:0, right:0, height:40, style: buttonStyle})
 	],
@@ -56,7 +56,7 @@ var deleteLogoSkin = new Skin({
 });
 
 var deleteButton = BUTTONS.Button.template(function($){ return{
-	right: 1, top: 1, skin: deleteLogoSkin,
+	right: 5, top: 1, skin: deleteLogoSkin,
 	contents: [
 		new Label({left:0, right:0, height:40, style: buttonStyle})
 	],
@@ -174,7 +174,8 @@ exports.generateDisplayContainer = function generateDisplayString(scheds) {
 										new editButton({schedule: scheds[i]}),
 										new deleteButton({schedule: scheds[i], name: "delete"}),
 									]})
-								]})
+								]}),
+								new Container({left:0, right:0, bottom:0, height:1, skin:blackSkin})
 							]});
 		scheds[i].container = scheduleContainer;
 		result.push(scheduleContainer);
