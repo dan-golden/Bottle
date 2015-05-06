@@ -71,11 +71,11 @@ var deleteButton = BUTTONS.Button.template(function($){ return{
 
 // SCREENS
 no_schedule = new Label({top: 5, string:"No schedules created yet!", style:errorStyle,});
-exports.ScheduleScreen = Container.template(function($) { return { left: 0, right: 0, top: 0, bottom: 0, skin: whiteS, contents: [
-	new Column({left:0, right:0, top:0, height:80, skin: whiteS, vertical: 'middle', 
+exports.ScheduleScreen = Container.template(function($) { return { left: 0, right: 0, top: 0, bottom: 0, contents: [
+	new Column({left:0, right:0, top:0, height:80,  vertical: 'middle', 
 		contents:[
 			new Content({width: 320, height:50, skin:logoSkin}),
-			new Label({ left: 0, right: 0, top:15, style: bottleStyle, vertical: 'middle',  string: 'Schedules', skin: whiteS}),
+			new Label({ left: 0, right: 0, top:15, style: bottleStyle, vertical: 'middle',  string: 'Schedules', }),
 			no_schedule,
 		]
 	}),
@@ -167,7 +167,7 @@ exports.generateDisplayContainer = function generateDisplayString(scheds) {
 		}
 		temperature = new Label({left:1, string: scheds[i].temperature + "\xB0 C", style: labelStyle});
 		scheds[i].existing = true;
-		scheduleContainer = new Container({left:0, right:0, skin: whiteS, contents:[
+		scheduleContainer = new Container({left:0, right:0, contents:[
 								new Line({left:0, right:0, contents:[
 									new Column({left:4, right:0, width: 150, contents:[title, time, repeat, temperature]}),
 									new Column({left:4, right:0, contents: [

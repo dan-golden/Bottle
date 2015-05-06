@@ -1,18 +1,21 @@
 // KPR Script file
 
-var UpLogo = new Texture("./up.png");
+//var UpLogo = new Texture("./up.png");
+var UpLogo = new Texture("./left2.png");
 var upLogoSkin = new Skin({
-    width: 54,
-    height: 50,
+    width: 70,
+    height: 55,
 	texture: UpLogo,
 });
 
-var DownLogo = new Texture("./down.png");
+//var DownLogo = new Texture("./down.png");
+var DownLogo = new Texture("./left3.png");
 var downLogoSkin = new Skin({
-    width: 54,
-    height: 50,
+    width: 70,
+    height: 58,
 	texture: DownLogo,
 });
+
 
 // Update Phone and Device Temperature
 function updateTemperature(newTemp) {
@@ -73,28 +76,29 @@ var boil_button = new SmallTextButtonTemplate({textForLabel:"b", temp: 212});
 
 // Columns
 
-exports.bottleContainer = new Container({left:20, width:100, height:225, bottom: 50, contents: [
-										new Container({name: "waterContainer", left:4, right:4, bottom: 4,  height: 190, skin: blueSkin}),
-										new Picture({top:0, bottom: 0, url:"empty bottle.png"}),
+exports.bottleContainer = new Container({left:20, width:120, height:235, bottom: 50, contents: [
+										new Container({name: "waterContainer", left:4, right:4, bottom: 4, width: 70, height: 164, skin: blueSkin}),
+										new Picture({top:0, bottom: 0, height: 220, url:"water80.png"}),
 										new Label({name:"waterLabel", bottom:-25, left:4, right:4, string:"100% Full", style: waterLevelStyle})
 										]});
 
 exports.homeCol = new Column({
 	left:0, right:0, top:0, bottom:0,
-	skin: whiteS,
+	skin: greySkin,
 	contents:[
 	    new Content({width: 320, height:50, skin:logoSkin}),
-		new Line({left:0, right:0, top:20, bottom:0, skin: whiteS, contents: [			
+		new Line({left:0, right:0, top:20, bottom:0, contents: [			
 			exports.bottleContainer,
-			new Column({name: "tempControl", left:0, right:0, top:-23, bottom:-23, skin: whiteS,
+			new Column({name: "tempControl", left:0, right:0, top:-23, bottom:-23, 
 				contents:[
 					increase_button,
 					desired_temperature_label,			
 					current_temperature_label,
 					decrease_button,
-					heating_cooling_label,
+					
 				]
 			}),
 		]}),
+		heating_cooling_label,
 	],
 });
