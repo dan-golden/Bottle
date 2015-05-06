@@ -269,6 +269,7 @@ Handler.bind("/delayShowMenu", {
     }});
 
 
+
 Handler.bind("/updateTemperature", Behavior({
 	onInvoke: function(handler, message){
 	    handler.invoke( new Message(deviceURL + "currentTemperature"), Message.TEXT );
@@ -283,6 +284,10 @@ Handler.bind("/updateTemperature", Behavior({
 	    heating_cooling_label.string = heating_cooling;
 	    current_temperature_string = current_temperature + temperature_unit + " now";
 	    menuTempLabel.string = current_temperature + "";   
+
+	    if (bottle_status == 0 ) {
+	    current_temperature_label.string = "OFF"} 
+	    else { current_temperature_label.string = current_temperature_string; }
 	    if (bottle_status == 0 ) {
 	    current_temperature_label.string = "OFF"} 
 	    else { current_temperature_label.string = current_temperature_string; }
@@ -293,8 +298,10 @@ Handler.bind("/updateTemperature", Behavior({
 	    else { menuTempLabel.string = current_temperature + "\xB0 C"; 
 	    heating_cooling_label.string = heating_cooling;}
 	    menuTempLabel.string = "OFF"} 
-	
-}));
+
+	    
+	}
+));
 
 
 Handler.bind("/updateBottleStatus", Behavior({

@@ -53,7 +53,6 @@ var MySwitchTemplate = SWITCHES.SwitchButton.template(function($){ return{
   }}})
 }});
 
-
 var MyButtonTemplate = BUTTONS.Button.template(function($){ return{
 	height:50, skin: saveLogoSkin, visible: false,
 	behavior: Object.create(BUTTONS.ButtonBehavior.prototype, {
@@ -89,6 +88,7 @@ var MyField = Container.template(function($) { return {
          	behavior: Object.create( CONTROL.FieldLabelBehavior.prototype, {
          		onEdited: { value: function(label){
          			var data = this.data;
+
 
          			
               data.name = label.string;
@@ -152,6 +152,7 @@ var MyField1 = Container.template(function($) { return {
 
 			
 			
+
          			var data = this.data;	
           		    data.name = label.string;
               		amount = label.string;
@@ -179,7 +180,6 @@ var saveLogoSkin = new Skin({
 });
 
 var save_button = new MyButtonTemplate({textForLabel:"Save", skin: saveLogoSkin, visible: false});
-
 
 var BottleLogo = new Texture("./bottleTitle.png");
 var logoSkin = new Skin({
