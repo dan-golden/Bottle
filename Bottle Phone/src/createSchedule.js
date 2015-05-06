@@ -69,6 +69,7 @@ function checkValidSchedule(schedule) {
 }
 
 exports.resetCreateScreen = function reset() {
+    title.string = "Create a New Schedule";
 	tempField.scroller.textbox.string = ""; 
 	hourField.scroller.textbox.string = "";
 	minuteField.scroller.textbox.string = "";
@@ -96,6 +97,7 @@ exports.addAMPM = function addAMPM() {
 }
 
 exports.populateFields = function populateFields(schedule) {
+    title.string = "Edit Schedule " + schedule.name;
 	oldSchedule = schedule;
 	tempField.scroller.textbox.string = schedule.temperature; 
 	hourField.scroller.textbox.string = schedule.hours;
@@ -172,10 +174,10 @@ var saveButton = BUTTONS.Button.template(function($){ return{
 var MyField = Container.template(function($) { return { 
   width: 160, height: 36, skin: nameInputSkin, contents: [
     Scroller($, { 
-      left: 4, right: 4, top: 4, bottom: 4, active: true, 
+      left: 4, right: 4, top: 4, bottom: 4, active: true, name: "scroller",
       behavior: Object.create(CONTROL.FieldScrollerBehavior.prototype), clip: true, contents: [
         Label($, { 
-          left: 0, top: 0, bottom: 0, skin: THEME.fieldLabelSkin, style: fieldStyle, anchor: 'NAME',
+          name: "textbox", left: 0, top: 0, bottom: 0, skin: THEME.fieldLabelSkin, style: fieldStyle, anchor: 'NAME',
           editable: true, string: $.name,
          	behavior: Object.create( CONTROL.FieldLabelBehavior.prototype, {
          		onEdited: { value: function(label){
@@ -193,13 +195,14 @@ var MyField = Container.template(function($) { return {
   ]
 }});
 
+
 var MyTempField = Container.template(function($) { return { 
   left: 26, width: 70, height: 36, skin: nameInputSkin, contents: [
     Scroller($, { 
-      left: 4, right: 4, top: 4, bottom: 4, active: true, 
+      name: "scroller", left: 4, right: 4, top: 4, bottom: 4, active: true, 
       behavior: Object.create(CONTROL.FieldScrollerBehavior.prototype), clip: true, contents: [
         Label($, { 
-          left: 0, top: 0, bottom: 0, skin: THEME.fieldLabelSkin, style: fieldStyle, anchor: 'NAME',
+          name: "textbox", left: 0, top: 0, bottom: 0, skin: THEME.fieldLabelSkin, style: fieldStyle, anchor: 'NAME',
           editable: true, string: $.name,
          	behavior: Object.create( CONTROL.FieldLabelBehavior.prototype, {
          		onEdited: { value: function(label){
@@ -318,12 +321,13 @@ minuteField.scroller.hint.string = "Min.";
 var validMessage = new Label( {style: errorStyle, string: "Error!", visible: false})
 var daysLabel = new Label( {left: 0, right: 0, style: labelStyle, skin: babyblueskin, string: "Select Days: ", visible: false});
 var existingValue = false;
+var title = new Label( {bottom: 10, style: bottleStyle, string: "Create a New Schedule", });
 
 exports.CreateScheduleScreen = Container.template(function($) { return { left: 0, right: 0, top: 0, bottom: 0, skin: babyblueskin, active: true, contents: [ 
 	new Column( {name:"column", left: 0, right: 0, top:0, contents: [
 		new Content({width: 320, height:50, skin:logoSkin}),
 		validMessage,
-		new Label( {bottom: 10, style: bottleStyle, string: "Create a New Schedule", }),
+		title,
 		new Line( { left:0, right:20, bottom: 5, contents: [
 			Label($, {left: 20, right: 0, style: labelStyle, string: "Title (Optional): "}),
 			nameField
