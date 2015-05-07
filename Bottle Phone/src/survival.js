@@ -3,39 +3,39 @@ var alert_label = new Label({ left: 50, right: 0, top:15, vertical: 'middle', st
 var help_string = "With advanced Tracking Features, you can see how much water you have consumed, set a goal for consumption, and ration your drink to last the whole day!";
 
 var MySlider = SLIDERS.HorizontalSlider.template(function($){ return{
-  height:50, left:50, right:50,
-  behavior: Object.create(SLIDERS.HorizontalSliderBehavior.prototype, {
-    onValueChanged: { value: function(container){
-      SLIDERS.HorizontalSliderBehavior.prototype.onValueChanged.call(this, container);
-      dispense_rate = this.data.value.toFixed(0);
-      dispense_rate_label.string = "Dispense " + dispense_rate + " oz";
-      updateDeviceDispenseRate();
-      
-  }}})
+	height:50, left:50, right:50,
+	behavior: Object.create(SLIDERS.HorizontalSliderBehavior.prototype, {
+	    onValueChanged: { value: function(container){
+	    	SLIDERS.HorizontalSliderBehavior.prototype.onValueChanged.call(this, container);
+	    	dispense_rate = this.data.value.toFixed(0);
+	    	dispense_rate_label.string = "Dispense " + dispense_rate + " oz";
+	    	updateDeviceDispenseRate();
+	  	}}
+  	})
 }});
 
 var MySwitchTemplate = SWITCHES.SwitchButton.template(function($){ return{
-  height:50, width: 10, right: 70, left: 0, top: 0, 
-  behavior: Object.create(SWITCHES.SwitchButtonBehavior.prototype, {
-    onValueChanged: { value: function(container){
-      SWITCHES.SwitchButtonBehavior.prototype.onValueChanged.call(this, container);
-      //trace("Value is: " + this.data.value + "\n");
-      if (this.data.value == 1) {
-      	survival_mode = "ON";
-      	line1.visible = true; 
-      	line2.visible = true;
-      	save_button.visible = true;
-      } else {
-      	survival_mode = "OFF";
-      	save_label.visible = false;
-      	line1.visible = false;
-      	line2.visible = false; 
-      	save_button.visible = false;
-      	validMessage.visible = false;
-      }
-      survival_mode_label.string = "Water Tracking is " + survival_mode;
-      updateDeviceSurvivalMode();  
-  }}})
+	height:50, width: 10, right: 70, left: 0, top: 0, 
+	behavior: Object.create(SWITCHES.SwitchButtonBehavior.prototype, {
+		onValueChanged: { value: function(container){
+			SWITCHES.SwitchButtonBehavior.prototype.onValueChanged.call(this, container);
+		    	if (this.data.value == 1) {
+			      	survival_mode = "ON";
+			      	line1.visible = true; 
+			      	line2.visible = true;
+			      	save_button.visible = true;
+		      	} else {
+			      	survival_mode = "OFF";
+			      	save_label.visible = false;
+			      	line1.visible = false;
+			      	line2.visible = false; 
+			      	save_button.visible = false;
+			      	validMessage.visible = false;
+		      	}
+			    survival_mode_label.string = "Water Tracking is " + survival_mode;
+			    updateDeviceSurvivalMode();  
+		}}
+	})
 }});
 
 var MyButtonTemplate = BUTTONS.Button.template(function($){ return{
