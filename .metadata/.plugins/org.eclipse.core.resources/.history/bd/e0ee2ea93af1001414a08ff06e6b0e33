@@ -1,0 +1,35 @@
+// KPR Script file
+var PinsSimulators = require('PinsSimulators');
+
+var configure = exports.configure = function(configuration) {
+	this.pinsSimulator = shell.delegate("addSimulatorPart", {
+			header : { 
+				label : "Water Level", 
+				name : "Weight Input", 
+				iconVariant : PinsSimulators.SENSOR_SLIDER 
+			},
+			axes : [
+				new PinsSimulators.AnalogInputAxisDescription(
+					{
+						valueLabel : "Value",
+						valueID : "waterLevelValue",
+						speed: 1,
+						defaultControl: PinsSimulators.SLIDER
+					}
+				),
+			]
+		});
+}
+
+var close = exports.close = function() {
+	shell.delegate("removeSimulatorPart", this.pinsSimulator);
+}
+
+var read = exports.read = function() {
+	axes = this.pinsSimulator.delegate("getValue");
+	return axes.weightValue;
+}
+
+exports.pins = {
+			weight: { type: "A2D" }
+		};

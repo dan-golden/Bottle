@@ -1,0 +1,104 @@
+// KPR Script file
+
+//var UpLogo = new Texture("./up.png");
+var UpLogo = new Texture("./left2.png");
+var upLogoSkin = new Skin({
+    width: 70,
+    height: 55,
+	texture: UpLogo,
+});
+
+//var DownLogo = new Texture("./down.png");
+var DownLogo = new Texture("./left3.png");
+var downLogoSkin = new Skin({
+    width: 70,
+    height: 58,
+	texture: DownLogo,
+});
+
+
+// Update Phone and Device Temperature
+function updateTemperature(newTemp) {
+    // make sure current_temperature is up to date before calling this to update device
+    current_temperature = newTemp;
+    desired_temperature = newTemp;
+    desired_temperature_string = desired_temperature + temperature_unit;
+    desired_temperature_label.string = desired_temperature_string;
+    updateDeviceTemperature(current_temperature);
+}
+
+// Button Templates
+var IncreaseTemperatureButtonTemplate = BUTTONS.Button.template(function($){ return{
+  top:20, bottom:10, left:50, right:50,height: 50, width: 50, skin: upLogoSkin,
+  behavior: Object.create(BUTTONS.ButtonBehavior.prototype, {
+    onTap: { value:  function(button){
+    	newTemp = desired_temperature + 5;
+    	if(desired_temperature >= 100) newTemp = desired_temperature;
+            updateTemperature(newTemp);
+            save_label.string = "Changes saved!";
+    }}
+  })
+}});
+
+var DecreaseTemperatureButtonTemplate = BUTTONS.Button.template(function($){ return{
+  top:10, bottom:20, left:50, right:50, height: 50, width: 50, skin: downLogoSkin,
+  behavior: Object.create(BUTTONS.ButtonBehavior.prototype, {
+    onTap: { value:  function(button){
+      	newTemp = desired_temperature - 5;
+		if(desired_temperature <= 0) newTemp = desired_temperature;
+            updateTemperature(newTemp);
+            save_label.string = "Changes saved!";
+    }}
+  })
+}});
+
+var SmallTextButtonTemplate = BUTTONS.Button.template(function($){ return{
+  top:25, bottom:10, left:5, right:5, width: 15,skin: navyblueskin,
+  contents:[
+    new Label({left:0, right:0, height:55, string:$.textForLabel, style:textStyle})
+  ],
+  behavior: Object.create(BUTTONS.ButtonBehavior.prototype, {
+    onTap: { value:  function(button){
+      updateTemperature($.temp);
+      save_label.string = "Changes saved!";
+    }}
+  })
+}});
+
+// Buttons
+var increase_button = new IncreaseTemperatureButtonTemplate({height: 50});
+var decrease_button = new DecreaseTemperatureButtonTemplate({height: 50});
+var cold_button = new SmallTextButtonTemplate({textForLabel:"i", temp: 40});
+var room_button = new SmallTextButtonTemplate({textForLabel:"r", temp: 72});
+var hot_button = new SmallTextButtonTemplate({textForLabel:"hot", temp: 150});
+var boil_button = new SmallTextButtonTemplate({textForLabel:"b", temp: 212});
+
+
+// Columns
+
+exports.bottleContainer = new Container({left:20, width:120, height:235, bottom: 0, contents: [
+										new Container({name: "waterContainer", left:4, right:4, bottom: 4, width: 70, height: 164, skin: blueSkin}),
+										new Picture({top:0, bottom: 0, height: 220, url:"water80.png"}),
+										new Label({name:"waterLabel", bottom:-25, left:4, right:4, string:"100% Full", style: waterLevelStyle})
+										]});
+
+exports.homeCol = new Column({
+	left:0, right:0, top:0, bottom:0,
+	skin: greySkin,
+	contents:[
+	    new Content({width: 320, height:50, skin:logoSkin}),
+		new Line({left:0, right:0, top:20, bottom:0, contents: [			
+			exports.bottleContainer,
+			new Column({name: "tempControl", left:0, right:0, top:-23, bottom:-23, 
+				contents:[
+					increase_button,
+					desired_temperature_label,			
+					current_temperature_label,
+					decrease_button,
+					
+				]
+			}),
+		]}),
+		heating_cooling_label,
+	],
+});

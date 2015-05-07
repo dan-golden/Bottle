@@ -1,0 +1,41 @@
+//@module
+//@line 17 "/Users/daniel/Documents/Daniel Golden's Files/School Files/College/UC Berkeley/Sophomore Year/Spring 2015/CS 160 (User Interfaces)/Bottle/Bottle Device/simulator/potentiometers.xml"
+/* KPS2JS GENERATED FILE; DO NOT EDIT! */
+//@line 19
+var PinsSimulators = require('PinsSimulators');
+//@line 21
+var configure = exports.configure = function(configuration) {
+	this.pinsSimulator = shell.delegate("addSimulatorPart", {
+			header : { 
+				label : "Slider", 
+				name : "Analog Inputs", 
+				iconVariant : PinsSimulators.SENSOR_MODULE 
+			},
+			axes : [
+				new PinsSimulators.AnalogInputAxisDescription(
+					{
+						valueLabel : "Slider",
+						valueID : "slider",
+						minValue: 32,
+						maxValue: 212,
+						defaultControl : PinsSimulators.SLIDER,
+						speed : 0,
+						value: 70
+					}
+				),
+				
+			]
+		});
+}
+//@line 45
+var close = exports.close = function() {
+	shell.delegate("removeSimulatorPart", this.pinsSimulator);
+}
+//@line 49
+var read = exports.read = function() {
+	return this.pinsSimulator.delegate("getValue");
+}
+//@line 54
+exports.pins = {
+			slider: { type: "A2D" }, 
+		};

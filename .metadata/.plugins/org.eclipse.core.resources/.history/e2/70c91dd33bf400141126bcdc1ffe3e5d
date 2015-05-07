@@ -1,0 +1,226 @@
+// BUTTONS
+
+//create new schedule screen on touch the plus button
+
+// plus button to go to create schedule screen
+
+var PlusLogo = new Texture("./plus.png");
+var plusLogoSkin = new Skin({
+    width: 70,
+    height: 43,
+	texture: PlusLogo,
+});
+
+var plusButton = BUTTONS.Button.template(function($){ return{
+	left: 250, right: -5, top: 1, height: 43, width: 70, skin: plusLogoSkin,
+	contents: [
+		new Label({left:0, right:0, height:40, string:"", style: buttonStyle})
+	],
+	behavior: Object.create(BUTTONS.ButtonBehavior.prototype, {
+		onTap: { value: function(content){
+			currentScreen = "create";
+			menu.visible = false;
+			addAMPM();
+			main.run( new TRANSITIONS.Push(), main.last, CreateScheduleScreen, {direction: "up", duration : 400 });
+		}}
+	})
+}});
+
+var EditLogo = new Texture("./edit.png");
+var editLogoSkin = new Skin({
+	width: 50,
+	height: 22,
+	texture: EditLogo,
+});
+
+var editButton = BUTTONS.Button.template(function($){ return{
+	right: 1, top: 1, skin: editLogoSkin,
+	contents: [
+		new Label({left:0, right:0, height:40, style: buttonStyle})
+	],
+	behavior: Object.create(BUTTONS.ButtonBehavior.prototype, {
+		onTap: { value: function(content){
+			currentScreen = "create";
+			menu.visible = false;
+			main.run( new TRANSITIONS.Push(), main.last, CreateScheduleScreen, {direction: "up", duration : 400 });
+			repopulateScheduleFields($.schedule);
+		}}
+	})
+}});
+
+var DeleteLogo = new Texture("./delete.png");
+var deleteLogoSkin = new Skin({
+	width: 50,
+	height: 22,
+	texture: DeleteLogo,
+});
+
+var deleteButton = BUTTONS.Button.template(function($){ return{
+	right: 1, top: 1, skin: deleteLogoSkin,
+	contents: [
+		new Label({left:0, right:0, height:40, style: buttonStyle})
+	],
+	behavior: Object.create(BUTTONS.ButtonBehavior.prototype, {
+		onTap: { value: function(content){
+			sched = $.schedule;
+			container = sched.container;
+			exports.removeSchedule(container);
+		}}
+	})
+}});
+
+// SCREENS
+no_schedule = new Label({top: 5, string:"No schedules created yet!", style:errorStyle,});
+exports.ScheduleScreen = Container.template(function($) { return { left: 0, right: 0, top: 0, bottom: 0, skin: whiteS, contents: [
+	new Column({left:0, right:0, top:0, height:80, skin: whiteS, vertical: 'middle', 
+		contents:[
+			new Content({width: 320, height:50, skin:logoSkin}),
+			new Label({ left: 0, right: 0, top:15, style: bottleStyle, vertical: 'middle',  string: 'Schedules', skin: whiteS}),
+			no_schedule,
+		]
+	}),
+	new plusButton(),
+	screen	
+]}});
+
+function generateRepeatedDaysDict(days) {
+	dict = {};
+	dict["Su"] = false
+	dict["M"] = false;
+	dict["Tu"] = false;
+	dict["W"] = false;
+	dict["Th"] = false;
+	dict["F"] = false;
+	dict["Sa"] = false;
+	for(i = 0; i<days.length; i++) {
+		dict[days[i]] = true;
+	}
+	return dict;
+}
+
+var schedule_empty = true;
+var numSchedules = 0;
+
+exports.generateDisplayContainer = function generateDisplayString(scheds) {
+	result = [];
+	for (var i = 0; i < scheds.length; i++) {
+		title = new Label({left:1, string: scheds[i].name, style:scheduleTitleStyle});
+		timeString = scheds[i].hours + ":" + scheds[i].minutes + " "+ scheds[i].t_of_day;
+		time = new Label({left:1, string: timeString, style:labelStyle});
+		repeat = new Label({left:1, string: "Today, Repeat Off", style: labelStyle});
+		if(scheds[i].repeat == 1) {
+			numDays = scheds[i].repeatedDays.length;
+			trace(numDays+"\n");
+			days = generateRepeatedDaysDict(scheds[i].repeatedDays);
+			repeatString = "Repeats on ";
+			if(days["Su"]) {
+				if(numDays == 1)
+					repeatString+="Su";
+				else
+					repeatString+="Su, ";
+				numDays--;
+			}
+			if(days["M"]) {
+				trace(numDays+"\n");
+				if(numDays == 1)
+					repeatString+="M";
+				else
+					repeatString+="M, ";
+				numDays--;
+			}
+			if(days["Tu"]) {
+				if(numDays == 1)
+					repeatString+="Tu";
+				else
+					repeatString+="Tu, ";
+				numDays--;
+			}
+			if(days["W"]) {
+				if(numDays == 1)
+					repeatString+="W";
+				else
+					repeatString+="W, ";
+				numDays--;
+			}
+			if(days["Th"]) {
+				if(numDays == 1)
+					repeatString+="Th";
+				else
+					repeatString+="Th, ";
+				numDays--;
+			}
+			if(days["F"]) {
+				if(numDays == 1)
+					repeatString+="F";
+				else
+					repeatString+="F, ";
+				numDays--;
+			}
+			if(days["Sa"]) {
+				if(numDays == 1)
+					repeatString+="Sa";
+				else
+					repeatString+="Sa, ";
+				numDays--;
+			}
+			repeat.string = repeatString;
+		}
+		temperature = new Label({left:1, string: scheds[i].temperature + "\xB0 C", style: labelStyle});
+		scheds[i].existing = true;
+		scheduleContainer = new Container({left:0, right:0, skin: whiteS, contents:[
+								new Line({left:0, right:0, contents:[
+									new Column({left:4, right:0, width: 150, contents:[title, time, repeat, temperature]}),
+									new Column({left:4, right:0, contents: [
+										new editButton({schedule: scheds[i]}),
+										new deleteButton({schedule: scheds[i], name: "delete"}),
+									]})
+								]})
+							]});
+		scheds[i].container = scheduleContainer;
+		result.push(scheduleContainer);
+		schedule_empty = false;
+		numSchedules++;
+	}
+	if (result.length > 0) {
+	    no_schedule.visible = false;
+	}
+	return result;
+}    
+
+/* This is template for a container which takes up the
+ * whole screen.  It contains only a single object,
+ * the SCROLLER.VerticalScroller.  Although we are not
+ * referencing any values from an object passed on creation,
+ * an object is still required as the SCROLLER uses it internally. */
+var ScreenContainer = Container.template(function($) { return {
+	left:0, right:0, top:100, bottom:100,
+	contents: [
+   		/* Note that the scroller is declared as having only an empty
+   		 * Column and a scrollbar.  All the entries will be added 
+   		 * programmatically. */ 
+   		SCROLLER.VerticalScroller($, { 
+   			contents: [
+  				Column($, { left: 0, right: 0, top: 0, name: 'menu', }),
+      			SCROLLER.VerticalScrollbar($, { }),
+  			]
+   		})
+   	]
+}});
+
+var data = new Object();
+var screen = new ScreenContainer(data);
+
+/* This simple function exists so we can call "forEach" on
+ * our array of list entries (menuItems).  It adds a new 
+ * ProcessorLine() object to the Column named "menu" in the
+ * screen object's SCROLLER */
+exports.ListBuilder = function ListBuilder(element, index, array) {
+	screen.first.menu.add(element);
+}
+
+exports.removeSchedule = function removeSchedule(container) {
+	screen.first.menu.remove(container);
+	numSchedules--;
+	if(numSchedules == 0)
+		no_schedule.visible = true;
+}
