@@ -172,23 +172,25 @@ var MyGoalField = Container.template(function($) { return {
          			
               data.name = label.string;
               goal = Math.round(parseFloat(label.string));
-              if(label.string == "") {
-              	goal_label.string = "No goal set!";
-              	goal = -1;
-             	survival.column.secondCol.bar.progress.width = 0;    
-              }
-              else if(isNaN(+label.string)) {
-              	goal_label.string = "Invalid Goal";
-              	goal = -1;
-				survival.column.secondCol.bar.progress.width = 0;
-              }
-              else {
-              	percent = consumption_level/goal * 100;
-				if(percent>100)
-					percent = 100;
-				goal_label.string = percent + "%";
-				survival.column.secondCol.bar.progress.width = 200 * percent/100;
-              }
+              if(bottle_status!=0) {
+	              if(label.string == "") {
+	              	goal_label.string = "No goal set!";
+	              	goal = -1;
+	             	survival.column.secondCol.bar.progress.width = 0;    
+	              }
+	              else if(isNaN(+label.string)) {
+	              	goal_label.string = "Invalid Goal";
+	              	goal = -1;
+					survival.column.secondCol.bar.progress.width = 0;
+	              }
+	              else {
+	              	percent = consumption_level/goal * 100;
+					if(percent>100)
+						percent = 100;
+					goal_label.string = percent + "%";
+					survival.column.secondCol.bar.progress.width = 200 * percent/100;
+	              }
+	          }
               label.container.hint.visible = ( data.name.length == 0 );	
          			var data = this.data;	
           		    data.name = label.string;
@@ -271,9 +273,9 @@ exports.SurvivalScreen = Container.template(function($) {return { left: 0, right
 					new Container({name:"progress", left:0, height:30, width:0, skin: new Skin({fill: "green"})}),
 					goal_label
 				]}),
-				new Line({left:0, right:0, top:0, bottom:0,contents: [
+				new Line({ name: "ration", left:0, right:0, top:0, bottom:0,contents: [
 					alert_label, 
-					new MySwitchTemplate({value: 0}),	
+					new MySwitchTemplate({ name: "switch", value: 0}),	
 					
 				]
 			}),

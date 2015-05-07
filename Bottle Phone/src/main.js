@@ -108,7 +108,7 @@ var dispense_time = "0";
 var schedules = [];
 var currentScreen = "temperature";
 var heating_cooling = "Ready";
-var heating_cooling_label = new Label({ left: 0, right: 0,  style: bottleStyle, skin: rectangleSkin, string: heating_cooling});
+var heating_cooling_label = new Label({ left: 0, right: 0, top: 40, style: bottleStyle, skin: greySkin, string: heating_cooling});
 var real_desired = 25; 
 var real_current = 25; 
 var goal = -1;
@@ -304,7 +304,6 @@ Handler.bind("/updateTemperature", Behavior({
 	    heating_cooling_label.string = "";
 	    heating_cooling_label.visible = false;} 
 	    else { 
-	    
 	    menuTempLabel.string = current_temperature + "\xB0 C";
 	    current_temperature_label.string = current_temperature_string; 
 	    heating_cooling_label.string = heating_cooling;
@@ -328,11 +327,20 @@ Handler.bind("/updateBottleStatus", Behavior({
 	    menuTempLabel.string = "OFF"; 
 	    heating_cooling_label.string = "";
 	    heating_cooling_label.visible = false;
-	    current_temperature_label.string = "OFF"; } 
+	    current_temperature_label.string = "OFF"; 
+	    handler.invoke(new Message("/updateWaterLevel"));
+	    survival = survivalOff;
+	    SurvivalScreen.remove(SurvivalScreen.first);
+	    SurvivalScreen.add(survival);} 
 	    else { menuTempLabel.string = current_temperature + "\xB0 C"; 
 	    heating_cooling_label.string = heating_cooling;
 	    heating_cooling_label.visible = true;
-	    handler.invoke(new Message("/updateTemperature")) }
+	    handler.invoke(new Message("/updateTemperature"));
+	    handler.invoke(new Message("/updateWaterLevel"));
+	    handler.invoke(new Message("/updateConsumptionLevel"));
+	    survival = survivalOn; 
+	    SurvivalScreen.remove(SurvivalScreen.first);
+	    SurvivalScreen.add(survival);}
 		
 		
 		
@@ -345,10 +353,16 @@ Handler.bind("/updateWaterLevel", Behavior({
 		//trace("inside updateWaterLevel in phone\n");
 	},
 	onComplete: function(handler, message, text) {
-	    water_level = parseFloat(text); 
-		water_level_label.string = water_level;
-		TEMPERATURE_SCREEN.bottleContainer.waterContainer.height = 190 * water_level/100;
-		TEMPERATURE_SCREEN.bottleContainer.waterLabel.string = Math.round(water_level)+"% Full";
+		if(bottle_status == 0) {
+			TEMPERATURE_SCREEN.bottleContainer.waterLabel.visible = false
+			TEMPERATURE_SCREEN.bottleContainer.waterContainer.height = 0;
+		} else {
+			water_level = parseFloat(text); 
+			water_level_label.string = water_level;
+			TEMPERATURE_SCREEN.bottleContainer.waterContainer.height = 190 * water_level/100;
+			TEMPERATURE_SCREEN.bottleContainer.waterLabel.visible = true;
+			TEMPERATURE_SCREEN.bottleContainer.waterLabel.string = Math.round(water_level)+"% Full";
+		}
 	}
 }));
 
@@ -357,16 +371,18 @@ Handler.bind("/updateConsumptionLevel", Behavior({
 	    handler.invoke( new Message(deviceURL + "currentConsumptionLevel"), Message.TEXT );
 	},
 	onComplete: function(handler, message, text) {
-	    consumption_level = parseFloat(text); 
-		consumption_level_label.string = consumption_level;
-		percent = consumption_level/goal * 100;
-		if(percent>100)
-			percent = 100;
-		if(percent>=0)
-			goal_label.string = percent + "%"
-		else
-			goal_label.string = "No gaol set!"
-		survival.column.secondCol.bar.progress.width = 200 * percent/100;
+	    if(bottle_status == 1) {
+		    consumption_level = parseFloat(text); 
+			consumption_level_label.string = consumption_level;
+			percent = consumption_level/goal * 100;
+			if(percent>100)
+				percent = 100;
+			if(percent>=0)
+				goal_label.string = percent + "%"
+			else
+				goal_label.string = "No gaol set!"
+			survival.column.secondCol.bar.progress.width = 200 * percent/100;
+		}
 	}
 }));
 
@@ -403,7 +419,14 @@ var CreateScheduleScreen = Container.template(function($) { return { left: 0, ri
 	}}, 
 }});
 
-survival = SURVIVAL_SCREEN.SurvivalScreen();
+survivalOn = SURVIVAL_SCREEN.SurvivalScreen();
+survivalOff = new Column({name:"column", left:0, right:0, top:0, bottom:0, skin: greySkin,
+	contents:[
+		new Content({width: 320, height:50, skin:logoSkin}),
+		new Text({left:5, right:5, top:150, bottom:5, style: bottleStyle, string: "Turn Bottle on to access Tracking features"})
+	]
+});
+survival = survivalOn
 var SurvivalScreen = Container.template(function($) { return { left: 0, right: 0, top: 0, bottom: 0, skin: whiteS, contents: [
 	survival,
 ], }});
