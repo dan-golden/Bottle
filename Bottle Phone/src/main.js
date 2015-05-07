@@ -69,6 +69,7 @@ var whiteSkinLabel = new Skin( { fill:"white", borders: { left:5, right:5, }, st
 var whiteS = new Skin({fill:"white", borders:{left:0, right:0, top:0, bottom:0}, stroke:"white"});
 var textStyle = new Style({font:"bold 25px Lato", color:"white", vertical: "middle", horizontal: 'center',});
 var bottleStyle = new Style({font:"bold 25px Lato", color:"#0078B6", vertical: "middle", horizontal: 'center',});
+var bottleStyleSmall = new Style({font:"bold 18px Lato", color:"#0078B6", vertical: "middle", horizontal: 'center',});
 var barStyle = new Style({font:"bold 20px Lato", color:"black", vertical: "middle", horizontal: 'center',});
 var inputStyle = new Style({font:"12px Lato", color:"black", vertical: "middle", horizontal: 'center',});
 var titleStyle = new Style({font:"bold 30px Lato", color:"black"});
@@ -391,12 +392,10 @@ Handler.bind("/updateConsumptionLevel", Behavior({
 				goal_label.string = Math.round(percent) + "%"
 			else
 				goal_label.string = "No gaol set!"
-			survival.column.scroller.secondCol.bar.progress.width = 198 * percent/100;
+			survival.column.secondCol.bar.progress.width = 198 * percent/100;
 		}
 	}
 }));
-
-
 
 // Labels
 var current_temperature_label = new Label({string: current_temperature_string, style:bigText,});
