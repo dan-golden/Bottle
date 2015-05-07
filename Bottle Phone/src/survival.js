@@ -14,7 +14,7 @@ var MySwitchTemplate = SWITCHES.SwitchButton.template(function($){ return{
       	save_button.visible = true;
       } else {
       	survival_mode = "OFF";
-      	//save_label.visible = false;
+      	save_label.visible = false;
       	line1.visible = false;
       	save_button.visible = false;
       	validMessage.visible = false;
@@ -29,9 +29,9 @@ var MyButtonTemplate = BUTTONS.Button.template(function($){ return{
 	behavior: Object.create(BUTTONS.ButtonBehavior.prototype, {
 		onTap: { value: function(content){
      		if(checkValidAmount(dispense_rate) == false) {
-				//hide green checkmark
+				save_label.visible = false; 
 			} else {
-				//display green checkmark
+				save_label.visible = true; 
 			}
      		content.invoke(new Message(deviceURL + "updateSurvivalMode"), Message.JSON);       			 
 			}}, 
@@ -58,18 +58,11 @@ var MyField = Container.template(function($) { return {
 	              	label.container.hint.visible = ( data.name.length == 0 );	
 	             	if(checkValidAmount(dispense_rate) == true) {
 						validMessage.visible = false;
-						//save_label.visible = false;
-					} else {
-						//validMessage.visible = true;
-					}
-					data.name = label.string;
-	          		amount = label.string;
-	          		label.container.hint.visible = ( data.name.length == 0 );	
-					if(checkValidAmount(amount) == true) {
-						validMessage.visible = false;
+						
 					} else {
 						validMessage.visible = true;
-					}	
+						save_label.visible = false; 
+					}
 	     		}},
 	     		onFocused: { value: function(label){
 	     			menu.visible = false;
@@ -232,7 +225,11 @@ exports.SurvivalScreen = Container.template(function($) {return { left: 0, right
 							new MySwitchTemplate({ name: "switch", value: 0}),		
 						]}),
 						line1, 
-						save_button,	
+						new Line({left:0, right:0, top:0, bottom:0,contents: [
+							save_button,	
+							save_label, 	
+						]}),
+						
 					], 
 					behavior: Object.create(Container.prototype, {
 		    			onTouchEnded: { value: function(content){
