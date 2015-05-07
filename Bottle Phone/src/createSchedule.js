@@ -104,8 +104,8 @@ exports.populateFields = function populateFields(schedule) {
 	minuteField.scroller.textbox.string = schedule.minutes;
 	nameField.scroller.textbox.string = schedule.name;
 	if(schedule.repeat) {
-		repeatSwitch.behavior.onValueChanged(repeatSwitch);
 		repeatSwitch.behavior.data.value = 1;
+		repeatSwitch.behavior.onValueChanged(repeatSwitch);
 	}
 	selectedBoxes = schedule.repeatedDays;
 	for(i = 0; i<selectedBoxes.length; i++) {
@@ -378,6 +378,12 @@ behavior: Object.create(Container.prototype, {
     onTouchEnded: { value: function(content){
       KEYBOARD.hide();
       content.focus();
+    }},
+    onDisplaying: {value: function(content){
+    	if(SCHEDULE_SCREEN.shouldIrepopulate) {
+    		exports.populateFields(SCHEDULE_SCREEN.incomingSchedule);
+    		SCHEDULE_SCREEN.shouldIrepopulate = false;
+    	}
     }}
   })
 }});

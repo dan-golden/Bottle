@@ -171,7 +171,7 @@ var MyGoalField = Container.template(function($) { return {
          			var data = this.data;
          			
               data.name = label.string;
-              goal = Math.round(parseFloat(label.string));
+              goal = parseFloat(label.string);
               if(bottle_status!=0) {
 	              if(label.string == "") {
 	              	goal_label.string = "No goal set!";
@@ -187,8 +187,8 @@ var MyGoalField = Container.template(function($) { return {
 	              	percent = consumption_level/goal * 100;
 					if(percent>100)
 						percent = 100;
-					goal_label.string = percent + "%";
-					survival.column.secondCol.bar.progress.width = 200 * percent/100;
+					goal_label.string = Math.round(percent) + "%";
+					survival.column.secondCol.bar.progress.width = 198 * percent/100;
 	              }
 	          }
               label.container.hint.visible = ( data.name.length == 0 );	
@@ -239,7 +239,7 @@ var line1 = new Line({left:0, right:0, top:0, height: 40, visible: false, conten
 				]})
 var line2 = new Line({left:26, right:0, top:0,  visible: false, contents: [
 				new Label({string: "Every " }),
-				rateField, 
+				rateField,
 				new Label({string: " minutes "}),	
 					
 				]
@@ -270,7 +270,7 @@ exports.SurvivalScreen = Container.template(function($) {return { left: 0, right
 					new Container({height:30, left:0, width:1, skin: blackSkin}),
 					new Container({height:1, bottom:0, width:200, skin: blackSkin}),
 					new Container({height:30, right:0, width:1, skin: blackSkin}),
-					new Container({name:"progress", left:0, height:30, width:0, skin: new Skin({fill: "green"})}),
+					new Container({name:"progress", left:1, height:28, width:0, skin: new Skin({fill: "#90EE90"})}),
 					goal_label
 				]}),
 				new Line({ name: "ration", left:0, right:0, top:0, bottom:0,contents: [

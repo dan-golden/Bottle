@@ -32,7 +32,7 @@ var editLogoSkin = new Skin({
 	height: 22,
 	texture: EditLogo,
 });
-
+exports.shouldIrepopulate = false;
 var editButton = BUTTONS.Button.template(function($){ return{
 	right: 5, top: 1, skin: editLogoSkin,
 	contents: [
@@ -42,8 +42,9 @@ var editButton = BUTTONS.Button.template(function($){ return{
 		onTap: { value: function(content){
 			currentScreen = "create";
 			menu.visible = false;
+			exports.shouldIrepopulate = true;
+			exports.incomingSchedule = $.schedule;
 			main.run( new TRANSITIONS.Push(), main.last, CreateScheduleScreen, {direction: "up", duration : 400 });
-			repopulateScheduleFields($.schedule);
 		}}
 	})
 }});
@@ -72,6 +73,7 @@ var deleteButton = BUTTONS.Button.template(function($){ return{
 // SCREENS
 no_schedule = new Label({top: 5, string:"No schedules created yet!", style:errorStyle,});
 exports.ScheduleScreen = Container.template(function($) { return { left: 0, right: 0, top: 0, bottom: 0, contents: [
+	screen,
 	new Column({left:0, right:0, top:0, height:80,  vertical: 'middle', 
 		contents:[
 			new Content({width: 320, height:50, skin:logoSkin}),
@@ -80,7 +82,6 @@ exports.ScheduleScreen = Container.template(function($) { return { left: 0, righ
 		]
 	}),
 	new plusButton(),
-	screen	
 ]}});
 
 function generateRepeatedDaysDict(days) {

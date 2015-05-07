@@ -62,13 +62,13 @@ var whiteSkinLabel = new Skin( { fill:"white", borders: { left:5, right:5, }, st
 var whiteS = new Skin({fill:"white", borders:{left:0, right:0, top:0, bottom:0}, stroke:"white"});
 var textStyle = new Style({font:"bold 25px Lato", color:"white", vertical: "middle", horizontal: 'center',});
 var bottleStyle = new Style({font:"bold 25px Lato", color:"#0078B6", vertical: "middle", horizontal: 'center',});
-var barStyle = new Style({font:"bold 25px Lato", color:"black", vertical: "middle", horizontal: 'center',});
+var barStyle = new Style({font:"bold 20px Lato", color:"black", vertical: "middle", horizontal: 'center',});
 var inputStyle = new Style({font:"12px Lato", color:"black", vertical: "middle", horizontal: 'center',});
 var titleStyle = new Style({font:"bold 30px Lato", color:"black"});
 var scheduleTitleStyle = new Style({font:"bold 20px Lato", color:"black"});
 var labelStyle = new Style( { font: "20px Lato", color:"black" } );
 var waterLevelStyle = new Style({font:"bold 20px Lato", color:"black", vertical: "middle", horizontal: 'center',});
-var helpText = new Style({font: "5 px", color:"black", vertical: "middle", horizontal: "center"});
+var helpText = new Style({font: "15px", color:"black", vertical: "middle", horizontal: "center"});
 var redSkin = new Skin({fill:'red'});
 var blackSkin = new Skin({fill:'black'});
 var biggerText = new Style({font:"bold 60px", color:"black"});
@@ -112,7 +112,7 @@ var heating_cooling_label = new Label({ left: 0, right: 0, top: 40, style: bottl
 var real_desired = 25; 
 var real_current = 25; 
 var goal = -1;
-var goal_label = new Label({ style: bottleStyle, string: "No goal set!"});
+var goal_label = new Label({ style: barStyle, string: "No goal set!"});
 
 bottle_status = "ON";
 water_level = 20; 
@@ -378,10 +378,10 @@ Handler.bind("/updateConsumptionLevel", Behavior({
 			if(percent>100)
 				percent = 100;
 			if(percent>=0)
-				goal_label.string = percent + "%"
+				goal_label.string = Math.round(percent) + "%"
 			else
 				goal_label.string = "No gaol set!"
-			survival.column.secondCol.bar.progress.width = 200 * percent/100;
+			survival.column.secondCol.bar.progress.width = 198 * percent/100;
 		}
 	}
 }));
