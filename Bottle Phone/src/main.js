@@ -69,6 +69,8 @@ var scheduleTitleStyle = new Style({font:"bold 20px Lato", color:"black"});
 var labelStyle = new Style( { font: "20px Lato", color:"black" } );
 var waterLevelStyle = new Style({font:"bold 20px Lato", color:"black", vertical: "middle", horizontal: 'center',});
 var helpText = new Style({font: "15px", color:"black", vertical: "middle", horizontal: "center"});
+var deleteText = new Style({font: "15px", color:"white", vertical: "middle", horizontal: "center"});
+
 var redSkin = new Skin({fill:'red'});
 var blackSkin = new Skin({fill:'black'});
 var biggerText = new Style({font:"bold 60px", color:"black"});
@@ -87,7 +89,7 @@ var menuBarSkin = new Skin({ fill: "#CCCCDD",});
 var separatorSkin = new Skin({ fill: 'silver',});
 var productNameStyle = new Style({  font: 'bold 22px Lato', horizontal: 'left', vertical: 'middle', lines: 1, });
 var productDescriptionStyle = new Style({  font: '16px Lato', horizontal: 'left', vertical: 'middle', left: 1, color: 'black' });
-var errorStyle = new Style( { font: "15px Lato", horizontal: "center", color:"red" } );
+var errorStyle = new Style( { font: "15px Lato", color:"red" } );
 var rectangleLogo = new Texture("./rectangle.png"); 
 var rectangleSkin = new Skin({
     width: 142,
@@ -119,9 +121,7 @@ water_level = 20;
 consumption_level = 0; 
 
 function checkValidAmount(amount) {
-	if(isNaN(+amount)) {
-		return false;
-	} else if (amount>24 | amount <0) {
+	if (amount>24 | amount <0) {
 		return false; 
 	} else {
 		return true;
@@ -394,11 +394,12 @@ Handler.bind("/updateConsumptionLevel", Behavior({
 var current_temperature_label = new Label({string: current_temperature_string, style:bigText,});
 var desired_temperature_label = new Label({string: desired_temperature_string, style:biggerText, });
 var survival_mode_label = new Label({string: survival_mode, style:bottleStyle, skin: whiteS});
+var save_label = new Label({string: "Changes Saved!", style:labelStyle, skin: whiteS, visible: false});
 var survival_title_label = new Label({ left: 0, right: 0, top:0, vertical: 'middle', style: bottleStyle, string: 'Survival Mode'});
 var survival_title_label = new Label({ left: 0, right: 0, top:0, vertical: 'middle', style: bottleStyle, string: 'Advanced Tracking'});
 var bottle_status_label = new Label({left:0, right:0, height:40, width:70, string: bottle_status, style: labelStyle}); //need to add to main screen 
 var water_level_label = new Label({left:0, right:0, height:40, width:70, string: water_level, style: labelStyle}); //need to add to main screen 
-var consumption_level_label = new Label({string: consumption_level, style: labelStyle}); //need to add to main screen 
+var consumption_level_label = new Label({height:40, width:50, left: 0, string: consumption_level, style: labelStyle}); //need to add to main screen 
 var SURVIVAL_SCREEN = require('survival.js');
 var CREATE_SCHEDULE_SCREEN = require("createSchedule.js");
 var SCHEDULE_SCREEN = require("schedules.js");
@@ -410,9 +411,9 @@ var ScheduleScreen = Container.template(function($) { return { left: 0, right: 0
 	SCHEDULE_SCREEN.ScheduleScreen(new Object()),
 ], }});
 
+
 createScreen = CREATE_SCHEDULE_SCREEN.CreateScheduleScreen();
-var CreateScheduleScreen = Container.template(function($) { return { left: 0, right: 0, top: 0, bottom: 0, skin: whiteS, 
-	contents: [
+var CreateScheduleScreen = Container.template(function($) { return { left: 0, right: 0, top: 0, bottom: 0, skin: whiteS, contents: [
 		createScreen,
 	], onTouchEnded: { value: function(content){
 		KEYBOARD.hide();
@@ -421,8 +422,7 @@ var CreateScheduleScreen = Container.template(function($) { return { left: 0, ri
 }});
 
 survivalOn = SURVIVAL_SCREEN.SurvivalScreen();
-survivalOff = new Column({name:"column", left:0, right:0, top:0, bottom:0, skin: whiteS,
-	contents:[
+survivalOff = new Column({name:"column", left:0, right:0, top:0, bottom:0, skin: whiteS,	contents:[
 		new Content({width: 320, height:50, skin:logoSkin}),
 		new Text({left:5, right:5, top:150, bottom:5, style: bottleStyle, string: "Turn Bottle on to access Tracking features"})
 	]
@@ -432,8 +432,7 @@ var SurvivalScreen = Container.template(function($) { return { left: 0, right: 0
 	survival,
 ], }});
 
-var TemperatureScreen = Container.template(function($) { return { left: 0, right: 0, top: 0, bottom: 0, skin: whiteS, contents: [
-	Label($, { left: 0, right: 0, style: textStyle, string: 'Manual Temperature Control', }),
+var TemperatureScreen = Container.template(function($) { return { left: 0, right: 0, top: 0, bottom: 0, skin: whiteS, contents: [	Label($, { left: 0, right: 0, style: textStyle, string: 'Manual Temperature Control', }),
 	TEMPERATURE_SCREEN.homeCol,
 ], }});
 
@@ -458,15 +457,13 @@ var ApplicationBehavior = Behavior.template({
 	},
 })
 
-var FullScreen = Column.template(function($) { return { left: 0, right: 0, top: 0, bottom: 0, active: true, skin: whiteS,
-	onTouchEnded: { value: function(content){
+var FullScreen = Column.template(function($) { return { left: 0, right: 0, top: 0, bottom: 0, active: true, skin: whiteS,	onTouchEnded: { value: function(content){
 		KEYBOARD.hide();
 		content.focus();
 	}}
 }});
 
-var MainScreen = Container.template(function($) { return { left: 0, right: 0, top: 0, bottom: 30, active: true, skin: whiteS, 
-	onTouchEnded: { value: function(content){
+var MainScreen = Container.template(function($) { return { left: 0, right: 0, top: 0, bottom: 30, active: true, skin: whiteS, 	onTouchEnded: { value: function(content){
 		KEYBOARD.hide();
 		content.focus();
 	}}, 
