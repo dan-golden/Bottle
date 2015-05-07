@@ -195,8 +195,13 @@ var MyGoalField = Container.template(function($) { return {
           		    amount = label.string;
 	                label.container.hint.visible = ( data.name.length == 0 );	
          		}},
+         	  onFocused: { value: function(label){
+         			menu.visible = false;
+         			KEYBOARD.show();
+         		}}
          	}),
          }),
+
          Label($, {
    			 	left:4, right:4, top:4, bottom:4, style:fieldHintStyle, string:"", name:"hint",
          })
@@ -247,8 +252,9 @@ exports.SurvivalScreen = Container.template(function($) {return { left: 0, right
 			contents:[
 				save_label,
 				survival_title_label,
+				new Text({left:5, right: 5, string: help_string, style: helpText}),
 				new Line({left:0, right:0, top:0, bottom:0, contents: [
-					new Label({left:50, right:0, top:0, bottom:0, width: 80, string: "Water Consumed: "}),	
+					new Label({left:50, right:0, top:0, bottom:0, width: 80, string: "Water Consumed: "}),
 					consumption_level_label, 
 					new Label({left:0, right:0, top:0, bottom:0, string: " oz", }),					
 				]}),

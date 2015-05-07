@@ -68,17 +68,12 @@ var titleStyle = new Style({font:"bold 30px Lato", color:"black"});
 var scheduleTitleStyle = new Style({font:"bold 20px Lato", color:"black"});
 var labelStyle = new Style( { font: "20px Lato", color:"black" } );
 var waterLevelStyle = new Style({font:"bold 20px Lato", color:"black", vertical: "middle", horizontal: 'center',});
+var helpText = new Style({font: "5 px", color:"black", vertical: "middle", horizontal: "center"});
 var redSkin = new Skin({fill:'red'});
-<<<<<<< HEAD
 var blackSkin = new Skin({fill:'black'});
 var biggerText = new Style({font:"bold 60px", color:"black"});
 var bigText = new Style({font:"bold 30px", color:"black"});
 var smallText = new Style({font:"bold 20px", color:"black"});
-=======
-var biggerText = new Style({font: 'bold 60px Lato', color:"black"});
-var bigText = new Style({font:"bold 30px Lato", color:"black"});
-var smallText = new Style({font:"bold 20px Lato", color:"black"});
->>>>>>> f64db80b9fbbc915368ac0a41fb2cd837267a0e5
 var nameInputSkin = new Skin({borders: { left:2, right:2, top:2, bottom:2 }, stroke: 'gray',});
 var fieldStyle = new Style({ color: 'black', fill: "white", font: 'bold 24px Lato', horizontal: 'left', vertical: 'middle', left: 5, right: 5, top: 5, bottom: 5, });
 var fieldHintStyle = new Style({ color: 'gray', font: '18px Lato', horizontal: 'left', fill: "white", vertical: 'middle', left: 5, right: 5, top: 5, bottom: 5, });
