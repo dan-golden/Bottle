@@ -97,7 +97,7 @@ var verifyDeleteYes = BUTTONS.Button.template(function($){ return{
 }});
 			
 var verifyDelete = Container.template(function($){ return {
-	left:45, right:45, top:50, height:75, active: true,
+	left:25, right:25, top:50, height:75, active: true,
 	skin: darkblueSkin,
 	contents:[
 		// two buttons go here
