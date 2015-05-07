@@ -2,6 +2,15 @@ var alert_label = new Label({ left: 50, right: 0, top:15, vertical: 'middle', st
 
 var help_string = "Use Advanced Tracking to set hydration goals, monitor your beverage consumpution, and ration your drink to last the whole day.";
 
+function checkValidMinutes(min) {
+	if(isNaN(min) || min == "") {
+		return false;
+	} else if(+min > 59 || +min < 0) {
+		return false;
+	}
+	return true;
+}
+
 var MySwitchTemplate = SWITCHES.SwitchButton.template(function($){ return{
   height:50, width: 10, right: 70, left: 0, top: 0, 
   behavior: Object.create(SWITCHES.SwitchButtonBehavior.prototype, {
@@ -28,10 +37,19 @@ var MyButtonTemplate = BUTTONS.Button.template(function($){ return{
 	left: 113, skin: saveLogoSkin, visible: false,
 	behavior: Object.create(BUTTONS.ButtonBehavior.prototype, {
 		onTap: { value: function(content){
+			trace("hello\n");
      		if(checkValidAmount(dispense_rate) == false) {
+     		    validMessage.string = "Please enter a valid amount up to 24oz";
+     		    validMessage.visible = true;
 				save_label.visible = false; 
+			} else if (checkValidMinutes(dispense_time) == false) {
+			    validMessage.string = "Please input a valid amount for mins.";
+			    validMessage.visible = true;
+			    save_label.visible = false;
 			} else {
+			    validMessage.visible = false;
 				save_label.visible = true; 
+				trace("hi\n");
 			}
      		content.invoke(new Message(deviceURL + "updateSurvivalMode"), Message.JSON);       			 
 			}}, 
@@ -59,10 +77,7 @@ var MyField = Container.template(function($) { return {
 	             	if(checkValidAmount(dispense_rate) == true) {
 						validMessage.visible = false;
 					} else {
-						trace("sup\n");
-						validMessage.visible = true;
 						save_label.visible = false; 
-						trace(validMessage.visible);
 					}
 	     		}},
 	     		onFocused: { value: function(label){
@@ -83,7 +98,7 @@ var MyField = Container.template(function($) { return {
 var MyField1 = Container.template(function($) { return { 
 	width: 50, height: 36, top: 0, skin: nameInputSkin, contents: [
     Scroller($, { 
-      left: 4, right: 4, top: 4, bottom: 4, active: true, name: "scroller", fill: "white", style: bottleStyle,
+      left: 4, right: 4, top: 4, bottom: 4, active: true, name: "scroller",
       behavior: Object.create(CONTROL.FieldScrollerBehavior.prototype), clip: true, contents: [
         Label($, { 
           name: "textbox", left: 0, top: 0, bottom: 0, skin: THEME.fieldLabelSkin, style: bottleStyle, anchor: 'AMOUNT',
@@ -120,7 +135,7 @@ var MyField1 = Container.template(function($) { return {
 var MyGoalField = Container.template(function($) { return { 
 	width: 50, height: 36, top: 0, bottom: 5, skin: nameInputSkin, contents: [
 	    Scroller($, { 
-	    	left: 4, right: 4, top: 4, bottom: 4, active: true, name: "scroller", fill: "white", style: bottleStyle,
+	    	left: 4, right: 4, top: 4, bottom: 4, active: true, name: "scroller",
 	    	behavior: Object.create(CONTROL.FieldScrollerBehavior.prototype), clip: true, contents: [
 	    		Label($, { 
 	          		name: "textbox", left: 0, top: 0, bottom: 0, skin: THEME.fieldLabelSkin, style: bottleStyle, anchor: 'AMOUNT',
@@ -197,13 +212,14 @@ var line1 = new Line({left:0, right:0, top:0, visible: false, contents: [
 
 exports.SurvivalScreen = Container.template(function($) {return { left: 0, right: 0, top: 0, bottom: 0, active: true, 
 	contents: [ 
-		new Container({name:"column", left:0, right:0, top:0, bottom:0, skin: whiteS,
+		new Column({name:"column", left:0, right:0, top:0, bottom:0, skin: whiteS,
 			contents:[	
-				SCROLLER.VerticalScroller({}, {top:50, name: "scroller", 
+				new Content({width: 320, height:50, skin:logoSkin}),
+				validMessage,
+				SCROLLER.VerticalScroller({}, {name: "scroller", 
 		   			contents: [
 		  				new Column({name: "secondCol", left:0, right:0, top:0, 
 							contents:[
-								validMessage,
 								survival_title_label,
 								new Text({left:5, right: 5, bottom:5, string: help_string, style: helpText}),
 								new Line({ top:0, bottom:0, skin: whiteS, contents: [
@@ -240,11 +256,11 @@ exports.SurvivalScreen = Container.template(function($) {return { left: 0, right
 								}}
 				  			})
 						}),
+						
 		      			SCROLLER.VerticalScrollbar({}, { }),
 		  			],
 		   		}),
-		   		new Content({top:0, width: 320, height:50, skin:logoSkin})		
-			],
+			], 
 		}) 
 	],
 	behavior: Object.create(Container.prototype, {
