@@ -172,7 +172,7 @@ var saveButton = BUTTONS.Button.template(function($){ return{
 }});
 
 var MyField = Container.template(function($) { return { 
-  width: 160, height: 36, skin: nameInputSkin, contents: [
+  width: 200, height: 36, skin: nameInputSkin, contents: [
     Scroller($, { 
       left: 4, right: 4, top: 4, bottom: 4, active: true, name: "scroller",
       behavior: Object.create(CONTROL.FieldScrollerBehavior.prototype), clip: true, contents: [
@@ -329,7 +329,7 @@ exports.CreateScheduleScreen = Container.template(function($) { return { left: 0
 		validMessage,
 		title,
 		new Line( { left:0, right:20, bottom: 5, contents: [
-			Label($, {left: 20, right: 0, style: labelStyle, string: "Title (Optional): "}),
+			Label($, {left: 20, right: 0, style: labelStyle, string: "Title: "}),
 			nameField
 		]}),
 		new Line( { left:0, right:20, contents: [

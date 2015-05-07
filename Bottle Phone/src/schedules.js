@@ -56,16 +56,74 @@ var deleteLogoSkin = new Skin({
 	texture: DeleteLogo,
 });
 
-var deleteButton = BUTTONS.Button.template(function($){ return{
-	right: 5, top: 1, skin: deleteLogoSkin,
+var smallCancel = new Texture("./small_cancel.png");
+var smallCancelSkin = new Skin({
+	width: 50,
+	height: 22,
+	texture: smallCancel,
+});
+
+
+//* verify if you really want to delete
+//* inside should be two buttons yes or no, if no do screen.first.menu.remove(deletePrompt);
+//* if yes, do //sched = $.schedule;
+			//container = sched.container;
+			//exports.removeSchedule(container);
+var verifyDeleteCancel = BUTTONS.Button.template(function($){ return{
+	right: 125, left: 25, height:20, top: 40, skin: smallCancelSkin,
+	contents: [
+		new Label({ left:0, right:0, top: 20, height:40, style: buttonStyle})
+	],
+	behavior: Object.create(BUTTONS.ButtonBehavior.prototype, {
+		onTap: { value: function(content){
+			screen.remove(deletePrompt);  
+		}}
+	})
+}});
+
+var verifyDeleteYes = BUTTONS.Button.template(function($){ return{
+	left: 125, right: 25, height:20, top: 40, skin: deleteLogoSkin,
 	contents: [
 		new Label({left:0, right:0, height:40, style: buttonStyle})
 	],
 	behavior: Object.create(BUTTONS.ButtonBehavior.prototype, {
 		onTap: { value: function(content){
-			sched = $.schedule;
+			screen.remove(deletePrompt);  
+			sched = currSchedule;
 			container = sched.container;
 			exports.removeSchedule(container);
+		}}
+	})
+}});
+			
+var verifyDelete = Container.template(function($){ return {
+	left:45, right:45, top:50, height:75, active: true,
+	skin: darkblueSkin,
+	contents:[
+		// two buttons go here
+		new Label({left:0, right:0, top: 10, height:30, style: deleteText, string:"Are you sure you want to delete?"}),
+		new verifyDeleteYes(),
+		new verifyDeleteCancel()
+
+		//new Label({left: 0, right:0, height:55, top: 10, string: "poop", style:bigText})
+	]
+}});
+
+var deletePrompt = new verifyDelete();
+var currSchedule;
+
+var deleteButton = BUTTONS.Button.template(function($){ return{
+	right: 1, top: 1, skin: deleteLogoSkin,
+	contents: [
+		new Label({left:0, right:0, height:40, style: buttonStyle})
+	],
+	behavior: Object.create(BUTTONS.ButtonBehavior.prototype, {
+		onTap: { value: function(content){
+			currSchedule = $.schedule;
+			screen.add(deletePrompt);  
+			//sched = $.schedule;
+			//container = sched.container;
+			//exports.removeSchedule(container);
 		}}
 	})
 }});
