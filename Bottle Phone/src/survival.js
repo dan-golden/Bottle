@@ -25,7 +25,7 @@ var MySwitchTemplate = SWITCHES.SwitchButton.template(function($){ return{
 }});
 
 var MyButtonTemplate = BUTTONS.Button.template(function($){ return{
-	height:50, skin: saveLogoSkin, visible: false,
+	height:50, left: 113, skin: saveLogoSkin, visible: false,
 	behavior: Object.create(BUTTONS.ButtonBehavior.prototype, {
 		onTap: { value: function(content){
      		if(checkValidAmount(dispense_rate) == false) {
