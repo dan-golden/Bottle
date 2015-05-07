@@ -28,12 +28,10 @@ var MyButtonTemplate = BUTTONS.Button.template(function($){ return{
 	left: 113, skin: saveLogoSkin, visible: false,
 	behavior: Object.create(BUTTONS.ButtonBehavior.prototype, {
 		onTap: { value: function(content){
-			trace("hello\n");
      		if(checkValidAmount(dispense_rate) == false) {
 				save_label.visible = false; 
 			} else {
 				save_label.visible = true; 
-				trace("hi\n");
 			}
      		content.invoke(new Message(deviceURL + "updateSurvivalMode"), Message.JSON);       			 
 			}}, 
@@ -61,8 +59,10 @@ var MyField = Container.template(function($) { return {
 	             	if(checkValidAmount(dispense_rate) == true) {
 						validMessage.visible = false;
 					} else {
+						trace("sup\n");
 						validMessage.visible = true;
 						save_label.visible = false; 
+						trace(validMessage.visible);
 					}
 	     		}},
 	     		onFocused: { value: function(label){
@@ -197,14 +197,13 @@ var line1 = new Line({left:0, right:0, top:0, visible: false, contents: [
 
 exports.SurvivalScreen = Container.template(function($) {return { left: 0, right: 0, top: 0, bottom: 0, active: true, 
 	contents: [ 
-		new Column({name:"column", left:0, right:0, top:0, bottom:0, skin: whiteS,
+		new Container({name:"column", left:0, right:0, top:0, bottom:0, skin: whiteS,
 			contents:[	
-				new Content({width: 320, height:50, skin:logoSkin}),
-				validMessage,
-				SCROLLER.VerticalScroller({}, {name: "scroller", 
+				SCROLLER.VerticalScroller({}, {top:50, name: "scroller", 
 		   			contents: [
 		  				new Column({name: "secondCol", left:0, right:0, top:0, 
 							contents:[
+								validMessage,
 								survival_title_label,
 								new Text({left:5, right: 5, bottom:5, string: help_string, style: helpText}),
 								new Line({ top:0, bottom:0, skin: whiteS, contents: [
@@ -241,11 +240,11 @@ exports.SurvivalScreen = Container.template(function($) {return { left: 0, right
 								}}
 				  			})
 						}),
-						
 		      			SCROLLER.VerticalScrollbar({}, { }),
 		  			],
 		   		}),
-			], 
+		   		new Content({top:0, width: 320, height:50, skin:logoSkin})		
+			],
 		}) 
 	],
 	behavior: Object.create(Container.prototype, {
