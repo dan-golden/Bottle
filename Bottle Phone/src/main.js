@@ -383,7 +383,7 @@ Handler.bind("/updateConsumptionLevel", Behavior({
 				goal_label.string = Math.round(percent) + "%"
 			else
 				goal_label.string = "No gaol set!"
-			survival.column.secondCol.bar.progress.width = 198 * percent/100;
+			survival.column.scroller.secondCol.bar.progress.width = 198 * percent/100;
 		}
 	}
 }));
