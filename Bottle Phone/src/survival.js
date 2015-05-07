@@ -1,6 +1,6 @@
 var alert_label = new Label({ left: 50, right: 0, top:15, vertical: 'middle', style: bottleStyle, string: 'Ration: '});
 
-var help_string = "With advanced Tracking Features, you can see how much water you have consumed, set a goal for consumption, and ration your drink to last the whole day!";
+var help_string = "Use Advanced Tracking to see how much water you have consumed, set hydration goals, and ration your drink to last the whole day!";
 
 var MySlider = SLIDERS.HorizontalSlider.template(function($){ return{
   height:50, left:50, right:50,
@@ -43,25 +43,20 @@ var MyButtonTemplate = BUTTONS.Button.template(function($){ return{
 	height:50, skin: saveLogoSkin, visible: false,
 	behavior: Object.create(BUTTONS.ButtonBehavior.prototype, {
 		onTap: { value: function(content){
-			//trace("Button was tapped.\n");
      		 if(checkValidAmount(dispense_rate) == false) {
 				save_label.visible = false;
 			} else {
 				save_label.visible = true;
 			}
-     		 
-     		 //content.invoke(new Message("/currentSurvivalMode"));
-     		 content.invoke(new Message(deviceURL + "updateSurvivalMode"), Message.JSON);
-     		 //trace("calling device's update survival handler");
-     		 
+     		content.invoke(new Message(deviceURL + "updateSurvivalMode"), Message.JSON);  
+     			 
 			}}, 
 			
 	})
 }});
 
 
-
-var validMessage = new Label( {left: 0, right:0, top: 15, style: errorStyle, string: "Please enter a valid amount up to 24oz", visible: false})	
+var validMessage = new Label( {left: 0, right:0, top: 0, style: errorStyle, string: "Please enter a valid amount up to 24oz", visible: false})	
 
 var MyField = Container.template(function($) { return { 
   width: 170, height: 36, top: 0, skin: nameInputSkin, contents: [
@@ -134,11 +129,6 @@ var MyField1 = Container.template(function($) { return {
               dispense_time = parseFloat(label.string);
               //trace("printing dispense time " + dispense_time); 
               label.container.hint.visible = ( data.name.length == 0 );	
-              
-
-			
-			
-
          			var data = this.data;	
           		    data.name = label.string;
               		amount = label.string;
@@ -243,7 +233,9 @@ var line2 = new Line({left:26, right:0, top:0,  visible: false, contents: [
 				new Label({string: " minutes "}),	
 					
 				]
-			})
+			}); 
+
+
 exports.SurvivalScreen = Container.template(function($) {return { left: 0, right: 0, top: 0, bottom: 0, active: true, contents: [ 
 
 	new Column({name:"column", left:0, right:0, top:0, bottom:0, skin: whiteS,
@@ -252,7 +244,7 @@ exports.SurvivalScreen = Container.template(function($) {return { left: 0, right
 		validMessage,
 		new Column({name: "secondCol", left:0, right:0, top:0, 
 			contents:[
-				save_label,
+				//save_label,
 				survival_title_label,
 				new Text({left:5, right: 5, string: help_string, style: helpText}),
 				new Line({left:0, right:0, top:0, bottom:0, contents: [
@@ -295,11 +287,6 @@ behavior: Object.create(Container.prototype, {
 }) 
 ], 
 
-behavior: Object.create(Container.prototype, {
-    onTouchEnded: { value: function(content){
-      KEYBOARD.hide();
-      content.focus();
-      application.invoke(new Message("/delayShowMenu"));
-    }}
-  })
+
 }});
+

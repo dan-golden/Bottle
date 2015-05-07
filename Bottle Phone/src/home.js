@@ -77,14 +77,14 @@ var boil_button = new SmallTextButtonTemplate({textForLabel:"b", temp: 212});
 // Columns
 
 exports.bottleContainer = new Container({left:20, width:120, height:235, contents: [
-										new Container({name: "waterContainer", left:4, right:4, bottom: 4, width: 70, height: 164, skin: blueSkin}),
+										new Container({name: "waterContainer", left:4, right:4, bottom: 4, width: 70, height: 190, skin: blueSkin}),
 										new Picture({top:0, bottom: 0, height: 220, url:"water80.png"}),
 										new Label({name:"waterLabel", bottom:-25, left:4, right:4, string:"100% Full", style: waterLevelStyle})
 										]});
 
 exports.homeCol = new Column({
 	left:0, right:0, top:0, bottom:0,
-	skin: greySkin,
+	skin: whiteS,
 	contents:[
 	    new Content({width: 320, height:50, skin:logoSkin}),
 		new Line({left:0, right:0, top:20, bottom:0, contents: [			
