@@ -103,8 +103,8 @@ var MyField1 = Container.template(function($) { return {
 	                label.container.hint.visible = ( data.name.length == 0 );	
          		}},
          		onFocused: { value: function(label){
-         			menu.visible = false;
          			KEYBOARD.show();
+         			menu.visible = false;
          		}}
          	}),
          }),
@@ -133,17 +133,17 @@ var MyGoalField = Container.template(function($) { return {
 			              		if(label.string == "") {
 			              			goal_label.string = "No goal set!";
 			              			goal = -1;
-			             			survival.column.secondCol.bar.progress.width = 0;    
+			             			survival.column.scroller.secondCol.bar.progress.width = 0;    
 			              		} else if(isNaN(+label.string)) {
 		              				goal_label.string = "Invalid Goal";
 		              				goal = -1;
-									survival.column.secondCol.bar.progress.width = 0;
+									survival.column.scroller.secondCol.bar.progress.width = 0;
 		              			} else {
 				              		percent = consumption_level/goal * 100;
 									if(percent>100)
 										percent = 100;
 									goal_label.string = Math.round(percent) + "%";
-									survival.column.secondCol.bar.progress.width = 198 * percent/100;
+									survival.column.scroller.secondCol.bar.progress.width = 198 * percent/100;
 		              			}
 		          	    	}
 			              	label.container.hint.visible = ( data.name.length == 0 );	
@@ -153,8 +153,8 @@ var MyGoalField = Container.template(function($) { return {
 			              	label.container.hint.visible = ( data.name.length == 0 );	
 			        	}},
 						onFocused: { value: function(label){
-							menu.visible = false;
 							KEYBOARD.show();
+							menu.visible = false;
 						}}
 	     			}),
 	  			}),
@@ -200,52 +200,49 @@ exports.SurvivalScreen = Container.template(function($) {return { left: 0, right
 			contents:[	
 				new Content({width: 320, height:50, skin:logoSkin}),
 				validMessage,
-				new Column({name: "secondCol", left:0, right:0, top:0, 
-					contents:[
-						survival_title_label,
-						new Text({left:5, right: 5, bottom:5, string: help_string, style: helpText}),
-						new Line({ top:0, bottom:0, skin: whiteS, contents: [
-							new Label({style:labelStyle, string: "Goal: "}),	
-							goalField,
-							new Label({style:labelStyle, string: " oz,", }),
-							new Label({left: 5, style:labelStyle, string: "So far: "}),
-							consumption_level_label, 
-							new Label({style:labelStyle, string: " oz", }),	
-						]}),
-						new Container({name:"bar", height:30, width:200, skin: whiteS, contents: [
-							new Container({height:1, top:0, width:200, skin: blackSkin}),
-							new Container({height:30, left:0, width:1, skin: blackSkin}),
-							new Container({height:1, bottom:0, width:200, skin: blackSkin}),
-							new Container({height:30, right:0, width:1, skin: blackSkin}),
-							new Container({name:"progress", left:1, height:28, width:0, skin: new Skin({fill: "#90EE90"})}),
-							goal_label
-						]}),
-						new Line({ name: "ration", left:0, right:0, top:0, bottom:0,contents: [
-							alert_label, 
-							new MySwitchTemplate({ name: "switch", value: 0}),		
-						]}),
-						line1, 
-						new Line({left:0, right:0, top:0, bottom:0,contents: [
-							save_button,	
-							save_label, 	
-						]}),
+				SCROLLER.VerticalScroller({}, {name: "scroller", 
+		   			contents: [
+		  				new Column({name: "secondCol", left:0, right:0, top:0, 
+							contents:[
+								survival_title_label,
+								new Text({left:5, right: 5, bottom:5, string: help_string, style: helpText}),
+								new Line({ top:0, bottom:0, skin: whiteS, contents: [
+									new Label({style:labelStyle, string: "Goal: "}),	
+									goalField,
+									new Label({style:labelStyle, string: " oz,", }),
+									new Label({left: 5, style:labelStyle, string: "So far: "}),
+									consumption_level_label, 
+									new Label({style:labelStyle, string: " oz", }),	
+								]}),
+								new Container({name:"bar", height:30, width:200, skin: whiteS, contents: [
+									new Container({height:1, top:0, width:200, skin: blackSkin}),
+									new Container({height:30, left:0, width:1, skin: blackSkin}),
+									new Container({height:1, bottom:0, width:200, skin: blackSkin}),
+									new Container({height:30, right:0, width:1, skin: blackSkin}),
+									new Container({name:"progress", left:1, height:28, width:0, skin: new Skin({fill: "#90EE90"})}),
+									goal_label
+								]}),
+								new Line({ name: "ration", left:0, right:0, top:0, bottom:0,contents: [
+									alert_label, 
+									new MySwitchTemplate({ name: "switch", value: 0}),		
+								]}),
+								line1, 
+								save_button,
+								new Content({width: 320, height:50,}),
+							], 
+							behavior: Object.create(Container.prototype, {
+				    			onTouchEnded: { value: function(content){
+							    	KEYBOARD.hide();
+							    	content.focus();
+							    	application.invoke(new Message("/delayShowMenu"));
+								}}
+				  			})
+						}),
 						
-					], 
-					behavior: Object.create(Container.prototype, {
-		    			onTouchEnded: { value: function(content){
-					    	KEYBOARD.hide();
-					    	content.focus();
-					    	application.invoke(new Message("/delayShowMenu"));
-						}}
-		  			})
-				}),
+		      			SCROLLER.VerticalScrollbar({}, { }),
+		  			],
+		   		}),
 			], 
 		}) 
-	], behavior: Object.create(Container.prototype, {
-			onTouchEnded: { value: function(content){
-		    	KEYBOARD.hide();
-		    	content.focus();
-		    	application.invoke(new Message("/delayShowMenu"));
-			}}
-		})
+	],
 }});
