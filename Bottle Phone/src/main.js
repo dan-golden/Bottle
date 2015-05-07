@@ -110,7 +110,7 @@ var dispense_time = "0";
 var schedules = [];
 var currentScreen = "temperature";
 var heating_cooling = "Ready";
-var heating_cooling_label = new Label({ left: 0, right: 0, top: 40, style: bottleStyle, skin: greySkin, string: heating_cooling});
+var heating_cooling_label = new Label({ left: 0, right: 0, top: 40, style: bottleStyle, skin: whiteS, string: heating_cooling});
 var real_desired = 25; 
 var real_current = 25; 
 var goal = -1;
@@ -406,14 +406,14 @@ var SCHEDULE_SCREEN = require("schedules.js");
 var TEMPERATURE_SCREEN = require("home.js");
 
 // SCREENS
-var ScheduleScreen = Container.template(function($) { return { left: 0, right: 0, top: 0, bottom: 0, skin: greySkin, contents: [
+var ScheduleScreen = Container.template(function($) { return { left: 0, right: 0, top: 0, bottom: 0, skin: whiteS, contents: [
 	Label($, { left: 0, right: 0, style: textStyle, string: '', }),
 	SCHEDULE_SCREEN.ScheduleScreen(new Object()),
 ], }});
 
+
 createScreen = CREATE_SCHEDULE_SCREEN.CreateScheduleScreen();
-var CreateScheduleScreen = Container.template(function($) { return { left: 0, right: 0, top: 0, bottom: 0, skin: greySkin, 
-	contents: [
+var CreateScheduleScreen = Container.template(function($) { return { left: 0, right: 0, top: 0, bottom: 0, skin: whiteS, contents: [
 		createScreen,
 	], onTouchEnded: { value: function(content){
 		KEYBOARD.hide();
@@ -422,8 +422,7 @@ var CreateScheduleScreen = Container.template(function($) { return { left: 0, ri
 }});
 
 survivalOn = SURVIVAL_SCREEN.SurvivalScreen();
-survivalOff = new Column({name:"column", left:0, right:0, top:0, bottom:0, skin: greySkin,
-	contents:[
+survivalOff = new Column({name:"column", left:0, right:0, top:0, bottom:0, skin: whiteS,	contents:[
 		new Content({width: 320, height:50, skin:logoSkin}),
 		new Text({left:5, right:5, top:150, bottom:5, style: bottleStyle, string: "Turn Bottle on to access Tracking features"})
 	]
@@ -433,8 +432,7 @@ var SurvivalScreen = Container.template(function($) { return { left: 0, right: 0
 	survival,
 ], }});
 
-var TemperatureScreen = Container.template(function($) { return { left: 0, right: 0, top: 0, bottom: 0, skin: greySkin, contents: [
-	Label($, { left: 0, right: 0, style: textStyle, string: 'Manual Temperature Control', }),
+var TemperatureScreen = Container.template(function($) { return { left: 0, right: 0, top: 0, bottom: 0, skin: whiteS, contents: [	Label($, { left: 0, right: 0, style: textStyle, string: 'Manual Temperature Control', }),
 	TEMPERATURE_SCREEN.homeCol,
 ], }});
 
@@ -459,15 +457,13 @@ var ApplicationBehavior = Behavior.template({
 	},
 })
 
-var FullScreen = Column.template(function($) { return { left: 0, right: 0, top: 0, bottom: 0, active: true, skin: greySkin,
-	onTouchEnded: { value: function(content){
+var FullScreen = Column.template(function($) { return { left: 0, right: 0, top: 0, bottom: 0, active: true, skin: whiteS,	onTouchEnded: { value: function(content){
 		KEYBOARD.hide();
 		content.focus();
 	}}
 }});
 
-var MainScreen = Container.template(function($) { return { left: 0, right: 0, top: 0, bottom: 30, active: true, skin: greySkin, 
-	onTouchEnded: { value: function(content){
+var MainScreen = Container.template(function($) { return { left: 0, right: 0, top: 0, bottom: 30, active: true, skin: whiteS, 	onTouchEnded: { value: function(content){
 		KEYBOARD.hide();
 		content.focus();
 	}}, 
@@ -557,7 +553,7 @@ var menu = new Line({
 		sButton,
 		tButton,
 		suButton
-	], skin: greySkin,
+	], skin: whiteS,
 });
 var main = new MainScreen();
 var full = new FullScreen();

@@ -2,18 +2,6 @@ var alert_label = new Label({ left: 50, right: 0, top:15, vertical: 'middle', st
 
 var help_string = "With advanced Tracking Features, you can see how much water you have consumed, set a goal for consumption, and ration your drink to last the whole day!";
 
-var MySlider = SLIDERS.HorizontalSlider.template(function($){ return{
-  height:50, left:50, right:50,
-  behavior: Object.create(SLIDERS.HorizontalSliderBehavior.prototype, {
-    onValueChanged: { value: function(container){
-      SLIDERS.HorizontalSliderBehavior.prototype.onValueChanged.call(this, container);
-      dispense_rate = this.data.value.toFixed(0);
-      dispense_rate_label.string = "Dispense " + dispense_rate + " oz";
-      updateDeviceDispenseRate();
-      
-  }}})
-}});
-
 var MySwitchTemplate = SWITCHES.SwitchButton.template(function($){ return{
   height:50, width: 10, right: 70, left: 0, top: 0, 
   behavior: Object.create(SWITCHES.SwitchButtonBehavior.prototype, {
@@ -50,11 +38,9 @@ var MyButtonTemplate = BUTTONS.Button.template(function($){ return{
 				save_label.visible = true;
 			}
      		 
-     		 //content.invoke(new Message("/currentSurvivalMode"));
-     		 content.invoke(new Message(deviceURL + "updateSurvivalMode"), Message.JSON);
-     		 //trace("calling device's update survival handler");
-     		 
+     		 content.invoke(new Message(deviceURL + "updateSurvivalMode"), Message.JSON);       			 
 			}}, 
+			
 			
 	})
 }});
@@ -134,11 +120,6 @@ var MyField1 = Container.template(function($) { return {
               dispense_time = parseFloat(label.string);
               //trace("printing dispense time " + dispense_time); 
               label.container.hint.visible = ( data.name.length == 0 );	
-              
-
-			
-			
-
          			var data = this.data;	
           		    data.name = label.string;
               		amount = label.string;
@@ -293,13 +274,11 @@ behavior: Object.create(Container.prototype, {
 		}),
 	], 
 }) 
-], 
-
-behavior: Object.create(Container.prototype, {
-    onTouchEnded: { value: function(content){
-      KEYBOARD.hide();
-      content.focus();
-      application.invoke(new Message("/delayShowMenu"));
-    }}
-  })
+], behavior: Object.create(Container.prototype, {
+			onTouchEnded: { value: function(content){
+		    	KEYBOARD.hide();
+		    	content.focus();
+		    	application.invoke(new Message("/delayShowMenu"));
+			}}
+		})
 }});

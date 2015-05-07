@@ -84,7 +84,7 @@ exports.bottleContainer = new Container({left:20, width:120, height:235, content
 
 exports.homeCol = new Column({
 	left:0, right:0, top:0, bottom:0,
-	skin: greySkin,
+	skin: whiteS,
 	contents:[
 	    new Content({width: 320, height:50, skin:logoSkin}),
 		new Line({left:0, right:0, top:20, bottom:0, contents: [			
