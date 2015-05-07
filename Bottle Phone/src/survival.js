@@ -245,4 +245,11 @@ exports.SurvivalScreen = Container.template(function($) {return { left: 0, right
 			], 
 		}) 
 	],
+	behavior: Object.create(Container.prototype, {
+		onTouchEnded: { value: function(content){
+	    	KEYBOARD.hide();
+	    	content.focus();
+	    	application.invoke(new Message("/delayShowMenu"));
+		}}
+	})
 }});
