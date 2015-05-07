@@ -401,7 +401,7 @@ Handler.bind("/updateConsumptionLevel", Behavior({
 var current_temperature_label = new Label({string: current_temperature_string, style:bigText,});
 var desired_temperature_label = new Label({string: desired_temperature_string, style:biggerText, });
 var survival_mode_label = new Label({string: survival_mode, style:bottleStyle, skin: whiteS});
-var save_label = new Content({string: "", skin: saveSkin, visible: false});
+var save_label = new Content({string: "", top:35, skin: saveSkin, visible: false});
 var survival_title_label = new Label({ left: 0, right: 0, top:0, vertical: 'middle', style: bottleStyle, string: 'Survival Mode'});
 var survival_title_label = new Label({ left: 0, right: 0, top:0, vertical: 'middle', style: bottleStyle, string: 'Advanced Tracking'});
 var bottle_status_label = new Label({left:0, right:0, height:40, width:70, string: bottle_status, style: labelStyle}); //need to add to main screen 

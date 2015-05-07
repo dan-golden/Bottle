@@ -25,13 +25,15 @@ var MySwitchTemplate = SWITCHES.SwitchButton.template(function($){ return{
 }});
 
 var MyButtonTemplate = BUTTONS.Button.template(function($){ return{
-	height:50, left: 113, skin: saveLogoSkin, visible: false,
+	left: 113, skin: saveLogoSkin, visible: false,
 	behavior: Object.create(BUTTONS.ButtonBehavior.prototype, {
 		onTap: { value: function(content){
+			trace("hello\n");
      		if(checkValidAmount(dispense_rate) == false) {
 				save_label.visible = false; 
 			} else {
 				save_label.visible = true; 
+				trace("hi\n");
 			}
      		content.invoke(new Message(deviceURL + "updateSurvivalMode"), Message.JSON);       			 
 			}}, 
@@ -58,7 +60,6 @@ var MyField = Container.template(function($) { return {
 	              	label.container.hint.visible = ( data.name.length == 0 );	
 	             	if(checkValidAmount(dispense_rate) == true) {
 						validMessage.visible = false;
-						
 					} else {
 						validMessage.visible = true;
 						save_label.visible = false; 
@@ -227,8 +228,10 @@ exports.SurvivalScreen = Container.template(function($) {return { left: 0, right
 									new MySwitchTemplate({ name: "switch", value: 0}),		
 								]}),
 								line1, 
-								save_button,
-								new Content({width: 320, height:50,}),
+								new Line({left:0, right:0, top:-35, bottom:0, contents: [
+									save_button,
+									save_label
+								]}),
 							], 
 							behavior: Object.create(Container.prototype, {
 				    			onTouchEnded: { value: function(content){
