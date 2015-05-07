@@ -56,16 +56,66 @@ var deleteLogoSkin = new Skin({
 	texture: DeleteLogo,
 });
 
-var deleteButton = BUTTONS.Button.template(function($){ return{
-	right: 5, top: 1, skin: deleteLogoSkin,
+
+//* verify if you really want to delete
+//* inside should be two buttons yes or no, if no do screen.first.menu.remove(deletePrompt);
+//* if yes, do //sched = $.schedule;
+			//container = sched.container;
+			//exports.removeSchedule(container);
+var verifyDeleteCancel = BUTTONS.Button.template(function($){ return{
+	right: 125, left: 25, height:20, top: 15, skin: blueSkin,
+	contents: [
+		new Label({ left:0, right:0, height:40, style: buttonStyle, string:"cancel"})
+	],
+	behavior: Object.create(BUTTONS.ButtonBehavior.prototype, {
+		onTap: { value: function(content){
+			screen.remove(deletePrompt);  
+		}}
+	})
+}});
+
+var verifyDeleteYes = BUTTONS.Button.template(function($){ return{
+	left: 125, right: 25, height:20, top: 15, skin: deleteLogoSkin,
 	contents: [
 		new Label({left:0, right:0, height:40, style: buttonStyle})
 	],
 	behavior: Object.create(BUTTONS.ButtonBehavior.prototype, {
 		onTap: { value: function(content){
-			sched = $.schedule;
+			screen.remove(deletePrompt);  
+			sched = currSchedule;
 			container = sched.container;
 			exports.removeSchedule(container);
+		}}
+	})
+}});
+			
+var verifyDelete = Container.template(function($){ return {
+	left:50, right:50, top:50, height:60, active: true,
+	skin: navyblueskin,
+	contents:[
+		// two buttons go here
+		new verifyDeleteYes(),
+		new verifyDeleteCancel()
+
+		//new Label({left: 0, right:0, height:55, top: 10, string: "poop", style:bigText})
+	]
+}});
+
+var deletePrompt = new verifyDelete();
+var currSchedule;
+
+var deleteButton = BUTTONS.Button.template(function($){ return{
+	right: 1, top: 1, skin: deleteLogoSkin,
+	contents: [
+		new Label({left:0, right:0, height:40, style: buttonStyle})
+	],
+	behavior: Object.create(BUTTONS.ButtonBehavior.prototype, {
+		onTap: { value: function(content){
+			currSchedule = $.schedule;
+			screen.add(deletePrompt);  
+			//sched = $.schedule;
+			//container = sched.container;
+			//exports.removeSchedule(container);
 		}}
 	})
 }});
