@@ -2,18 +2,6 @@ var alert_label = new Label({ left: 50, right: 0, top:15, vertical: 'middle', st
 
 var help_string = "Use Advanced Tracking to set hydration goals, monitor your beverage consumpution, and ration your drink to last the whole day.";
 
-var MySlider = SLIDERS.HorizontalSlider.template(function($){ return{
-  height:50, left:50, right:50,
-  behavior: Object.create(SLIDERS.HorizontalSliderBehavior.prototype, {
-    onValueChanged: { value: function(container){
-      SLIDERS.HorizontalSliderBehavior.prototype.onValueChanged.call(this, container);
-      dispense_rate = this.data.value.toFixed(0);
-      dispense_rate_label.string = "Dispense " + dispense_rate + " oz";
-      updateDeviceDispenseRate();
-      
-  }}})
-}});
-
 var MySwitchTemplate = SWITCHES.SwitchButton.template(function($){ return{
   height:50, width: 10, right: 70, left: 0, top: 0, 
   behavior: Object.create(SWITCHES.SwitchButtonBehavior.prototype, {
@@ -45,10 +33,12 @@ var MyButtonTemplate = BUTTONS.Button.template(function($){ return{
 			} else {
 				//display green checkmark
 			}
-     		content.invoke(new Message(deviceURL + "updateSurvivalMode"), Message.JSON); 
-		}}, 	
+     		content.invoke(new Message(deviceURL + "updateSurvivalMode"), Message.JSON);       			 
+			}}, 
+			
 	})
 }});
+
 
 var validMessage = new Label( {left: 0, right:0, top: 5, style: errorStyle, string: "Please enter a valid amount up to 24oz", visible: false})	
 
@@ -98,35 +88,39 @@ var MyField = Container.template(function($) { return {
 
 var MyField1 = Container.template(function($) { return { 
 	width: 50, height: 36, top: 0, skin: nameInputSkin, contents: [
-    	Scroller($, { 
-      		left: 4, right: 4, top: 4, bottom: 4, active: true, name: "scroller", fill: "white", style: bottleStyle,
-      		behavior: Object.create(CONTROL.FieldScrollerBehavior.prototype), clip: true, contents: [
-        		Label($, { 
-        			name: "textbox", left: 0, top: 0, bottom: 0, skin: THEME.fieldLabelSkin, style: bottleStyle, anchor: 'AMOUNT',
-          			editable: true, string: $.name,
-         			behavior: Object.create( CONTROL.FieldLabelBehavior.prototype, {
-         				onEdited: { value: function(label){
-         					var data = this.data;
-              				data.name = label.string;
-				            dispense_time = parseFloat(label.string);
-				            label.container.hint.visible = ( data.name.length == 0 );	
-				            var data = this.data;	
-				  		    data.name = label.string;
-				      		amount = label.string;
-              				label.container.hint.visible = ( data.name.length == 0 );	
-         				}},
-		         		onFocused: { value: function(label){
-		         			menu.visible = false;
-		         			KEYBOARD.show();
-		         		}}
-         			}),
-         		}),
-		        Label($, {
-		   		 	left:4, right:4, top:4, bottom:4, style:fieldHintStyle, string:"", name:"hint",
-		        })
-      		]
-    	})
-	]
+    Scroller($, { 
+      left: 4, right: 4, top: 4, bottom: 4, active: true, name: "scroller", fill: "white", style: bottleStyle,
+      behavior: Object.create(CONTROL.FieldScrollerBehavior.prototype), clip: true, contents: [
+        Label($, { 
+          name: "textbox", left: 0, top: 0, bottom: 0, skin: THEME.fieldLabelSkin, style: bottleStyle, anchor: 'AMOUNT',
+          editable: true, string: $.name,
+         	behavior: Object.create( CONTROL.FieldLabelBehavior.prototype, {
+         		onEdited: { value: function(label){
+         			var data = this.data;
+         			
+              data.name = label.string;
+              //amount = label.string;
+              
+              dispense_time = parseFloat(label.string);
+              //trace("printing dispense time " + dispense_time); 
+              label.container.hint.visible = ( data.name.length == 0 );	
+         			var data = this.data;	
+          		    data.name = label.string;
+              		amount = label.string;
+	                label.container.hint.visible = ( data.name.length == 0 );	
+         		}},
+         		onFocused: { value: function(label){
+         			menu.visible = false;
+         			KEYBOARD.show();
+         		}}
+         	}),
+         }),
+         Label($, {
+   			 	left:4, right:4, top:4, bottom:4, style:fieldHintStyle, string:"", name:"hint",
+         })
+      ]
+    })
+  ]
 }});
 
 var MyGoalField = Container.template(function($) { return { 
@@ -210,7 +204,7 @@ var line1 = new Line({left:0, right:0, top:0, visible: false, contents: [
 exports.SurvivalScreen = Container.template(function($) {return { left: 0, right: 0, top: 0, bottom: 0, active: true, 
 	contents: [ 
 		new Column({name:"column", left:0, right:0, top:0, bottom:0, skin: whiteS,
-			contents:[
+			contents:[	
 				new Content({width: 320, height:50, skin:logoSkin}),
 				validMessage,
 				new Column({name: "secondCol", left:0, right:0, top:0, 
@@ -250,12 +244,11 @@ exports.SurvivalScreen = Container.template(function($) {return { left: 0, right
 				}),
 			], 
 		}) 
-	], 
-	behavior: Object.create(Container.prototype, {
-	    onTouchEnded: { value: function(content){
-	      KEYBOARD.hide();
-	      content.focus();
-	      application.invoke(new Message("/delayShowMenu"));
-	    }}
-	})
+	], behavior: Object.create(Container.prototype, {
+			onTouchEnded: { value: function(content){
+		    	KEYBOARD.hide();
+		    	content.focus();
+		    	application.invoke(new Message("/delayShowMenu"));
+			}}
+		})
 }});
